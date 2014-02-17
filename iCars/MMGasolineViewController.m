@@ -94,7 +94,7 @@
     
     //tabBar buttons
     self.navigationItem.hidesBackButton = YES;
-    UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithTitle:@"hambu" style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
+    UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     UIBarButtonItem *addNewRefueling = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewRefueling:)];
     [self.navigationItem setRightBarButtonItem:addNewRefueling];
@@ -105,16 +105,16 @@
 -(void)showHamburger:(id)sender{
     NSLog(@"menu");
     NSArray *images = @[
-                        [UIImage imageNamed:@"back_to_mainMenu.jpg"],
+                        [UIImage imageNamed:@"back_logo.jpg"],
                         [UIImage imageNamed:@"refueling_logo.png"],
-                        [UIImage imageNamed:@"refueling_logo.png"],
+                        [UIImage imageNamed:@"refueling-pin_logo.png"],
                         [UIImage imageNamed:@"oilChange_logo.jpg"],
                         [UIImage imageNamed:@"services_logo.jpg"],
-                        [UIImage imageNamed:@"services_logo.jpg"],
+                        [UIImage imageNamed:@"services-pin_logo.jpg"],
                         [UIImage imageNamed:@"reminders_logo.jpg"],
                         [UIImage imageNamed:@"expenses_logo.png"],
                         [UIImage imageNamed:@"insurance_logo.png"],
-                        [UIImage imageNamed:@"insurance_logo.png"],
+                        [UIImage imageNamed:@"insurance-pin_logo.png"],
                         [UIImage imageNamed:@"summary_logo.png"],
                         [UIImage imageNamed:@"charts_logo.png"]];
     

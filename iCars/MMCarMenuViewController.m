@@ -129,14 +129,14 @@
     [[[self navigationController] navigationBar] setTranslucent:NO];
     
     self.icons = [NSArray arrayWithObjects: @"refueling_logo.png",
-                  @"refueling_logo.png",//+gps
+                  @"refueling-pin_logo.png",//+gps
                                             @"oilChange_logo.jpg",
                                              @"services_logo.jpg",
-                  @"services_logo.jpg",//+gps
+                  @"services-pin_logo.jpg",//+gps
                                             @"reminders_logo.jpg",
                                              @"expenses_logo.png",
                                             @"insurance_logo.png",
-                  @"insurance_logo.png",//+gps
+                  @"insurance-pin_logo.png",//+gps
                                               @"summary_logo.png",
                                                @"charts_logo.png",nil];
     

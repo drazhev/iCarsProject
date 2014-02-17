@@ -14,7 +14,8 @@
 
 @property (nonatomic, strong) UILabel *formLabel;
 @property (nonatomic, strong) UILabel *dateLabel;
-@property (nonatomic, strong) UITextField *dateTextField;
+//@property (nonatomic, strong) UITextField *dateTextField;
+@property (nonatomic, strong) UIDatePicker *datePicker;
 @property (nonatomic, strong) UILabel *totalCostLabel;
 @property (nonatomic, strong) UILabel *fuelPriceLabel;
 @property (nonatomic, strong) UITextField *totalCostTextField;
@@ -35,7 +36,7 @@
 @implementation MMNewRefuelingViewController
 
 @synthesize formLabel, dateLabel, totalCostLabel, fuelPriceLabel, litersLabel, odometerLabel,fuelTypeLabel, gasStationLabel, gasNotesLabel;
-@synthesize dateTextField, totalCostTextField, fuelPriceTextField, litersTextField, odometerTextField, fuelTypeTextField, gasStationTextField, gasNotesTextField;
+@synthesize datePicker, totalCostTextField, fuelPriceTextField, litersTextField, odometerTextField, fuelTypeTextField, gasStationTextField, gasNotesTextField;
 @synthesize carToEdit;
 
 - (id)initWithCar:(Car*)car
@@ -71,14 +72,18 @@
     self.dateLabel.text = @"Дата на зареждане:";
     [gazFormView addSubview:self.dateLabel];
     
-    self.dateTextField = [[UITextField alloc] init];
-    [self.dateTextField setBorderStyle:UITextBorderStyleRoundedRect];
-    //[self.dateTextField setDelegate:self];
-    self.dateTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    self.dateTextField.translatesAutoresizingMaskIntoConstraints = NO;
-    //self.dateTextField.secureTextEntry = YES;
-    //self.dateTextField.placeholder = @"Enter Password";
-    [gazFormView addSubview: self.dateTextField];
+    self.datePicker = [[UIDatePicker alloc] init];
+    self.datePicker.translatesAutoresizingMaskIntoConstraints = NO;
+    [gazFormView addSubview:self.datePicker];
+    
+//    self.dateTextField = [[UITextField alloc] init];
+//    [self.dateTextField setBorderStyle:UITextBorderStyleRoundedRect];
+//    //[self.dateTextField setDelegate:self];
+//    self.dateTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+//    self.dateTextField.translatesAutoresizingMaskIntoConstraints = NO;
+//    //self.dateTextField.secureTextEntry = YES;
+//    //self.dateTextField.placeholder = @"Enter Password";
+//    [gazFormView addSubview: self.dateTextField];
     
     self.totalCostLabel = [[UILabel alloc] init];
     self.totalCostLabel.textColor = [UIColor blackColor];
@@ -193,41 +198,41 @@
     //Date label and textField
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-20-[dateLabel(120)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(dateLabel)]];
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-60-[dateLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(dateLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-18-[dateTextField(120)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(dateTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-85-[dateTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(dateTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-18-[datePicker(320)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(datePicker)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-85-[datePicker]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(datePicker)]];
     
     //Total cost, fuel price and liters labels
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-22-[totalCostLabel(80)]-10-[fuelPriceLabel(90)]-10-[litersLabel(100)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(totalCostLabel, fuelPriceLabel, litersLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-110-[totalCostLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(totalCostLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-110-[fuelPriceLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelPriceLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-110-[litersLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(litersLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-310-[totalCostLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(totalCostLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-310-[fuelPriceLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelPriceLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-310-[litersLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(litersLabel)]];
     
     
     //Total cost, fuel price and liters textField
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-20-[totalCostTextField(80)]-10-[fuelPriceTextField(90)]-10-[litersTextField(100)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings( totalCostTextField, fuelPriceTextField, litersTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-135-[totalCostTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(totalCostTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-135-[fuelPriceTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelPriceTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-135-[litersTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(litersTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-335-[totalCostTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(totalCostTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-335-[fuelPriceTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelPriceTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-335-[litersTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(litersTextField)]];
     
     //Odometer label and textfield
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-22-[odometerLabel(80)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(odometerLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-160-[odometerLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(odometerLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-360-[odometerLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(odometerLabel)]];
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-20-[odometerTextField(80)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(odometerTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-185-[odometerTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(odometerTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-385-[odometerTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(odometerTextField)]];
     
     //fuel tupe and gas station
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-22-[fuelTypeLabel(80)]-30-[gasStationLabel(100)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelTypeLabel, gasStationLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-210-[fuelTypeLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelTypeLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-210-[gasStationLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasStationLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-410-[fuelTypeLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelTypeLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-410-[gasStationLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasStationLabel)]];
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-22-[fuelTypeTextField(80)]-30-[gasStationTextField(100)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelTypeTextField, gasStationTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-235-[fuelTypeTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelTypeTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-235-[gasStationTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasStationTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-435-[fuelTypeTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(fuelTypeTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-435-[gasStationTextField(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasStationTextField)]];
     
     //Notes
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-22-[gasNotesLabel(80)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesLabel)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-260-[gasNotesLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesLabel)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-460-[gasNotesLabel(20)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesLabel)]];
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-20-[gasNotesTextField(280)]-20-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesTextField)]];
-    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-285-[gasNotesTextField(60)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesTextField)]];
+    [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-485-[gasNotesTextField(60)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesTextField)]];
     
     //VERY IMPORTANT FOR THE PROPER FUNCTIONALITY OF RDVKeyboardAvoidingScrollView
     [gazFormView setContentSize:CGSizeMake(gazFormFrame.size.width, CGRectGetMaxY(self.gasNotesTextField.frame) + 	55)];
@@ -252,7 +257,7 @@
         MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
         Refueling* newRefueling = [NSEntityDescription insertNewObjectForEntityForName:@"Refueling" inManagedObjectContext:appDelegate.managedObjectContext];
         
-        newRefueling.refuelingDate = [NSDate date];//da se prepravi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        newRefueling.refuelingDate = self.datePicker.date;
         
         newRefueling.refuelingTotalCost = @([self.totalCostTextField.text integerValue]);
         newRefueling.odometer = @([self.odometerTextField.text integerValue]);

@@ -37,6 +37,7 @@
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
+    //commit comment
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     UIScrollView *newCarView = [[UIScrollView alloc] initWithFrame:applicationFrame];
     //[newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];

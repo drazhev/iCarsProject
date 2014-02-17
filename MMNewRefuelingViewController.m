@@ -230,7 +230,7 @@
     [gazFormView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-285-[gasNotesTextField(60)]" options:0 metrics:nil views:NSDictionaryOfVariableBindings(gasNotesTextField)]];
     
     //VERY IMPORTANT FOR THE PROPER FUNCTIONALITY OF RDVKeyboardAvoidingScrollView
-   // [gazFormView setContentSize:CGSizeMake(gazFormFrame.size.width, CGRectGetMaxY(self.gasNotesTextField.frame) + 	55)];
+    [gazFormView setContentSize:CGSizeMake(gazFormFrame.size.width, CGRectGetMaxY(self.gasNotesTextField.frame) + 	55)];
     
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style: UIBarButtonItemStyleBordered target:self action:@selector(saveCarButtonAction:)];
     [self.navigationItem setRightBarButtonItem:addButton];

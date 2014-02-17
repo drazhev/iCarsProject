@@ -80,7 +80,7 @@
         cell.carMakeLogo.image = [UIImage imageNamed:@"porsche_logo.jpg"];
     }
     if ([car.make  isEqual: @"Audi"]) {
-        cell.carMakeLogo.image = [UIImage imageNamed:@"audi_logo_100.png"];
+        cell.carMakeLogo.image = [UIImage imageNamed:@"audi_logo.png"];
     }
     return cell;
 }
@@ -133,7 +133,7 @@
         cell.carMakeLogo.image = [UIImage imageNamed:@"porsche_logo.jpg"];
     }
     if ([car.make  isEqual: @"Audi"]) {
-        cell.carMakeLogo.image = [UIImage imageNamed:@"audi_logo_100.png"];
+        cell.carMakeLogo.image = [UIImage imageNamed:@"audi_logo.png"];
     }
 
     return cell;

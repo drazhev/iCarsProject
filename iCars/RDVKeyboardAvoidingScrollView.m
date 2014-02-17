@@ -114,7 +114,8 @@
         // Change the content offset only for the first activeTextView, the system handles the rest
         CGRect aRect = self.frame;
         aRect.size.height -= keyboardFrame.size.height;
-        
+        NSLog(@"%@", NSStringFromCGRect(aRect));
+        NSLog(@"%f", self.activeTextView.frame.origin.y);
         if (!CGRectContainsPoint(aRect, self.activeTextView.frame.origin)) {
             [self scrollRectToVisible:self.activeTextView.frame animated:YES];
         }

@@ -93,15 +93,20 @@
     self.refuelingsArray = [[NSMutableArray alloc] init];
     UIView *refuelingView;
     for(Refueling *refueling in refuelingEntities) {
-        
         refuelingView = [[UIView alloc] init];
-//        refuelingView.backgroundColor = [UIColor redColor];
-        UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, applicationFrame.size.width - 10, 40)];
-        label.text = [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@ ", refueling.refuelingDate, refueling.refuelingTotalCost, refueling.odometer, refueling.refuelingQantity, refueling.fuelType , refueling.refuelingGasStation, refueling.fullTank];
-        label.backgroundColor = [UIColor greenColor];
-        [refuelingView addSubview: label];
         
+        UILabel* refuelingDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width - 10, 20)];
+        refuelingDateLabel.text = @"Refueling date";
+        refuelingDateLabel.textColor = [UIColor lightGrayColor];
+        refuelingDateLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:refuelingDateLabel];
         
+        UILabel* refuelingDateMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, applicationFrame.size.width - 10, 40)];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"dd/MM/yyyy"];
+        refuelingDateMainLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:refueling.refuelingDate]];
+        [refuelingView addSubview: refuelingDateMainLabel];
+
         [refuelingsArray addObject:refuelingView];
     }
     
@@ -111,7 +116,6 @@
     for(UIView *view in refuelingsArray) {
         
         [newCarView addSubview:view];
-        view.backgroundColor = [UIColor lightGrayColor];
         [view setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
         view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
     }

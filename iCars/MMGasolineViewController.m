@@ -11,7 +11,7 @@
 @interface MMGasolineViewController ()<UIScrollViewDelegate>
 
 @property(nonatomic, strong)Car* carToEdit;
-@property(nonatomic) NSUInteger currentPage;
+@property(nonatomic) CGPoint currentOffset;
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
@@ -71,7 +71,7 @@
     //commit comment
     CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
     UIScrollView *newCarView = [[UIScrollView alloc] initWithFrame:applicationFrame];
-    //[newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     [newCarView setBackgroundColor:[UIColor whiteColor]];
     //[newCarView setAlwaysBounceVertical:NO];
     //[newCarView setAlwaysBounceHorizontal:NO];
@@ -219,6 +219,7 @@
         view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
     }
     newCarView.contentSize = CGSizeMake(applicationFrame.size.width * [refuelingsArray count], applicationFrame.size.height - 44);
+
     
     //tabBar buttons
     self.navigationItem.hidesBackButton = YES;
@@ -226,6 +227,8 @@
     [self.navigationItem setLeftBarButtonItem:hamburger];
     UIBarButtonItem *addNewRefueling = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewRefueling:)];
     [self.navigationItem setRightBarButtonItem:addNewRefueling];
+    
+    [newCarView setContentOffset:self.currentOffset];
     self.view = newCarView;
     
 }
@@ -322,6 +325,17 @@
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
+
+    UIScrollView* current = (UIScrollView*) self.view;
+    NSLog(@"%f %f", applicationFrame.size.height, applicationFrame.size.width);
+    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
+        self.currentOffset = CGPointMake(current.contentOffset.x*3/2, current.contentOffset.y);
+    else
+    {
+        NSLog(@"vliza");
+        self.currentOffset = CGPointMake(current.contentOffset.x*2/3, current.contentOffset.y);
+    }
     [self loadView];
 
 }

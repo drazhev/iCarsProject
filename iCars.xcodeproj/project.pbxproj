@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DCC865AE18B3C2480036A539 /* MMNewOilChangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */; };
+		DCC865AF18B3C2480036A539 /* MMNewServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC865AD18B3C2480036A539 /* MMNewServiceViewController.m */; };
 		EB573C5418AF8B38003DE8D3 /* MMCarMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB573C5318AF8B38003DE8D3 /* MMCarMenuViewController.m */; };
 		EB573C5718AF9317003DE8D3 /* MMCarMenuIcon.m in Sources */ = {isa = PBXBuildFile; fileRef = EB573C5618AF9317003DE8D3 /* MMCarMenuIcon.m */; };
 		EB573C7218AFB42F003DE8D3 /* services_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EB573C6A18AFB42F003DE8D3 /* services_logo.jpg */; };
@@ -79,6 +81,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DCC865AA18B3C2480036A539 /* MMNewOilChangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewOilChangeViewController.h; sourceTree = "<group>"; };
+		DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNewOilChangeViewController.m; sourceTree = "<group>"; };
+		DCC865AC18B3C2480036A539 /* MMNewServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewServiceViewController.h; sourceTree = "<group>"; };
+		DCC865AD18B3C2480036A539 /* MMNewServiceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNewServiceViewController.m; sourceTree = "<group>"; };
 		EB573C5218AF8B38003DE8D3 /* MMCarMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMCarMenuViewController.h; sourceTree = "<group>"; };
 		EB573C5318AF8B38003DE8D3 /* MMCarMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMCarMenuViewController.m; sourceTree = "<group>"; };
 		EB573C5518AF9317003DE8D3 /* MMCarMenuIcon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMCarMenuIcon.h; sourceTree = "<group>"; };
@@ -246,6 +252,10 @@
 			children = (
 				EB573C7A18AFC95B003DE8D3 /* MMGasolineViewController.h */,
 				EB573C7B18AFC95B003DE8D3 /* MMGasolineViewController.m */,
+				DCC865AA18B3C2480036A539 /* MMNewOilChangeViewController.h */,
+				DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */,
+				DCC865AC18B3C2480036A539 /* MMNewServiceViewController.h */,
+				DCC865AD18B3C2480036A539 /* MMNewServiceViewController.m */,
 				EBAFCDCC18B1113B000FC14A /* MMNewRefuelingViewController.h */,
 				EBAFCDCD18B1113B000FC14A /* MMNewRefuelingViewController.m */,
 				EB573C7D18AFC973003DE8D3 /* MMOilViewController.h */,
@@ -488,6 +498,7 @@
 				EBAD463718AB9CF500EA3B6B /* Expense.m in Sources */,
 				EBAFCDCE18B1113B000FC14A /* MMNewRefuelingViewController.m in Sources */,
 				EB573C8818AFC9E3003DE8D3 /* MMServicesMapViewController.m in Sources */,
+				DCC865AF18B3C2480036A539 /* MMNewServiceViewController.m in Sources */,
 				EB573C9418AFCA51003DE8D3 /* MMSummaryViewController.m in Sources */,
 				EBAD464018AB9CF500EA3B6B /* Reminder.m in Sources */,
 				EBA9C5BE18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.m in Sources */,
@@ -499,6 +510,7 @@
 				EB573C9A18AFCAB4003DE8D3 /* MMExpensesViewController.m in Sources */,
 				EBA9C5BB18ABDF790088A2AF /* MMAddNewCarViewController.m in Sources */,
 				EB573C7F18AFC973003DE8D3 /* MMOilViewController.m in Sources */,
+				DCC865AE18B3C2480036A539 /* MMNewOilChangeViewController.m in Sources */,
 				EB573C8518AFC999003DE8D3 /* MMServicesViewController.m in Sources */,
 				EBAD464618AB9CF500EA3B6B /* Service.m in Sources */,
 				EBB7F32E18A555FA0050998B /* main.m in Sources */,

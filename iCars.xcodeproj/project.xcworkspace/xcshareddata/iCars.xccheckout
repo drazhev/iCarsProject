@@ -5,19 +5,19 @@
 	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
 	<false/>
 	<key>IDESourceControlProjectIdentifier</key>
-	<string>3534971A-E475-4CFD-B363-A40B15E82407</string>
+	<string>C0F393D3-9663-4023-B9E1-33B323ABBFDF</string>
 	<key>IDESourceControlProjectName</key>
 	<string>iCars</string>
 	<key>IDESourceControlProjectOriginsDictionary</key>
 	<dict>
-		<key>8D0A36CC-06DC-40C3-B9F1-3C72BF903E10</key>
+		<key>EF71000D-A9BB-45FD-A230-0397D6D3CBDF</key>
 		<string>https://github.com/EmilianParvanov/iCars.git</string>
 	</dict>
 	<key>IDESourceControlProjectPath</key>
 	<string>iCars.xcodeproj/project.xcworkspace</string>
 	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
 	<dict>
-		<key>8D0A36CC-06DC-40C3-B9F1-3C72BF903E10</key>
+		<key>EF71000D-A9BB-45FD-A230-0397D6D3CBDF</key>
 		<string>../..</string>
 	</dict>
 	<key>IDESourceControlProjectURL</key>
@@ -25,14 +25,14 @@
 	<key>IDESourceControlProjectVersion</key>
 	<integer>110</integer>
 	<key>IDESourceControlProjectWCCIdentifier</key>
-	<string>8D0A36CC-06DC-40C3-B9F1-3C72BF903E10</string>
+	<string>EF71000D-A9BB-45FD-A230-0397D6D3CBDF</string>
 	<key>IDESourceControlProjectWCConfigurations</key>
 	<array>
 		<dict>
 			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
 			<string>public.vcs.git</string>
 			<key>IDESourceControlWCCIdentifierKey</key>
-			<string>8D0A36CC-06DC-40C3-B9F1-3C72BF903E10</string>
+			<string>EF71000D-A9BB-45FD-A230-0397D6D3CBDF</string>
 			<key>IDESourceControlWCCName</key>
 			<string>iCars</string>
 		</dict>

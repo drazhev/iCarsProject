@@ -103,7 +103,7 @@
         refuelingView = [[UIView alloc] init];
         
         UILabel* refuelingDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width - 10, 20)];
-        refuelingDateLabel.text = @"Refueling date";
+        refuelingDateLabel.text = @"Дата на презареждане";
         refuelingDateLabel.textColor = [UIColor lightGrayColor];
         refuelingDateLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:refuelingDateLabel];
@@ -115,7 +115,7 @@
         [refuelingView addSubview: refuelingDateMainLabel];
         
         UILabel* totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, applicationFrame.size.width - 10, 20)];
-        totalCostLabel.text = @"Total cost";
+        totalCostLabel.text = @"Крайна цена";
         totalCostLabel.textColor = [UIColor lightGrayColor];
         totalCostLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:totalCostLabel];
@@ -125,7 +125,7 @@
         [refuelingView addSubview: totalCostMainLabel];
         
         UILabel* fuelPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 60, applicationFrame.size.width - 10, 20)];
-        fuelPriceLabel.text = @"Fuel price";
+        fuelPriceLabel.text = @"Цена гориво";
         fuelPriceLabel.textColor = [UIColor lightGrayColor];
         fuelPriceLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:fuelPriceLabel];
@@ -135,7 +135,7 @@
         [refuelingView addSubview: fuelPriceMainLabel];
         
         UILabel* litresLabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 60, applicationFrame.size.width - 10, 20)];
-        litresLabel.text = @"Litres";
+        litresLabel.text = @"Количество(л.)";
         litresLabel.textColor = [UIColor lightGrayColor];
         litresLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:litresLabel];
@@ -145,7 +145,7 @@
         [refuelingView addSubview: litresMainlabel];
 
         UILabel* odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];
-        odometerLabel.text = @"Odometer";
+        odometerLabel.text = @"Километраж";
         odometerLabel.textColor = [UIColor lightGrayColor];
         odometerLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:odometerLabel];
@@ -155,7 +155,7 @@
         [refuelingView addSubview: odometerMainLabel];
         
         UILabel* fullTankLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 110, applicationFrame.size.width - 10, 20)];
-        fullTankLabel.text = @"Full tank";
+        fullTankLabel.text = @"Пълен резервоар";
         fullTankLabel.textColor = [UIColor lightGrayColor];
         fullTankLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:fullTankLabel];
@@ -165,7 +165,7 @@
         [refuelingView addSubview: fullTankMainLabel];
         
         UILabel* consumptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 110, applicationFrame.size.width - 10, 20)];
-        consumptionLabel.text = @"L/100KM";
+        consumptionLabel.text = @"л/100км";
         consumptionLabel.textColor = [UIColor lightGrayColor];
         consumptionLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:consumptionLabel];
@@ -185,7 +185,7 @@
         [refuelingView addSubview: consumptionMainLabel];
         
         UILabel* fuelTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
-        fuelTypeLabel.text = @"Fuel type";
+        fuelTypeLabel.text = @"Тип гориво";
         fuelTypeLabel.textColor = [UIColor lightGrayColor];
         fuelTypeLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:fuelTypeLabel];
@@ -195,7 +195,7 @@
         [refuelingView addSubview: fuelTypeMainLabel];
         
         UILabel* gasStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 160, applicationFrame.size.width - 10, 20)];
-        gasStationLabel.text = @"Gas station";
+        gasStationLabel.text = @"Бюензиностанция";
         gasStationLabel.textColor = [UIColor lightGrayColor];
         gasStationLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:gasStationLabel];
@@ -220,7 +220,6 @@
         view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
     }
     newCarView.contentSize = CGSizeMake(applicationFrame.size.width * [refuelingsArray count], applicationFrame.size.height - 44);
-
     
     //tabBar buttons
     self.navigationItem.hidesBackButton = YES;
@@ -286,7 +285,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
-    self.page = 2;
+    self.page = 0;
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     
@@ -350,25 +349,11 @@
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-
-//    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
-//
-//    UIScrollView* current = (UIScrollView*) self.view;
-//    NSLog(@"%f %f", applicationFrame.size.height, applicationFrame.size.width);
-//    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
-//        self.currentOffset = CGPointMake(current.contentOffset.x*3/2, current.contentOffset.y);
-//    else
-//    {
-//        NSLog(@"vliza");
-//        self.currentOffset = CGPointMake(current.contentOffset.x*2/3, current.contentOffset.y);
-//    }
     [self loadView];
-    [self gotoPage:YES];
-
+    [self gotoPage:NO];
 }
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 }
-//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(NSUInteger)supportedInterfaceOrientations {
     

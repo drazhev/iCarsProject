@@ -265,10 +265,9 @@
         
         if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
         
-       /* if (self.fuelTypeTextField.text.length != 0)*/ newRefueling.fuelType = @"A95";//da se prepravi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! spisuk @"95, 95+, 98, 98+, diesel, gaz4iza, metan4e i t.n"
-       /* if (self.gasStationTextField.text.length != 0) */newRefueling.refuelingGasStation = @"Lukoil";///!!!!!!!!!!!!!!!!!!    i tva da se napravi sys spisuk ot WS sa6o
-        newRefueling.fullTank = @(1);//da se sloji checkboX
-        
+        /* if (self.fuelTypeTextField.text.length != 0)*/ newRefueling.fuelType = self.fuelTypeTextField.text;;//da se prepravi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! spisuk @"95, 95+, 98, 98+, diesel, gaz4iza, metan4e i t.n"
+        /* if (self.gasStationTextField.text.length != 0) */newRefueling.refuelingGasStation = self.gasStationTextField.text;
+        newRefueling.fullTank = @(1);
         newRefueling.car = carToEdit;
         
         
@@ -311,6 +310,7 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Auto/Rotation CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

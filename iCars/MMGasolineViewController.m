@@ -95,7 +95,7 @@
     for(Refueling *refueling in refuelingEntities) {
         
         refuelingView = [[UIView alloc] init];
-        refuelingView.backgroundColor = [UIColor redColor];
+//        refuelingView.backgroundColor = [UIColor redColor];
         UILabel* label = [[UILabel alloc] initWithFrame:CGRectMake(0, 10, applicationFrame.size.width - 10, 40)];
         label.text = [NSString stringWithFormat:@"%@, %@, %@, %@, %@, %@, %@ ", refueling.refuelingDate, refueling.refuelingTotalCost, refueling.odometer, refueling.refuelingQantity, refueling.fuelType , refueling.refuelingGasStation, refueling.fullTank];
         label.backgroundColor = [UIColor greenColor];

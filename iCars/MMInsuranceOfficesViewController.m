@@ -15,6 +15,7 @@
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
+@property (nonatomic, strong) NSMutableData* response;
 
 @end
 
@@ -44,13 +45,15 @@
 //    [newCarView setAlwaysBounceHorizontal:NO];
 //    [newCarView setScrollEnabled:YES];
     
-    MKMapView* mapView;
+    MKMapView* mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, applicationFrame.size.width, applicationFrame.size.height)];
+     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(42.696552, 23.32601), 10000, 10000);
+    [mapView setRegion:[mapView regionThatFits:region] animated:YES];
+    self.view = mapView;
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     
-    //self.view = newCarView;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -98,22 +101,45 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Data CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    self.response = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [self.response appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"failed request");
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSError *err = nil;
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData: self.response options: NSJSONReadingMutableContainers error: &err];
+    for(NSDictionary *item in jsonArray) {
+        NSString* name = [item objectForKey:@"name"];
+        CGFloat x = [[item objectForKey:@"x"] floatValue];
+        CGFloat y = [[item objectForKey:@"y"] floatValue];
+        
+        MKPointAnnotation* annotation = [[MKPointAnnotation alloc] init];
+        annotation.coordinate = CLLocationCoordinate2DMake(x, y);
+        annotation.title = name;
+        MKMapView* mapView = (MKMapView*) self.view;
+        [mapView addAnnotation:annotation];
+        
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     NSString *url=@"http://icars.orgfree.com/";
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
-    NSURLResponse *resp = nil;
-    NSError *err = nil;
-    NSData *response = [NSURLConnection sendSynchronousRequest: theRequest returningResponse: &resp error: &err];
-    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData: response options: NSJSONReadingMutableContainers error: &err];
-    for(NSDictionary *item in jsonArray) {
-        NSString* name = [item objectForKey:@"name"];
-        CGFloat x = [[item objectForKey:@"x"] floatValue];
-        CGFloat y = [[item objectForKey:@"y"] floatValue];
-
-    }
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     

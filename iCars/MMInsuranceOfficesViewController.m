@@ -7,6 +7,7 @@
 //
 
 #import "MMInsuranceOfficesViewController.h"
+#include <MapKit/MapKit.h>
 
 @interface MMInsuranceOfficesViewController ()
 
@@ -36,18 +37,20 @@
 -(void)loadView{
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     
-    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
-    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-    [newCarView setBackgroundColor:[UIColor whiteColor]];
-    [newCarView setAlwaysBounceVertical:YES];
-    [newCarView setAlwaysBounceHorizontal:NO];
-    [newCarView setScrollEnabled:YES];
+//    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
+//    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+//    [newCarView setBackgroundColor:[UIColor whiteColor]];
+//    [newCarView setAlwaysBounceVertical:YES];
+//    [newCarView setAlwaysBounceHorizontal:NO];
+//    [newCarView setScrollEnabled:YES];
+    
+    MKMapView* mapView;
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     
-    self.view = newCarView;
+    //self.view = newCarView;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -99,6 +102,18 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    NSString *url=@"http://icars.orgfree.com/";
+    NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLResponse *resp = nil;
+    NSError *err = nil;
+    NSData *response = [NSURLConnection sendSynchronousRequest: theRequest returningResponse: &resp error: &err];
+    NSArray *jsonArray = [NSJSONSerialization JSONObjectWithData: response options: NSJSONReadingMutableContainers error: &err];
+    for(NSDictionary *item in jsonArray) {
+        NSString* name = [item objectForKey:@"name"];
+        CGFloat x = [[item objectForKey:@"x"] floatValue];
+        CGFloat y = [[item objectForKey:@"y"] floatValue];
+
+    }
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     

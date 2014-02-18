@@ -12,6 +12,7 @@
 
 @property(nonatomic, strong)Car* carToEdit;
 @property(nonatomic) CGPoint currentOffset;
+@property (nonatomic) int page;
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
@@ -285,6 +286,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.page = 2;
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     
@@ -300,6 +302,29 @@
                                      @"MMInsuranceOfficesViewController",
                                      @"MMSummaryViewController",
                                      @"MMChartsViewController",nil];
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+
+{
+    scrollView = (UIScrollView*)self.view;
+
+    // switch the indicator when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = CGRectGetWidth(scrollView.frame);
+    NSUInteger page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    self.page = page;
+    
+}
+
+- (void)gotoPage:(BOOL)animated
+{
+    NSInteger page = self.page;
+    UIScrollView* scrollView = (UIScrollView*)self.view;
+    
+	// update the scroll view to the appropriate page
+    CGRect bounds = scrollView.bounds;
+    bounds.origin.x = CGRectGetWidth(bounds) * page;
+    bounds.origin.y = 0;
+    [scrollView scrollRectToVisible:bounds animated:animated];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)didReceiveMemoryWarning
@@ -325,18 +350,20 @@
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
-    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
 
-    UIScrollView* current = (UIScrollView*) self.view;
-    NSLog(@"%f %f", applicationFrame.size.height, applicationFrame.size.width);
-    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
-        self.currentOffset = CGPointMake(current.contentOffset.x*3/2, current.contentOffset.y);
-    else
-    {
-        NSLog(@"vliza");
-        self.currentOffset = CGPointMake(current.contentOffset.x*2/3, current.contentOffset.y);
-    }
+//    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
+//
+//    UIScrollView* current = (UIScrollView*) self.view;
+//    NSLog(@"%f %f", applicationFrame.size.height, applicationFrame.size.width);
+//    if (toInterfaceOrientation == UIInterfaceOrientationLandscapeLeft || toInterfaceOrientation == UIInterfaceOrientationLandscapeRight)
+//        self.currentOffset = CGPointMake(current.contentOffset.x*3/2, current.contentOffset.y);
+//    else
+//    {
+//        NSLog(@"vliza");
+//        self.currentOffset = CGPointMake(current.contentOffset.x*2/3, current.contentOffset.y);
+//    }
     [self loadView];
+    [self gotoPage:YES];
 
 }
 - (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {

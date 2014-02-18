@@ -11,6 +11,7 @@
 @interface MMGasolineViewController ()<UIScrollViewDelegate>
 
 @property(nonatomic, strong)Car* carToEdit;
+@property(nonatomic) NSUInteger currentPage;
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
@@ -60,6 +61,11 @@
     
     return fullScreenRect;
 }
+-(CGFloat) calculateConsumptionFrom: (Refueling*)last To: (Refueling*)current {
+    if (last == nil) return 0;
+    if (![last.fullTank  isEqual: @1] || ![current.fullTank  isEqual: @1]) return 0;
+    return ([current.refuelingQantity floatValue]/([current.odometer floatValue] - [last.odometer floatValue])*100);
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
     //commit comment
@@ -106,8 +112,101 @@
         [formatter setDateFormat:@"dd/MM/yyyy"];
         refuelingDateMainLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:refueling.refuelingDate]];
         [refuelingView addSubview: refuelingDateMainLabel];
+        
+        UILabel* totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, applicationFrame.size.width - 10, 20)];
+        totalCostLabel.text = @"Total cost";
+        totalCostLabel.textColor = [UIColor lightGrayColor];
+        totalCostLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:totalCostLabel];
+        
+        UILabel* totalCostMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 90, 40)];
+        totalCostMainLabel.text = [NSString stringWithFormat:@"%@",refueling.refuelingTotalCost];
+        [refuelingView addSubview: totalCostMainLabel];
+        
+        UILabel* fuelPriceLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 60, applicationFrame.size.width - 10, 20)];
+        fuelPriceLabel.text = @"Fuel price";
+        fuelPriceLabel.textColor = [UIColor lightGrayColor];
+        fuelPriceLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:fuelPriceLabel];
+        
+        UILabel* fuelPriceMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 70, 90, 40)];
+        fuelPriceMainLabel.text = [NSString stringWithFormat:@"%@", refueling.fuelPrice];
+        [refuelingView addSubview: fuelPriceMainLabel];
+        
+        UILabel* litresLabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 60, applicationFrame.size.width - 10, 20)];
+        litresLabel.text = @"Litres";
+        litresLabel.textColor = [UIColor lightGrayColor];
+        litresLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:litresLabel];
+        
+        UILabel* litresMainlabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 70, 90, 40)];
+        litresMainlabel.text = [NSString stringWithFormat:@"%@", refueling.refuelingQantity];
+        [refuelingView addSubview: litresMainlabel];
+
+        UILabel* odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];
+        odometerLabel.text = @"Odometer";
+        odometerLabel.textColor = [UIColor lightGrayColor];
+        odometerLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:odometerLabel];
+        
+        UILabel* odometerMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 90, 40)];
+        odometerMainLabel.text = [NSString stringWithFormat:@"%@", refueling.odometer];
+        [refuelingView addSubview: odometerMainLabel];
+        
+        UILabel* fullTankLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 110, applicationFrame.size.width - 10, 20)];
+        fullTankLabel.text = @"Full tank";
+        fullTankLabel.textColor = [UIColor lightGrayColor];
+        fullTankLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:fullTankLabel];
+        
+        UILabel* fullTankMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 120, 90, 40)];
+        fullTankMainLabel.text = [refueling.fullTank  isEqual: @1] ? @"Yes" : @"No";
+        [refuelingView addSubview: fullTankMainLabel];
+        
+        UILabel* consumptionLabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 110, applicationFrame.size.width - 10, 20)];
+        consumptionLabel.text = @"L/100KM";
+        consumptionLabel.textColor = [UIColor lightGrayColor];
+        consumptionLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:consumptionLabel];
+        
+        UILabel* consumptionMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 120, 90, 40)];
+        int currentIndex = [refuelingEntities indexOfObject:refueling];
+        if (currentIndex == [refuelingEntities count] - 1)
+            consumptionMainLabel.text = @"N/A";
+        else {
+            CGFloat consumption = [self calculateConsumptionFrom:refuelingEntities[currentIndex+1] To:refueling];
+            if (consumption == 0)
+                consumptionMainLabel.text = @"N/A";
+            else
+                consumptionMainLabel.text = [NSString stringWithFormat:@"%.2f", consumption];
+        }
+        
+        [refuelingView addSubview: consumptionMainLabel];
+        
+        UILabel* fuelTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
+        fuelTypeLabel.text = @"Fuel type";
+        fuelTypeLabel.textColor = [UIColor lightGrayColor];
+        fuelTypeLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:fuelTypeLabel];
+        
+        UILabel* fuelTypeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
+        fuelTypeMainLabel.text = refueling.fuelType;
+        [refuelingView addSubview: fuelTypeMainLabel];
+        
+        UILabel* gasStationLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 160, applicationFrame.size.width - 10, 20)];
+        gasStationLabel.text = @"Gas station";
+        gasStationLabel.textColor = [UIColor lightGrayColor];
+        gasStationLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [refuelingView addSubview:gasStationLabel];
+        
+        UILabel* gasStationMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 170, 90, 40)];
+        gasStationMainLabel.text = refueling.refuelingGasStation;
+        [refuelingView addSubview: gasStationMainLabel];
+        
+
 
         [refuelingsArray addObject:refuelingView];
+        
     }
     
     //paging
@@ -119,7 +218,6 @@
         [view setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
         view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
     }
-    NSLog(@"%f", applicationFrame.size.width);
     newCarView.contentSize = CGSizeMake(applicationFrame.size.width * [refuelingsArray count], applicationFrame.size.height - 44);
     
     //tabBar buttons
@@ -128,8 +226,8 @@
     [self.navigationItem setLeftBarButtonItem:hamburger];
     UIBarButtonItem *addNewRefueling = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewRefueling:)];
     [self.navigationItem setRightBarButtonItem:addNewRefueling];
-    
     self.view = newCarView;
+    
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{

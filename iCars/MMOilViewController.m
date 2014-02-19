@@ -176,25 +176,25 @@
             [oilChangeView addSubview: odometerMainLabel];
             
             
-            UILabel* oilNextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
+            UILabel* oilNextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 110, applicationFrame.size.width - 10, 20)];
             oilNextChangeLabel.text = @"Следваща смяна";
             oilNextChangeLabel.textColor = [UIColor lightGrayColor];
             oilNextChangeLabel.font = [UIFont fontWithName:@"Arial" size:11];
             [oilChangeView addSubview:oilNextChangeLabel];
             
-            UILabel* oilNextChangeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
+            UILabel* oilNextChangeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 120, 90, 40)];
             oilNextChangeMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.oilNextChangeOdometer];
             [oilChangeView addSubview: oilNextChangeMainLabel];
             
             
             
-            UILabel* detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 160, applicationFrame.size.width - 10, 20)];
+            UILabel* detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
             detailsLabel.text = @"Детайли";
             detailsLabel.textColor = [UIColor lightGrayColor];
             detailsLabel.font = [UIFont fontWithName:@"Arial" size:11];
             [oilChangeView addSubview:detailsLabel];
             
-            UILabel* detailsMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 170, 90, 40)];
+            UILabel* detailsMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
             detailsMainLabel.text = oilChange.oilChangeDetails;
             [oilChangeView addSubview: detailsMainLabel];
             
@@ -203,8 +203,6 @@
             [oilChangesArray addObject:oilChangeView];
             
         }
-        
-        
         //paging
         
         NSUInteger page = 0;

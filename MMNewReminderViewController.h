@@ -12,7 +12,15 @@
 #import "MMRemindersViewController.h"
 
 
-@interface MMNewReminderViewController : UIViewController
+@interface MMNewReminderViewController : UIViewController <UIPickerViewDelegate, UIGestureRecognizerDelegate>
+@property (weak, nonatomic) IBOutlet UITextField *odometerTextField;
+@property (weak, nonatomic) IBOutlet UIDatePicker *datePicker;
+@property (weak, nonatomic) IBOutlet UIPickerView *typePickerView;
+@property (weak, nonatomic) IBOutlet UITextField *detailsTextField;
+@property (weak, nonatomic) IBOutlet UIButton *dateLabel;
+@property (weak, nonatomic) IBOutlet UIButton *typeLabel;
+
+@property(nonatomic, strong) Car* carToEdit;
 
 -(id)initWithCar: (Car*) car;
 

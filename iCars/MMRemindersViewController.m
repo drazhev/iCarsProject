@@ -62,7 +62,8 @@
     
 }
 -(void)addNewReminder: (id) sender {
-    MMNewReminderViewController* newRefueling = [[MMNewReminderViewController alloc] initWithCar:carToEdit];
+    MMNewReminderViewController* newRefueling = [[MMNewReminderViewController alloc] initWithNibName:@"MMNewReminderViewController" bundle:nil];
+    newRefueling.carToEdit = carToEdit;
     [self.navigationController pushViewController:newRefueling animated:YES];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

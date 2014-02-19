@@ -74,8 +74,8 @@
         [gasStations addObject:@"Shell"];
         [gasStations addObject:@"OMV"];
         [gasStations addObject:@"Petrol"];
-        [gasStations addObject:@"Lucoil"];
-        [gasStations addObject:@"ECO "];
+        [gasStations addObject:@"Lukoil"];
+        [gasStations addObject:@"EKO "];
         
     }
     return self;

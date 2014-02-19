@@ -5,9 +5,9 @@
 //  Created by Emilian Parvanov on 2/15/14.
 //  Copyright (c) 2014 MMA. All rights reserved.
 //
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #import "MMOilViewController.h"
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @interface MMOilViewController ()<UIScrollViewDelegate>
 
 @property(nonatomic, strong)Car* carToEdit;
@@ -19,13 +19,19 @@
 
 @property (nonatomic, strong)NSMutableArray* oilChangesArray;
 
-@end
+@property (nonatomic, strong)UILabel* noOilChangesLabel;
 
+
+
+
+@end
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @implementation MMOilViewController
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @synthesize optionIndices, viewControllersContainer;
 @synthesize carToEdit;
 @synthesize oilChangesArray;
+@synthesize noOilChangesLabel;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
 {
@@ -37,6 +43,9 @@
     }
     return self;
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#pragma mark - ApplicationFrame CONFIG
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (CGRect)getScreenFrameForCurrentOrientation {
     return [self getScreenFrameForOrientation:[UIApplication sharedApplication].statusBarOrientation];
 }
@@ -63,6 +72,21 @@
     return fullScreenRect;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#pragma mark - FetchAllOilChangesForThatCar DRY DRY DRY
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-(NSArray*)oilChangeEntities{
+    
+    MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSFetchRequest* requestOilChanges = [[NSFetchRequest alloc] initWithEntityName:@"OilChange"];
+    requestOilChanges.predicate = [NSPredicate predicateWithFormat: @"car = %@", carToEdit];
+    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"oilChangeDate" ascending:NO];
+    requestOilChanges.sortDescriptors = @[sortByDate];
+    NSError *errorOilChanges;
+    return [[appDelegate.managedObjectContext executeFetchRequest:requestOilChanges error:&errorOilChanges] mutableCopy];
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#pragma mark - MainView CONFIG
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
     //commit comment
     CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
@@ -79,109 +103,127 @@
     oilChangesScrollView.delegate = self;
     
     
-    //fetch all refuelings for that car
-    
-    MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
-    NSFetchRequest* requestOilChanges = [[NSFetchRequest alloc] initWithEntityName:@"OilChange"];
-    requestOilChanges.predicate = [NSPredicate predicateWithFormat: @"car = %@", carToEdit];
-    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"oilChangeDate" ascending:NO];
-    requestOilChanges.sortDescriptors = @[sortByDate];
-    NSError *errorOilChanges;
-    NSArray *oilChangeEntities = [[appDelegate.managedObjectContext executeFetchRequest:requestOilChanges error:&errorOilChanges] mutableCopy];
-    
-    
-    
-    
-    self.oilChangesArray = [[NSMutableArray alloc] init];
-    UIView *oilChangeView;
-    for(OilChange *oilChange in oilChangeEntities) {
-        oilChangeView = [[UIView alloc] init];
-        
-        UILabel* oilChangeDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width - 10, 20)];
-        oilChangeDateLabel.text = @"Дата на смяна";
-        oilChangeDateLabel.textColor = [UIColor lightGrayColor];
-        oilChangeDateLabel.font = [UIFont fontWithName:@"Arial" size:11];
-        [oilChangeView addSubview:oilChangeDateLabel];
-        
-        UILabel* oilChangeDateMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, applicationFrame.size.width - 10, 40)];
-        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
-        [formatter setDateFormat:@"dd/MM/yyyy"];
-        oilChangeDateMainLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:oilChange.oilChangeDate]];
-        [oilChangeView addSubview: oilChangeDateMainLabel];
-        
-        
-        
-        UILabel* totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, applicationFrame.size.width - 10, 20)];
-        totalCostLabel.text = @"Крайна цена";
-        totalCostLabel.textColor = [UIColor lightGrayColor];
-        totalCostLabel.font = [UIFont fontWithName:@"Arial" size:11];
-        [oilChangeView addSubview:totalCostLabel];
-        
-        UILabel* totalCostMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 90, 40)];
-        totalCostMainLabel.text = [NSString stringWithFormat:@"%@",oilChange.oilChangeTotalCost];
-        [oilChangeView addSubview: totalCostMainLabel];
-        
 
+    if (self.oilChangesArray.count == 0){
         
-        UILabel* odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];
-        odometerLabel.text = @"Километраж";
-        odometerLabel.textColor = [UIColor lightGrayColor];
-        odometerLabel.font = [UIFont fontWithName:@"Arial" size:11];
-        [oilChangeView addSubview:odometerLabel];
-        
-        UILabel* odometerMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 90, 40)];
-        odometerMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.odometer];//kofti imenuvana promenliva!!! ATTENZIONE!!!
-        [oilChangeView addSubview: odometerMainLabel];
+        UIView* noView= [[UIView alloc] initWithFrame:applicationFrame];
+        [noView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [noView setBackgroundColor:[UIColor whiteColor]];
         
         
-        UILabel* oilNextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
-        oilNextChangeLabel.text = @"Следваща смяна";
-        oilNextChangeLabel.textColor = [UIColor lightGrayColor];
-        oilNextChangeLabel.font = [UIFont fontWithName:@"Arial" size:11];
-        [oilChangeView addSubview:oilNextChangeLabel];
+        self.noOilChangesLabel = [[UILabel alloc] init];
+        self.noOilChangesLabel.textColor = [UIColor blackColor];
+        self.noOilChangesLabel.backgroundColor = [UIColor whiteColor];
         
-        UILabel* oilNextChangeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
-        oilNextChangeMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.oilNextChangeOdometer];
-        [oilChangeView addSubview: oilNextChangeMainLabel];
+        self.noOilChangesLabel.text = @"Сменете си маслото.";
+        self.noOilChangesLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+            self.noOilChangesLabel.font = [UIFont fontWithName:@"Arial" size: 15.0f];
+        }
+        else{
+            self.noOilChangesLabel.font = [UIFont fontWithName:@"Arial" size: 30.0f];
+        }
+        self.noOilChangesLabel.textAlignment = NSTextAlignmentCenter;
+        [noView addSubview: self.noOilChangesLabel];
+        
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noOilChangesLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noOilChangesLabel)]];
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[noOilChangesLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noOilChangesLabel)]];
+        
+        self.view = noView;
+    }
+    else{
+        self.oilChangesArray = [[NSMutableArray alloc] init];
+        UIView *oilChangeView;
+        for(OilChange *oilChange in self.oilChangeEntities) {
+            oilChangeView = [[UIView alloc] init];
+            
+            UILabel* oilChangeDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width - 10, 20)];
+            oilChangeDateLabel.text = @"Дата на смяна";
+            oilChangeDateLabel.textColor = [UIColor lightGrayColor];
+            oilChangeDateLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [oilChangeView addSubview:oilChangeDateLabel];
+            
+            UILabel* oilChangeDateMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, applicationFrame.size.width - 10, 40)];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"dd/MM/yyyy"];
+            oilChangeDateMainLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:oilChange.oilChangeDate]];
+            [oilChangeView addSubview: oilChangeDateMainLabel];
+            
+            
+            
+            UILabel* totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, applicationFrame.size.width - 10, 20)];
+            totalCostLabel.text = @"Крайна цена";
+            totalCostLabel.textColor = [UIColor lightGrayColor];
+            totalCostLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [oilChangeView addSubview:totalCostLabel];
+            
+            UILabel* totalCostMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 90, 40)];
+            totalCostMainLabel.text = [NSString stringWithFormat:@"%@",oilChange.oilChangeTotalCost];
+            [oilChangeView addSubview: totalCostMainLabel];
+            
+            
+            
+            UILabel* odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];
+            odometerLabel.text = @"Километраж";
+            odometerLabel.textColor = [UIColor lightGrayColor];
+            odometerLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [oilChangeView addSubview:odometerLabel];
+            
+            UILabel* odometerMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 90, 40)];
+            odometerMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.odometer];//kofti imenuvana promenliva!!! ATTENZIONE!!!
+            [oilChangeView addSubview: odometerMainLabel];
+            
+            
+            UILabel* oilNextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
+            oilNextChangeLabel.text = @"Следваща смяна";
+            oilNextChangeLabel.textColor = [UIColor lightGrayColor];
+            oilNextChangeLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [oilChangeView addSubview:oilNextChangeLabel];
+            
+            UILabel* oilNextChangeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
+            oilNextChangeMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.oilNextChangeOdometer];
+            [oilChangeView addSubview: oilNextChangeMainLabel];
+            
+            
+            
+            UILabel* detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 160, applicationFrame.size.width - 10, 20)];
+            detailsLabel.text = @"Детайли";
+            detailsLabel.textColor = [UIColor lightGrayColor];
+            detailsLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [oilChangeView addSubview:detailsLabel];
+            
+            UILabel* detailsMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 170, 90, 40)];
+            detailsMainLabel.text = oilChange.oilChangeDetails;
+            [oilChangeView addSubview: detailsMainLabel];
+            
+            
+            
+            [oilChangesArray addObject:oilChangeView];
+            
+        }
         
         
+        //paging
         
-        UILabel* detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 160, applicationFrame.size.width - 10, 20)];
-        detailsLabel.text = @"Детайли";
-        detailsLabel.textColor = [UIColor lightGrayColor];
-        detailsLabel.font = [UIFont fontWithName:@"Arial" size:11];
-        [oilChangeView addSubview:detailsLabel];
+        NSUInteger page = 0;
+        for(UIView *view in oilChangesArray) {
+            
+            [oilChangesScrollView addSubview:view];
+            [view setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+            view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
+        }
+        oilChangesScrollView.contentSize = CGSizeMake(applicationFrame.size.width * [oilChangesArray count], applicationFrame.size.height - 44);
         
-        UILabel* detailsMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 170, 90, 40)];
-        detailsMainLabel.text = oilChange.oilChangeDetails;
-        [oilChangeView addSubview: detailsMainLabel];
-        
-        
-        
-        [oilChangesArray addObject:oilChangeView];
+        self.view = oilChangesScrollView;
+
         
     }
-
-    
-    //paging
-    
-    NSUInteger page = 0;
-    for(UIView *view in oilChangesArray) {
-        
-        [oilChangesScrollView addSubview:view];
-        [view setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-        view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
-    }
-    oilChangesScrollView.contentSize = CGSizeMake(applicationFrame.size.width * [oilChangesArray count], applicationFrame.size.height - 44);
-
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     UIBarButtonItem *addNewOilChange = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewOilChange:)];
     [self.navigationItem setRightBarButtonItem:addNewOilChange];
-    
-    self.view = oilChangesScrollView;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -261,6 +303,36 @@
     // Dispose of any resources that can be recreated.
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#pragma mark - Paging CONFIG
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+
+{
+    scrollView = (UIScrollView*)self.view;
+    
+    // switch the indicator when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = CGRectGetWidth(scrollView.frame);
+    NSUInteger page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    self.page = page;
+    
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)gotoPage:(BOOL)animated
+{
+    
+    NSInteger page = self.page;
+    UIScrollView* scrollView = (UIScrollView*)self.view;
+    
+	// update the scroll view to the appropriate page
+    CGRect bounds = scrollView.bounds;
+    bounds.origin.x = CGRectGetWidth(bounds) * page;
+    bounds.origin.y = 0;
+    
+    if (self.oilChangeEntities.count != 0){
+        [scrollView scrollRectToVisible:bounds animated:animated];
+    }
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Auto/Rotation CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
@@ -275,6 +347,14 @@
         return YES;
     }
     else return NO;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [self loadView];
+    [self gotoPage:NO];
+}
+- (void)willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(NSUInteger)supportedInterfaceOrientations {

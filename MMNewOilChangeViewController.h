@@ -11,6 +11,7 @@
 #import "Car.h"
 #import "MMAppDelegate.h"
 #import "OilChange.h"
+#import "Reminder.h"
 #import "MMOilViewController.h"
 
 @interface MMNewOilChangeViewController : UIViewController

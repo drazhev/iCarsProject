@@ -32,7 +32,7 @@
 -(void)loadView{
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     UIScrollView *newServiceView = [[RDVKeyboardAvoidingScrollView alloc]initWithFrame:applicationFrame];
-    [newServiceView setBackgroundColor:[UIColor redColor]];
+    [newServiceView setBackgroundColor:[UIColor whiteColor]];
     [newServiceView setAlwaysBounceVertical:YES];
     [newServiceView setAlwaysBounceHorizontal:NO];
     [newServiceView setScrollEnabled:YES];
@@ -57,10 +57,6 @@
     
     MMServicesViewController* serviceVC = [[MMServicesViewController alloc] initWithCar:carToEdit];
     [self.navigationController pushViewController:serviceVC animated:YES];
-    
-    
-    
-    
     
 }
 

@@ -46,6 +46,8 @@
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
+    UIBarButtonItem *addNewService = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewService:)];
+    [self.navigationItem setRightBarButtonItem:addNewService];
     
     self.view = newCarView;
 }
@@ -73,6 +75,10 @@
     //callout.showFromRight = YES;
     [callout show];
     
+}
+-(void)addNewService:(id)sender{
+    MMNewServiceViewController* newService = [[MMNewServiceViewController alloc] initWithCar:carToEdit];
+    [self.navigationController pushViewController:newService animated:YES];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - RNFrostedSidebarDelegate

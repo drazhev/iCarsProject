@@ -25,6 +25,8 @@
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
 
+#import "MMNewOilChangeViewController.h"
+
 @interface MMOilViewController : UIViewController <RNFrostedSidebarDelegate>
 
 -(id)initWithCar:(Car*) car;

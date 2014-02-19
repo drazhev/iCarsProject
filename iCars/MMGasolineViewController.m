@@ -155,7 +155,7 @@
         [refuelingView addSubview: odometerMainLabel];
         
         UILabel* fullTankLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 110, applicationFrame.size.width - 10, 20)];
-        fullTankLabel.text = @"Пълен резервоар";
+        fullTankLabel.text = @"Full Tank";
         fullTankLabel.textColor = [UIColor lightGrayColor];
         fullTankLabel.font = [UIFont fontWithName:@"Arial" size:11];
         [refuelingView addSubview:fullTankLabel];

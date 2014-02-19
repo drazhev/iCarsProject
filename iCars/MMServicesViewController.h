@@ -25,6 +25,8 @@
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
 
+#import "MMNewServiceViewController.h"
+
 @interface MMServicesViewController : UIViewController <RNFrostedSidebarDelegate>
 
 -(id)initWithCar:(Car*) car;

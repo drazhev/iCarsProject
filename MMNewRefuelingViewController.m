@@ -206,12 +206,7 @@
         //push to gasolineVC
         
         MMGasolineViewController* gasolineVC = [[MMGasolineViewController alloc] initWithCar:carToEdit];
-        [self.navigationController pushViewController:gasolineVC animated:YES];
-        
-        
-        
-        
-        
+        [self.navigationController pushViewController:gasolineVC animated:YES]; 
     }
 }
 - (void)viewDidLoad

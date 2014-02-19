@@ -46,6 +46,8 @@
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
+    UIBarButtonItem *addNewOilChange = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewOilChange:)];
+    [self.navigationItem setRightBarButtonItem:addNewOilChange];
     
     self.view = newCarView;
 }
@@ -73,6 +75,11 @@
     //callout.showFromRight = YES;
     [callout show];
     
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-(void)addNewOilChange:(id)sender{
+    MMNewOilChangeViewController* newOilChange = [[MMNewOilChangeViewController alloc] initWithCar:carToEdit];
+    [self.navigationController pushViewController:newOilChange animated:YES];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - RNFrostedSidebarDelegate

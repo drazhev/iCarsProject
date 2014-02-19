@@ -15,6 +15,8 @@
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
 
+@property (nonatomic, strong) NSArray* gasStations;
+
 @end
 
 @implementation MMGasStationsViewController

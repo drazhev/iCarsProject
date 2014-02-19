@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RDVKeyboardAvoidingScrollView.h"
+#import "Car.h"
+#import "MMAppDelegate.h"
+#import "Service.h"
+#import "MMServicesViewController.h"
 
 @interface MMNewServiceViewController : UIViewController
+
+-(id)initWithCar:(Car*) car;
 
 @end

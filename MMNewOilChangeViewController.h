@@ -7,7 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RDVKeyboardAvoidingScrollView.h"
+#import "Car.h"
+#import "MMAppDelegate.h"
+#import "OilChange.h"
+#import "MMOilViewController.h"
 
 @interface MMNewOilChangeViewController : UIViewController
+
+-(id)initWithCar:(Car*) car;
 
 @end

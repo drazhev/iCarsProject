@@ -7,6 +7,7 @@
 //
 
 #import "MMGasStationsViewController.h"
+#import <MapKit/MapKit.h>
 
 @interface MMGasStationsViewController ()
 
@@ -16,6 +17,8 @@
 @property (nonatomic, strong) NSArray* viewControllersContainer;
 
 @property (nonatomic, strong) NSArray* gasStations;
+
+@property (nonatomic, strong) NSMutableData* response;
 
 @end
 
@@ -34,9 +37,47 @@
     }
     return self;
 }
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    self.response = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [self.response appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"failed request");
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSError *err = nil;
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData: self.response options: NSJSONReadingMutableContainers error: &err];
+    NSArray *results = [jsonDict objectForKey:@"results"];
+    for(NSDictionary *item in results) {
+            NSString* name = [item objectForKey:@"name"];
+            CGFloat x = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"] floatValue];
+            CGFloat y = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"] floatValue];
+            MKPointAnnotation* annotation = [[MKPointAnnotation alloc] init];
+            annotation.coordinate = CLLocationCoordinate2DMake(x, y);
+            annotation.title = name;
+            MKMapView* mapView = (MKMapView*) self.view;
+            [mapView addAnnotation:annotation]; 
+    }
+}
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
+    
+    
+    MKMapView* mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, applicationFrame.size.width, applicationFrame.size.height)];
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(42.696552, 23.32601), 10000, 10000);
+    [mapView setRegion:[mapView regionThatFits:region] animated:YES];
+    self.view = mapView;
+
     
     UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
     [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
@@ -49,7 +90,6 @@
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     
-    self.view = newCarView;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -101,7 +141,11 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    NSString *url=@"https://maps.googleapis.com/maps/api/place/textsearch/json?query=gas%20stations%20in%20Sofia&sensor=true&key=AIzaSyBVYq2PvGlNrSIewHboBOdDJqULO3Ff4XM";
+    NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
     [[[self navigationController] navigationBar] setTranslucent:NO];
+    
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     
     self.viewControllersContainer = [NSArray arrayWithObjects: @"MMCarMenuViewController",

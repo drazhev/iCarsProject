@@ -356,8 +356,6 @@
     self.fullTankSwitchLabel.hidden = NO;
     self.fullTankSwitch.hidden = NO;
     isDatePickerViewDrop = NO;
-    
-
 
 }
 

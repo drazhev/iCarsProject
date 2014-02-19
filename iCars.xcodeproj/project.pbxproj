@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DCAD541018B528AB0040734E /* MMRemindersTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */; };
+		DCAD541218B528C50040734E /* MMRemindersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */; };
 		DCC865AE18B3C2480036A539 /* MMNewOilChangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */; };
 		DCC865AF18B3C2480036A539 /* MMNewServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC865AD18B3C2480036A539 /* MMNewServiceViewController.m */; };
 		EB573C5418AF8B38003DE8D3 /* MMCarMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB573C5318AF8B38003DE8D3 /* MMCarMenuViewController.m */; };
@@ -82,6 +84,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DCAD540E18B528AB0040734E /* MMRemindersTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMRemindersTableViewCell.h; sourceTree = "<group>"; };
+		DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMRemindersTableViewCell.m; sourceTree = "<group>"; };
+		DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MMRemindersTableViewCell.xib; sourceTree = "<group>"; };
 		DCC865AA18B3C2480036A539 /* MMNewOilChangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewOilChangeViewController.h; sourceTree = "<group>"; };
 		DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNewOilChangeViewController.m; sourceTree = "<group>"; };
 		DCC865AC18B3C2480036A539 /* MMNewServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewServiceViewController.h; sourceTree = "<group>"; };
@@ -271,6 +276,9 @@
 				EB573C8718AFC9E3003DE8D3 /* MMServicesMapViewController.m */,
 				EB573C8918AFC9F4003DE8D3 /* MMRemindersViewController.h */,
 				EB573C8A18AFC9F4003DE8D3 /* MMRemindersViewController.m */,
+				DCAD540E18B528AB0040734E /* MMRemindersTableViewCell.h */,
+				DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */,
+				DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */,
 				EB573C8C18AFCA0D003DE8D3 /* MMInsurancesViewController.h */,
 				EB573C8D18AFCA0D003DE8D3 /* MMInsurancesViewController.m */,
 				EBA20C5818B430CC005272DA /* MMNewInsuranceViewController.h */,
@@ -458,6 +466,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB9B48E718AE5D8700C1B83A /* mercedes_logo.jpg in Resources */,
+				DCAD541218B528C50040734E /* MMRemindersTableViewCell.xib in Resources */,
 				EB9B48EC18AE5F8100C1B83A /* Images.xcassets in Resources */,
 				EB9B48E818AE5D8700C1B83A /* opel_logo.jpg in Resources */,
 				EB573C7218AFB42F003DE8D3 /* services_logo.jpg in Resources */,
@@ -493,6 +502,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				EB573C9718AFCA5E003DE8D3 /* MMChartsViewController.m in Sources */,
+				DCAD541018B528AB0040734E /* MMRemindersTableViewCell.m in Sources */,
 				EB573C7C18AFC95B003DE8D3 /* MMGasolineViewController.m in Sources */,
 				EBB7F33218A555FA0050998B /* MMAppDelegate.m in Sources */,
 				EBAD463A18AB9CF500EA3B6B /* OilChange.m in Sources */,

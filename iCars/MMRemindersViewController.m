@@ -14,6 +14,7 @@
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
+@property (nonatomic, strong) NSArray* reminders;
 
 @end
 
@@ -29,25 +30,47 @@
         // Custom initialization
         self.title = @"Напомняния";
         carToEdit = car;
+        MMAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
+        NSManagedObjectContext *context = [delegate managedObjectContext];
+        
+        Reminder *reminder1 = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:context];
+        reminder1.reminderDetails = @"Blah blah blah blah blah";
+        reminder1.reminderOdometer = @150000;
+        
+        Reminder *reminder2 = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:context];
+        reminder1.reminderDetails = @"Blah blah blah blah blah";
+        reminder1.reminderOdometer = @150000;
+        
+        Reminder *reminder3 = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:context];
+        reminder1.reminderDetails = @"Blah blah blah blah blah";
+        reminder1.reminderOdometer = @150000;
+        
+        self.reminders = @[reminder1, reminder2, reminder3];
     }
     return self;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
-    CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     
-    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
-    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-    [newCarView setBackgroundColor:[UIColor whiteColor]];
-    [newCarView setAlwaysBounceVertical:YES];
-    [newCarView setAlwaysBounceHorizontal:NO];
-    [newCarView setScrollEnabled:YES];
+//    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
+//    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+//    [newCarView setBackgroundColor:[UIColor whiteColor]];
+//    [newCarView setAlwaysBounceVertical:YES];
+//    [newCarView setAlwaysBounceHorizontal:NO];
+//    [newCarView setScrollEnabled:YES];
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     
-    self.view = newCarView;
+    UITableView* tableView = [[UITableView alloc] init];
+    tableView.delegate = self;
+    tableView.dataSource = self;
+    
+    UINib *cellNib = [UINib nibWithNibName:@"MMRemindersTableViewCell" bundle:nil];
+    [tableView registerNib:cellNib forCellReuseIdentifier:@"mainCell"];
+    self.view = tableView;
+    
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -115,6 +138,36 @@
                                      @"MMInsuranceOfficesViewController",
                                      @"MMSummaryViewController",
                                      @"MMChartsViewController",nil];
+}
+-(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
+    return 100;
+}
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 1;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return [self.reminders count];
+}
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *CellIdentifier = @"mainCell";
+    MMRemindersTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
+    
+    Reminder* reminder = self.reminders[indexPath.row];
+    
+    cell.whenLabel.text = [NSDateFormatter localizedStringFromDate:reminder.reminderDate
+                                                         dateStyle:NSDateFormatterShortStyle
+                                                         timeStyle:NSDateFormatterNoStyle];
+    
+    cell.detailsLabel.text = reminder.reminderDetails;
+    
+    
+    return cell;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)didReceiveMemoryWarning

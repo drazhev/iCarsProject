@@ -8,12 +8,16 @@
 
 #import "MMOilViewController.h"
 
-@interface MMOilViewController ()
+@interface MMOilViewController ()<UIScrollViewDelegate>
 
 @property(nonatomic, strong)Car* carToEdit;
+@property(nonatomic) CGPoint currentOffset;
+@property (nonatomic) int page;
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
+
+@property (nonatomic, strong)NSMutableArray* oilChangesArray;
 
 @end
 
@@ -21,6 +25,7 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @synthesize optionIndices, viewControllersContainer;
 @synthesize carToEdit;
+@synthesize oilChangesArray;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
 {
@@ -32,16 +37,143 @@
     }
     return self;
 }
+- (CGRect)getScreenFrameForCurrentOrientation {
+    return [self getScreenFrameForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+}
+
+- (CGRect)getScreenFrameForOrientation:(UIInterfaceOrientation)orientation {
+    
+    UIScreen *screen = [UIScreen mainScreen];
+    CGRect fullScreenRect = screen.bounds;
+    BOOL statusBarHidden = [UIApplication sharedApplication].statusBarHidden;
+    
+    //implicitly in Portrait orientation.
+    if(orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
+        CGRect temp = CGRectZero;
+        temp.size.width = fullScreenRect.size.height;
+        temp.size.height = fullScreenRect.size.width;
+        fullScreenRect = temp;
+    }
+    
+    if(!statusBarHidden){
+        CGFloat statusBarHeight = 20;//Needs a better solution, FYI statusBarFrame reports wrong in some cases..
+        fullScreenRect.size.height -= statusBarHeight;
+    }
+    
+    return fullScreenRect;
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
-    CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
+    //commit comment
+    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
+    UIScrollView *oilChangesScrollView = [[UIScrollView alloc] initWithFrame:applicationFrame];
+    [oilChangesScrollView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+    [oilChangesScrollView setBackgroundColor:[UIColor whiteColor]];
+    //[newCarView setAlwaysBounceVertical:NO];
+    //[newCarView setAlwaysBounceHorizontal:NO];
+    //[newCarView setScrollEnabled:YES];
+    oilChangesScrollView.pagingEnabled = YES;
+    oilChangesScrollView.showsHorizontalScrollIndicator = YES;//no
+    oilChangesScrollView.showsVerticalScrollIndicator = YES;//no
+    oilChangesScrollView.scrollsToTop = NO;
+    oilChangesScrollView.delegate = self;
     
-    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
-    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-    [newCarView setBackgroundColor:[UIColor whiteColor]];
-    [newCarView setAlwaysBounceVertical:YES];
-    [newCarView setAlwaysBounceHorizontal:NO];
-    [newCarView setScrollEnabled:YES];
+    
+    //fetch all refuelings for that car
+    
+    MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSFetchRequest* requestOilChanges = [[NSFetchRequest alloc] initWithEntityName:@"OilChange"];
+    requestOilChanges.predicate = [NSPredicate predicateWithFormat: @"car = %@", carToEdit];
+    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"oilChangeDate" ascending:NO];
+    requestOilChanges.sortDescriptors = @[sortByDate];
+    NSError *errorOilChanges;
+    NSArray *oilChangeEntities = [[appDelegate.managedObjectContext executeFetchRequest:requestOilChanges error:&errorOilChanges] mutableCopy];
+    
+    
+    
+    
+    self.oilChangesArray = [[NSMutableArray alloc] init];
+    UIView *oilChangeView;
+    for(OilChange *oilChange in oilChangeEntities) {
+        oilChangeView = [[UIView alloc] init];
+        
+        UILabel* oilChangeDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width - 10, 20)];
+        oilChangeDateLabel.text = @"Дата на смяна";
+        oilChangeDateLabel.textColor = [UIColor lightGrayColor];
+        oilChangeDateLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [oilChangeView addSubview:oilChangeDateLabel];
+        
+        UILabel* oilChangeDateMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, applicationFrame.size.width - 10, 40)];
+        NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+        [formatter setDateFormat:@"dd/MM/yyyy"];
+        oilChangeDateMainLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:oilChange.oilChangeDate]];
+        [oilChangeView addSubview: oilChangeDateMainLabel];
+        
+        
+        
+        UILabel* totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, applicationFrame.size.width - 10, 20)];
+        totalCostLabel.text = @"Крайна цена";
+        totalCostLabel.textColor = [UIColor lightGrayColor];
+        totalCostLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [oilChangeView addSubview:totalCostLabel];
+        
+        UILabel* totalCostMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 90, 40)];
+        totalCostMainLabel.text = [NSString stringWithFormat:@"%@",oilChange.oilChangeTotalCost];
+        [oilChangeView addSubview: totalCostMainLabel];
+        
+
+        
+        UILabel* odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];
+        odometerLabel.text = @"Километраж";
+        odometerLabel.textColor = [UIColor lightGrayColor];
+        odometerLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [oilChangeView addSubview:odometerLabel];
+        
+        UILabel* odometerMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, 90, 40)];
+        odometerMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.odometer];//kofti imenuvana promenliva!!! ATTENZIONE!!!
+        [oilChangeView addSubview: odometerMainLabel];
+        
+        
+        UILabel* oilNextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
+        oilNextChangeLabel.text = @"Следваща смяна";
+        oilNextChangeLabel.textColor = [UIColor lightGrayColor];
+        oilNextChangeLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [oilChangeView addSubview:oilNextChangeLabel];
+        
+        UILabel* oilNextChangeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
+        oilNextChangeMainLabel.text = [NSString stringWithFormat:@"%@", oilChange.oilNextChangeOdometer];
+        [oilChangeView addSubview: oilNextChangeMainLabel];
+        
+        
+        
+        UILabel* detailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 160, applicationFrame.size.width - 10, 20)];
+        detailsLabel.text = @"Детайли";
+        detailsLabel.textColor = [UIColor lightGrayColor];
+        detailsLabel.font = [UIFont fontWithName:@"Arial" size:11];
+        [oilChangeView addSubview:detailsLabel];
+        
+        UILabel* detailsMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(100, 170, 90, 40)];
+        detailsMainLabel.text = oilChange.oilChangeDetails;
+        [oilChangeView addSubview: detailsMainLabel];
+        
+        
+        
+        [oilChangesArray addObject:oilChangeView];
+        
+    }
+
+    
+    //paging
+    
+    NSUInteger page = 0;
+    for(UIView *view in oilChangesArray) {
+        
+        [oilChangesScrollView addSubview:view];
+        [view setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
+    }
+    oilChangesScrollView.contentSize = CGSizeMake(applicationFrame.size.width * [oilChangesArray count], applicationFrame.size.height - 44);
+
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
@@ -49,7 +181,7 @@
     UIBarButtonItem *addNewOilChange = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewOilChange:)];
     [self.navigationItem setRightBarButtonItem:addNewOilChange];
     
-    self.view = newCarView;
+    self.view = oilChangesScrollView;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{

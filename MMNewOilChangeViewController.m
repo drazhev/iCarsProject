@@ -72,13 +72,13 @@
     
     //-----------------------------------------------------------
     
-    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, (applicationFrame.size.width / 4), 20)];
+    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, (applicationFrame.size.width / 3), 20)];
     self.dateLabel.textColor = [UIColor blackColor];
     self.dateLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.dateLabel.text = @"Дата на смяна:";
     [self.newOilChangeView addSubview:self.dateLabel];
     
-    self.datePickerButton = [[UIButton alloc] initWithFrame:CGRectMake(50, CGRectGetMaxY(self.formLabel.frame) + 10, 400, 25)];
+    self.datePickerButton = [[UIButton alloc] initWithFrame:CGRectMake(40, CGRectGetMaxY(self.formLabel.frame) + 10, 400, 25)];
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterShortStyle];
     [formatter setDateFormat:@"dd' 'MMMM' 'yyyy"];
@@ -97,27 +97,26 @@
     [self.datePicker addTarget:self action:@selector(dueDateChanged:) forControlEvents:UIControlEventValueChanged];
     self.datePicker.datePickerMode = UIDatePickerModeDate;
     
-    self.totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(self.dateLabel.frame) +10, 90, 25)];
+    self.totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.dateLabel.frame) +10, 90, 25)];
     self.totalCostLabel.textColor = [UIColor blackColor];
     self.totalCostLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.totalCostLabel.text = @"Крайна цена:";
     [self.newOilChangeView addSubview:self.totalCostLabel];
     
-    self.totalCostTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostLabel.frame) + 5, applicationFrame.size.width/4, 20)];
+    self.totalCostTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostLabel.frame) + 5, applicationFrame.size.width / 3, 20)];
     [self.totalCostTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.totalCostTextField setDelegate:self];
     //self.totalCostTextField.backgroundColor = [UIColor redColor];
     self.totalCostTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.newOilChangeView addSubview: self.totalCostTextField];
     
-    self.litersLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostLabel.frame) + 10, CGRectGetMaxY(self.dateLabel.frame) +10, applicationFrame.size.width /3, 25)];
+    self.litersLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostLabel.frame) + 40, CGRectGetMaxY(self.dateLabel.frame) + 15, applicationFrame.size.width /3, 20)];
     self.litersLabel.textColor = [UIColor blackColor];
     self.litersLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.litersLabel.text = @"Литри:";
     [self.newOilChangeView addSubview:self.litersLabel];
     
-    self.litersTextField = [[UITextField alloc] initWithFrame:CGRectMake(litersLabel.frame.origin.x -20 , litersLabel.frame.origin.y + litersLabel.frame.size.height + 5, 150, 25)];
-    NSLog(@"{{%.1f : %.1f} {%.1f : %.1f}}", litersTextField.frame.origin.x, litersTextField.frame.origin.y, litersTextField.frame.size.width, litersTextField.frame.size.height);
+    self.litersTextField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(totalCostTextField.frame) + 20, CGRectGetMaxY(self.totalCostLabel.frame) + 5, applicationFrame.size.width/4, 20)];
     self.litersTextField.text = @"0.0";
     [self.litersTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
@@ -126,7 +125,7 @@
     
     self.increaseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.increaseButton setTitle:@"▲" forState:UIControlStateNormal];
-    self.increaseButton.frame = CGRectMake(200, CGRectGetMaxY(litersTextField.frame ), 20, 20);
+    self.increaseButton.frame = CGRectMake(CGRectGetMaxX(self.litersTextField.frame) + 20, CGRectGetMaxY(litersTextField.frame ) - 20, 20, 20);
     //self.increaseButton.layer.borderWidth = 0.5;
     //self.increaseButton.layer.cornerRadius = 3;
     //self.increaseButton.backgroundColor = [UIColor redColor];
@@ -137,7 +136,7 @@
     
     self.decreaseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.decreaseButton setTitle:@"▼" forState:UIControlStateNormal];
-    self.decreaseButton.frame = CGRectMake(232, 70, 20, 20);
+    self.decreaseButton.frame = CGRectMake(CGRectGetMaxX(self.increaseButton.frame) + 10, CGRectGetMaxY(litersTextField.frame ) - 20, 20, 20);
     //self.decreaseButton.layer.borderColor = [UIColor greenColor].CGColor;
     //self.increaseButton.layer.borderWidth = 0.5;
     //self.decreaseButton.layer.cornerRadius = 3;
@@ -147,39 +146,39 @@
                   forControlEvents:UIControlEventTouchDown];
     [self.newOilChangeView addSubview:self.decreaseButton];
     
-    self.odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(self.totalCostTextField.frame) + 10, CGRectGetMaxY(self.totalCostTextField.frame), 25)];
+    self.odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostTextField.frame) + 10, CGRectGetMaxY(self.totalCostTextField.frame), 20)];
     self.odometerLabel.textColor = [UIColor blackColor];
     self.odometerLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.odometerLabel.text = @"Километраж:";
     [self.newOilChangeView addSubview:self.odometerLabel];
     
-    self.odometerTextField = [[UITextField alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(self.odometerLabel.frame) + 10, (applicationFrame.size.width - 60) / 2, 25)];
+    self.odometerTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.odometerLabel.frame) + 10, applicationFrame.size.width / 3, 20)];
     [self.odometerTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.odometerTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.newOilChangeView addSubview: self.odometerTextField];
     
     
-    self.nextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(self.litersLabel.frame.origin.x + 20, CGRectGetMaxY(totalCostTextField.frame) + 10, (applicationFrame.size.width - 60) / 2, 25)];
+    self.nextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.litersLabel.frame), CGRectGetMaxY(totalCostTextField.frame) + 10, (applicationFrame.size.width - 60) / 2, 20)];
     self.nextChangeLabel.textColor = [UIColor blackColor];
     //self.nextChangeLabel.backgroundColor = [UIColor redColor];
     self.nextChangeLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.nextChangeLabel.text = @"Следваща смяна:";
     [self.newOilChangeView addSubview:self.nextChangeLabel];
     
-    self.nextChangeTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.nextChangeLabel.frame.origin.x + 20, (litersLabel.frame.origin.y + 100 ), nextChangeLabel.frame.size.width, 25)];
+    self.nextChangeTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.nextChangeLabel.frame.origin.x, CGRectGetMaxY(self.nextChangeLabel.frame) + 10, nextChangeLabel.frame.size.width, 20)];
     [self.nextChangeTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.nextChangeTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.newOilChangeView addSubview: self.nextChangeTextField];
     
-    self.changeLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.odometerTextField.frame) + 10, (applicationFrame.size.width / 4) + 8, 20)];
+    self.changeLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.odometerTextField.frame) + 10, (applicationFrame.size.width / 3), 20)];
     self.changeLocationLabel.textColor = [UIColor blackColor];
     self.changeLocationLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.changeLocationLabel.text = @"Сервиз:";
     [self.newOilChangeView addSubview:self.changeLocationLabel];
     
-    self.changeLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.changeLocationLabel.frame) + 10, (applicationFrame.size.width / 4) + 8, 20 )];
+    self.changeLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.changeLocationLabel.frame) + 10, (applicationFrame.size.width / 3) , 20 )];
     [self.changeLocationTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.changeLocationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -212,7 +211,61 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    
+    [[[self navigationController] navigationBar] setTranslucent:NO];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
+                                   initWithTarget:self
+                                   action:@selector(dismissAll)];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWasShown:)
+                                                 name:UIKeyboardDidShowNotification
+                                               object:nil];
+    
+    
+    [self.view addGestureRecognizer:tap];
 }
+
+- (void)keyboardWasShown:(NSNotification *)aNotification {
+    
+    self.datePicker.frame = CGRectMake(150, CGRectGetMaxY(self.newOilChangeView.frame), 0, 0);
+    self.datePicker.hidden = YES;
+    self.totalCostLabel.hidden = NO;
+    self.totalCostTextField.hidden = NO;
+    self.litersLabel.hidden = NO;
+    self.litersTextField.hidden = NO;
+    self.odometerLabel.hidden = NO;
+    self.odometerTextField.hidden = NO;
+    self.nextChangeLabel.hidden = NO;
+    self.nextChangeTextField.hidden = NO;
+    self.increaseButton.hidden = NO;
+    self.decreaseButton.hidden = NO;
+    isDatePickerViewDrop = NO;
+    
+}
+-(void) dismissAll{
+    
+    [self.view endEditing:YES];
+    
+    self.datePicker.frame = CGRectMake(0, CGRectGetMaxY(self.dateTextField.frame) + 10, 0, 0);
+    self.datePicker.hidden = YES;
+    self.totalCostLabel.hidden = NO;
+    self.totalCostTextField.hidden = NO;
+    self.litersLabel.hidden = NO;
+    self.litersTextField.hidden = NO;
+    self.odometerLabel.hidden = NO;
+    self.odometerTextField.hidden = NO;
+    self.nextChangeLabel.hidden = NO;
+    self.nextChangeTextField.hidden = NO;
+    self.increaseButton.hidden = NO;
+    self.decreaseButton.hidden = NO;
+    isDatePickerViewDrop = NO;
+    NSLog(@"pribra se ");
+    
+}
+
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)didReceiveMemoryWarning
 {
@@ -223,7 +276,7 @@
 -(void) addNewOilChange:(id)sender{
     MMOilViewController *oilFormViewController = [[MMOilViewController alloc] initWithNibName:nil bundle:nil];
     [self.navigationController pushViewController:oilFormViewController animated:YES];
-    
+    [self.view endEditing:YES];
     NSLog(@"This is gaz form.");
     
 }
@@ -233,13 +286,15 @@
     NSString *inputData = self.litersTextField.text;
     float inputLiters = [inputData floatValue];
     if(inputLiters < 10) self.litersTextField.text = [NSString stringWithFormat:@"%.1f", inputLiters + 0.5];
-    
+    [self.view endEditing:YES];
 }
 
 -(void) decreaseLitters{
     NSString *inputData = self.litersTextField.text;
     float inputLiters = [inputData floatValue];
     if(inputLiters > 0) self.litersTextField.text = [NSString stringWithFormat:@"%.1f", inputLiters - 0.5];
+    [self.view endEditing:YES];
+    [self.view endEditing:YES];
 }
 
 -(void)chooseDate:(id)sender{
@@ -251,14 +306,14 @@
             self.datePicker.hidden = NO;
             [newOilChangeView addSubview:datePicker];
             self.totalCostLabel.hidden = YES;
-             self.totalCostTextField.hidden = YES;
-             self.litersLabel.hidden = YES;
-             self.litersTextField.hidden = YES;
-             self.odometerLabel.hidden = YES;
-             self.odometerTextField.hidden = YES;
-             self.nextChangeLabel.hidden = YES;
-             self.nextChangeTextField.hidden = YES;
-             self.increaseButton.hidden = YES;
+            self.totalCostTextField.hidden = YES;
+            self.litersLabel.hidden = YES;
+            self.litersTextField.hidden = YES;
+            self.odometerLabel.hidden = YES;
+            self.odometerTextField.hidden = YES;
+            self.nextChangeLabel.hidden = YES;
+            self.nextChangeTextField.hidden = YES;
+            self.increaseButton.hidden = YES;
             self.decreaseButton.hidden = YES;
              [self.view endEditing:YES];
             

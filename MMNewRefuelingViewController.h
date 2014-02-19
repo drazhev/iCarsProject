@@ -12,6 +12,7 @@
 #import "MMAppDelegate.h"
 #import "Refueling.h"
 #import "MMGasolineViewController.h"
+#import <QuartzCore/QuartzCore.h>
 
 @interface MMNewRefuelingViewController : UIViewController
 

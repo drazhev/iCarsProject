@@ -9,8 +9,8 @@
 #import "MMNewOilChangeViewController.h"
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @interface MMNewOilChangeViewController ()<UITextFieldDelegate, /*UIPickerViewDelegate, UIPickerViewDataSource,*/ UIActionSheetDelegate, UIGestureRecognizerDelegate>{
-    //UIScrollView *newCarView;
     BOOL isDatePickerViewDrop;
+    CGRect datePickerFrame;
 }
 
 @property(nonatomic, strong)Car* carToEdit;
@@ -31,6 +31,7 @@
 @property (nonatomic, strong) UILabel *changeLocationLabel;
 @property (nonatomic, strong) UITextField *changeLocationTextField;
 @property (nonatomic, strong) UIButton *datePickerButton;
+@property (nonatomic) CGRect datePickerFrame;
 
 @property (strong, nonatomic, getter = theNewOilChangeView) UIScrollView *newOilChangeView;
 //-----------------------------------------------------------------
@@ -62,8 +63,36 @@
     return self;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+#pragma mark - ApplicationFrame CONFIG
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (CGRect)getScreenFrameForCurrentOrientation {
+    return [self getScreenFrameForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+}
+
+- (CGRect)getScreenFrameForOrientation:(UIInterfaceOrientation)orientation {
+    
+    UIScreen *screen = [UIScreen mainScreen];
+    CGRect fullScreenRect = screen.bounds;
+    BOOL statusBarHidden = [UIApplication sharedApplication].statusBarHidden;
+    
+    //implicitly in Portrait orientation.
+    if(orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
+        CGRect temp = CGRectZero;
+        temp.size.width = fullScreenRect.size.height;
+        temp.size.height = fullScreenRect.size.width;
+        fullScreenRect = temp;
+    }
+    
+    if(!statusBarHidden){
+        CGFloat statusBarHeight = 20;//Needs a better solution, FYI statusBarFrame reports wrong in some cases..
+        fullScreenRect.size.height -= statusBarHeight;
+    }
+    
+    return fullScreenRect;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
-    CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
+    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
     newOilChangeView = [[RDVKeyboardAvoidingScrollView alloc]initWithFrame:applicationFrame];
     [newOilChangeView setBackgroundColor:[UIColor whiteColor]];
     [newOilChangeView setAlwaysBounceVertical:YES];
@@ -72,12 +101,12 @@
     
     //-----------------------------------------------------------
     
-    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, (applicationFrame.size.width / 3), 20)];
+    self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width, 20)];
     self.dateLabel.textColor = [UIColor blackColor];
     self.dateLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.dateLabel.text = @"Дата на смяна:";
     [self.newOilChangeView addSubview:self.dateLabel];
-    
+    //self.totalCostTextField.frame) + 20
     self.datePickerButton = [[UIButton alloc] initWithFrame:CGRectMake(40, CGRectGetMaxY(self.formLabel.frame) + 10, 400, 25)];
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterShortStyle];
@@ -92,6 +121,9 @@
     [self.datePickerButton addTarget:self action: @selector(chooseDate:) forControlEvents:UIControlEventTouchUpInside];
     [self.newOilChangeView addSubview:self.datePickerButton];
     
+    
+    
+    //datePickerFrame = CGRectMake(applicationFrame.origin, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
     self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.dateTextField.frame) + 10, applicationFrame.size.width, 0)];
     [self.datePicker setDate:[NSDate date]];
     [self.datePicker addTarget:self action:@selector(dueDateChanged:) forControlEvents:UIControlEventValueChanged];
@@ -110,7 +142,7 @@
     self.totalCostTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [self.newOilChangeView addSubview: self.totalCostTextField];
     
-    self.litersLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostLabel.frame) + 40, CGRectGetMaxY(self.dateLabel.frame) + 15, applicationFrame.size.width /3, 20)];
+    self.litersLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostTextField.frame) + 20, CGRectGetMaxY(self.dateLabel.frame) + 15, applicationFrame.size.width /3, 20)];
     self.litersLabel.textColor = [UIColor blackColor];
     self.litersLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.litersLabel.text = @"Литри:";
@@ -166,7 +198,7 @@
     self.nextChangeLabel.text = @"Следваща смяна:";
     [self.newOilChangeView addSubview:self.nextChangeLabel];
     
-    self.nextChangeTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.nextChangeLabel.frame.origin.x, CGRectGetMaxY(self.nextChangeLabel.frame) + 10, nextChangeLabel.frame.size.width, 20)];
+    self.nextChangeTextField = [[UITextField alloc] initWithFrame:CGRectMake(self.nextChangeLabel.frame.origin.x, CGRectGetMaxY(self.nextChangeLabel.frame) + 10, odometerTextField.frame.size.width, 20)];
     [self.nextChangeTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.nextChangeTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -193,6 +225,12 @@
     [self.navigationItem setRightBarButtonItem:addButton];
     
     self.view = newOilChangeView;
+    
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone) {
+        self.datePickerFrame = CGRectMake(0, CGRectGetMaxY(self.dateTextField.frame) + 10, applicationFrame.size.width, 160);
+    }else if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad){
+        self.datePickerFrame = CGRectMake(100, CGRectGetMaxY(self.dateTextField.frame) + 10, 3 * applicationFrame.size.width, 160);
+    }
 }
 -(void)saveOilChange:(id)sender{
     NSLog(@"nova smqna na maslo");
@@ -215,6 +253,8 @@
 	// Do any additional setup after loading the view.
     
     [[[self navigationController] navigationBar] setTranslucent:NO];
+    
+    
     
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
@@ -302,9 +342,10 @@
 -(void)chooseDate:(id)sender{
     
     if (!isDatePickerViewDrop) {
-        //[self.datePicker reloadData];
+        
         [UIView animateWithDuration:0.01 animations:^{
-            self.datePicker.frame = CGRectMake(0, CGRectGetMaxY(self.dateTextField.frame) + 30, 320, 150);
+            
+            self.datePicker.frame = datePickerFrame;
             self.datePicker.hidden = NO;
             [newOilChangeView addSubview:datePicker];
             self.totalCostLabel.hidden = YES;

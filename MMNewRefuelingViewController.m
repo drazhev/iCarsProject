@@ -84,6 +84,7 @@
 -(void)loadView{
     CGRect gazFormFrame = [[UIScreen mainScreen] applicationFrame];
     gazFormView = [[RDVKeyboardAvoidingScrollView alloc]initWithFrame:gazFormFrame];
+    [gazFormView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth];
     [gazFormView setBackgroundColor:[UIColor whiteColor]];
     [gazFormView setAlwaysBounceVertical:YES];
     [gazFormView setAlwaysBounceHorizontal:NO];
@@ -579,56 +580,7 @@
     [self.datePickerButton setTitle:[NSString stringWithFormat:@"%@", [formatter stringFromDate:self.datePicker.date]] forState:UIControlStateNormal ];
     //return [NSString stringWithFormat:@"Picked the date %@", [dateFormatter stringFromDate:[sender date]]];
 }
-//-----------------------------------------------------------------------
-//-----------------------------------------------------------------------
 
-
-//-----------------------------------------------------------------------
-/*-(void)updateTextField:(id)sender
-{
-    UIDatePicker *picker = (UIDatePicker*)self.dateTextField.inputView;
-    //self.dateTextField.text = [NSString stringWithFormat:@"%@",picker.date];
-    self.dateTextField.text = [self formatDate:datePicker.date];
-}
-
-- (void)textFieldDidBeginEditing:(UITextField *)textField{
-    self.dateTextField = textField;
-    
-    // Create a date picker for the date field.
-    //datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.dateTextField.frame) + 10, gazFormFrame.size.width, 150)];
-    datePicker.datePickerMode = UIDatePickerModeDate;
-    //datePicker.minimumDate = [NSDate dateWithTimeIntervalSinceNow:-31536000];
-    [datePicker setDate:[NSDate date]];
-    //[datePicker addTarget:self action:@selector(updateDateField:) forControlEvents:UIControlEventValueChanged];
-    
-    // If the date field has focus, display a date picker instead of keyboard.
-    // Set the text to the date currently displayed by the picker.
-    if (textField.tag == 1)
-    {
-        //[self.datePicker addSubview:myDatePicker];
-        self.dateTextField.text = [self formatDate:datePicker.date];
-    }
-}
-
--(void)doneButtonPressed:(id)sender{
-    //Do something here here with the value selected using [pickerView date] to get that value
-    //[self.view dismissWithClickedButtonIndex:1 animated:YES];
-}
-
--(void)cancelButtonPressed:(id)sender{
-    //[pickerViewPopup dismissWithClickedButtonIndex:1 animated:YES];
-}
-
-- (NSString *)formatDate:(NSDate *)date
-{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateStyle:NSDateFormatterShortStyle];
-    [dateFormatter setDateFormat:@"dd'/'MM'/'yyyy"];
-    NSString *formattedDate = [dateFormatter stringFromDate:date];
-    return formattedDate;
-}
-*/
-//-----------------------------------------------------------------------
 - (NSString *)formatDate:(NSDate *)date
 {
     NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];

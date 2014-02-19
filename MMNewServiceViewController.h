@@ -12,6 +12,7 @@
 #import "MMAppDelegate.h"
 #import "Service.h"
 #import "MMServicesViewController.h"
+#import "MMNewReminderViewController.h"
 
 @interface MMNewServiceViewController : UIViewController
 

@@ -93,6 +93,7 @@
 -(void)loadView{
     CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
     newOilChangeView = [[RDVKeyboardAvoidingScrollView alloc]initWithFrame:applicationFrame];
+    [newOilChangeView setAutoresizingMask:UIViewAutoresizingFlexibleHeight|UIViewAutoresizingFlexibleWidth];
     [newOilChangeView setBackgroundColor:[UIColor whiteColor]];
     [newOilChangeView setAlwaysBounceVertical:YES];
     [newOilChangeView setAlwaysBounceHorizontal:NO];

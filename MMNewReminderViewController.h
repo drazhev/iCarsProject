@@ -23,5 +23,6 @@
 @property(nonatomic, strong) Car* carToEdit;
 
 -(id)initWithCar: (Car*) car;
+- (id)initWithNibName:(NSString*) nibName details: (NSString*) details andType: (int)type;
 
 @end

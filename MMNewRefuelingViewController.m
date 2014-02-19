@@ -272,7 +272,7 @@
         newRefueling.fuelPrice = @([self.fuelPriceTextField.text integerValue]);
         
         if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
-        
+        else newRefueling.refuelingQantity = [NSNumber numberWithFloat:[newRefueling.refuelingTotalCost floatValue] / [newRefueling.fuelPrice floatValue]];
         newRefueling.fuelType = [fuelType objectAtIndex:[self.fuelTypePicerView selectedRowInComponent:0]];
         if (self.gasStationPickerButton.titleLabel.text.length != 0) newRefueling.refuelingGasStation = [gasStations objectAtIndex:[self.gasStationPickerView selectedRowInComponent:0]];
         newRefueling.fullTank = [NSNumber numberWithBool: self.fullTankSwitch.on];

@@ -49,6 +49,7 @@
 @synthesize formLabel, dateLabel, totalCostLabel, nextChangeLabel, litersLabel, odometerLabel, changeLocationLabel;
 @synthesize dateTextField, totalCostTextField, nextChangeTextField, litersTextField, odometerTextField, changeLocationTextField;
 @synthesize datePickerButton, datePicker, newOilChangeView;
+@synthesize datePickerFrame;
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
@@ -232,6 +233,7 @@
         
         
         MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+        
         OilChange*  oilChange = [NSEntityDescription insertNewObjectForEntityForName:@"OilChange" inManagedObjectContext:appDelegate.managedObjectContext];
         
         oilChange.odometer = @([self.odometerTextField.text integerValue]);
@@ -243,10 +245,21 @@
         oilChange.car = carToEdit;
         
         Reminder* oilChangeReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:appDelegate.managedObjectContext];
+        oilChangeReminder.reminderDate = [NSDate dateWithTimeInterval: 2 * 365 * 24 * 60 * 60 sinceDate:self.datePicker.date];
+        oilChangeReminder.reminderType = @"OilChange";
+        oilChangeReminder.reminderOdometer = @([self.nextChangeTextField.text integerValue]);
+        oilChangeReminder.reminderDetails = self.changeLocationTextField.text;
         
-        oilChangeReminder
+        oilChangeReminder.car = carToEdit;
         
-
+        
+       
+        
+        
+        
+        
+        
+        
         // Save the object to managedObjectContext
         NSError* newOilChangeError = nil;
         if (![appDelegate.managedObjectContext save:&newOilChangeError]) {

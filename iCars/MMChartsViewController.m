@@ -7,6 +7,8 @@
 //
 
 #import "MMChartsViewController.h"
+#import <QuartzCore/QuartzCore.h>
+#import <CoreGraphics/CoreGraphics.h>
 
 @interface MMChartsViewController ()
 
@@ -32,10 +34,19 @@
     }
     return self;
 }
+-(void)drawRect {
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetLineWidth(context, 10.0);
+    CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
+    CGContextMoveToPoint(context, 100, 600);
+    CGContextAddCurveToPoint(context, 475, 0, 750, 600, 200, 300);
+    CGContextStrokePath(context);
+
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
-    
+    [self drawRect];
     UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
     [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     [newCarView setBackgroundColor:[UIColor whiteColor]];
@@ -97,7 +108,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view.
+    // Do any additional setup after loading the view.
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     

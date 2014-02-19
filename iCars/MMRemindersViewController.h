@@ -10,7 +10,7 @@
 #import "RDVKeyboardAvoidingScrollView.h"
 #import "RNFrostedSidebar.h"
 #import "Car.h"
-
+#import "Reminder.h"
 #import "MMCarMenuViewController.h"
 
 #import "MMGasolineViewController.h"
@@ -24,8 +24,10 @@
 #import "MMExpensesViewController.h"
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
+#import "MMAppDelegate.h"
+#import "MMRemindersTableViewCell.h"
 
-@interface MMRemindersViewController : UIViewController <RNFrostedSidebarDelegate>
+@interface MMRemindersViewController : UITableViewController <RNFrostedSidebarDelegate, UITableViewDataSource, UITableViewDelegate>
 
 -(id)initWithCar:(Car*) car;
 

@@ -14,7 +14,6 @@
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
-@property (nonatomic, strong) NSArray* reminders;
 
 @end
 
@@ -30,24 +29,18 @@
         // Custom initialization
         self.title = @"Напомняния";
         carToEdit = car;
-        MMAppDelegate* delegate = [[UIApplication sharedApplication] delegate];
-        NSManagedObjectContext *context = [delegate managedObjectContext];
-        
-        Reminder *reminder1 = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:context];
-        reminder1.reminderDetails = @"Blah blah blah blah blah";
-        reminder1.reminderOdometer = @150000;
-        
-        Reminder *reminder2 = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:context];
-        reminder1.reminderDetails = @"Blah blah blah blah blah";
-        reminder1.reminderOdometer = @150000;
-        
-        Reminder *reminder3 = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:context];
-        reminder1.reminderDetails = @"Blah blah blah blah blah";
-        reminder1.reminderOdometer = @150000;
-        
-        self.reminders = @[reminder1, reminder2, reminder3];
     }
     return self;
+}
+-(NSArray*)reminders{
+    
+    MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSFetchRequest* requestRefuelings = [[NSFetchRequest alloc] initWithEntityName:@"Reminder"];
+    requestRefuelings.predicate = [NSPredicate predicateWithFormat: @"car = %@", carToEdit];
+    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:NO];
+    requestRefuelings.sortDescriptors = @[sortByDate];
+    NSError *errorRefuelings;
+    return [[appDelegate.managedObjectContext executeFetchRequest:requestRefuelings error:&errorRefuelings] mutableCopy];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
@@ -140,7 +133,7 @@
                                      @"MMChartsViewController",nil];
 }
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath {
-    return 100;
+    return 80;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -150,14 +143,14 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return [self.reminders count];
+    return [[self reminders] count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     static NSString *CellIdentifier = @"mainCell";
     MMRemindersTableViewCell* cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    
+    NSLog(@"test");
     Reminder* reminder = self.reminders[indexPath.row];
     
     cell.whenLabel.text = [NSDateFormatter localizedStringFromDate:reminder.reminderDate

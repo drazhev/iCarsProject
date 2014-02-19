@@ -39,8 +39,6 @@
 @property (nonatomic) UIButton *increaseButton;
 @property (nonatomic) UIButton *decreaseButton;
 
-
-
 @end
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @implementation MMNewOilChangeViewController
@@ -223,6 +221,7 @@
         self.datePickerFrame = CGRectMake(100, CGRectGetMaxY(self.dateTextField.frame) + 10, 3 * applicationFrame.size.width, 160);
     }
 }
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)saveOilChange:(id)sender{
     NSLog(@"nova smqna na maslo");
     if (self.totalCostTextField.text.length == 0 || self.odometerTextField.text.length == 0 || self.nextChangeTextField.text.length == 0) {
@@ -245,20 +244,12 @@
         oilChange.car = carToEdit;
         
         Reminder* oilChangeReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:appDelegate.managedObjectContext];
-        oilChangeReminder.reminderDate = [NSDate dateWithTimeInterval: 2 * 365 * 24 * 60 * 60 sinceDate:self.datePicker.date];
+        oilChangeReminder.reminderDate = [NSDate dateWithTimeInterval: 2 * 365 * 24 * 60 * 60 sinceDate:self.datePicker.date];// 2 godini ili XXXXXXX km
         oilChangeReminder.reminderType = @"OilChange";
         oilChangeReminder.reminderOdometer = @([self.nextChangeTextField.text integerValue]);
         oilChangeReminder.reminderDetails = self.changeLocationTextField.text;
         
         oilChangeReminder.car = carToEdit;
-        
-        
-       
-        
-        
-        
-        
-        
         
         // Save the object to managedObjectContext
         NSError* newOilChangeError = nil;
@@ -303,7 +294,7 @@
     
     [self.view addGestureRecognizer:tap];
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)keyboardWasShown:(NSNotification *)aNotification {
     
     self.datePicker.frame = CGRectMake(150, CGRectGetMaxY(self.newOilChangeView.frame), 0, 0);
@@ -341,8 +332,6 @@
     NSLog(@"pribra se ");
     
 }
-
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)didReceiveMemoryWarning
 {
@@ -350,14 +339,6 @@
     // Dispose of any resources that can be recreated.
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--(void) addNewOilChange:(id)sender{
-    MMOilViewController *oilFormViewController = [[MMOilViewController alloc] initWithNibName:nil bundle:nil];
-    [self.navigationController pushViewController:oilFormViewController animated:YES];
-    [self.view endEditing:YES];
-    NSLog(@"This is gaz form.");
-    
-}
-
 -(void) increaseLitters{
     
     NSString *inputData = self.litersTextField.text;
@@ -365,7 +346,7 @@
     if(inputLiters < 10) self.litersTextField.text = [NSString stringWithFormat:@"%.1f", inputLiters + 0.5];
     [self.view endEditing:YES];
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void) decreaseLitters{
     NSString *inputData = self.litersTextField.text;
     float inputLiters = [inputData floatValue];
@@ -373,7 +354,7 @@
     [self.view endEditing:YES];
     [self.view endEditing:YES];
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)chooseDate:(id)sender{
     
     if (!isDatePickerViewDrop) {
@@ -419,9 +400,8 @@
         }];
     }
     isDatePickerViewDrop = !isDatePickerViewDrop;
-    
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showDatePicker:(id)sender
 {
     
@@ -436,7 +416,7 @@
     [self.view addSubview:picker];
     
 }
-
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void) dueDateChanged:(UIDatePicker *)sender {
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterFullStyle];
@@ -444,10 +424,33 @@
     [self.datePickerButton setTitle:[NSString stringWithFormat:@"%@", [formatter stringFromDate:self.datePicker.date]] forState:UIControlStateNormal ];
     //return [NSString stringWithFormat:@"Picked the date %@", [dateFormatter stringFromDate:[sender date]]];
 }
-
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
+#pragma mark - ConfigureRotation
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        return YES;
+    }
+    return toInterfaceOrientation != UIInterfaceOrientationPortraitUpsideDown;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (BOOL)shouldAutorotate {
+    if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
+        return YES;
+    }
+    else return NO;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-(NSUInteger)supportedInterfaceOrientations {
+    
+    return UIInterfaceOrientationMaskPortrait |
+    UIInterfaceOrientationMaskLandscapeLeft |
+    UIInterfaceOrientationMaskLandscapeRight;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-(UIInterfaceOrientation)preferredInterfaceOrientationForPresentation {
+    return UIInterfaceOrientationPortrait;
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 @end
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------

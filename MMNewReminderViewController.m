@@ -175,6 +175,14 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardShown) name:UIKeyboardWillShowNotification object:nil];
     
     [self.datePicker addTarget:self action:@selector(datePickerValueChanged) forControlEvents:UIControlEventValueChanged];
+    
+    [self.typeLabel setTitle:self.reminderTypes[0] forState:UIControlStateNormal];
+    
+    NSString* dateString;
+    NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+    [formatter setDateFormat:@"dd/MM/yyyy"];
+    dateString = [formatter stringFromDate:self.datePicker.date];
+    [self.dateLabel setTitle:dateString forState:UIControlStateNormal];
 }
 
 -(void)datePickerValueChanged {

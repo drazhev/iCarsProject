@@ -275,6 +275,7 @@
         //if wantReminder
         if (self.wantReminderSwitch.on) {
             MMNewReminderViewController* newReminderVC = [[MMNewReminderViewController alloc] initWithNibName: @"MMNewReminderViewController" details:  [NSString stringWithFormat:@"%@: %@", self.serviceTypePickerButton.titleLabel.text, self.serviceDetailsTextField.text] andType: 2];
+            newReminderVC.carToEdit = carToEdit;
 
             [self.navigationController pushViewController:newReminderVC animated:YES];
             
@@ -284,11 +285,6 @@
             [self.navigationController pushViewController:serviceVC animated:YES];
         }
     }
-    
-    
-    
-    
-
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Picker, Dismiss and Hiding CONFIG

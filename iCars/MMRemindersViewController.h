@@ -26,6 +26,7 @@
 #import "MMChartsViewController.h"
 #import "MMAppDelegate.h"
 #import "MMRemindersTableViewCell.h"
+#import "MMNewReminderViewController.h"
 
 @interface MMRemindersViewController : UITableViewController <RNFrostedSidebarDelegate, UITableViewDataSource, UITableViewDelegate>
 

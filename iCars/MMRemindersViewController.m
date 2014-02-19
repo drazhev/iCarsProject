@@ -45,16 +45,12 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
     
-//    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
-//    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-//    [newCarView setBackgroundColor:[UIColor whiteColor]];
-//    [newCarView setAlwaysBounceVertical:YES];
-//    [newCarView setAlwaysBounceHorizontal:NO];
-//    [newCarView setScrollEnabled:YES];
-    
+    //tabBar buttons
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
+        UIBarButtonItem *addNewReminder = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewReminder:)];
+    [self.navigationItem setRightBarButtonItem:addNewReminder];
     
     UITableView* tableView = [[UITableView alloc] init];
     tableView.delegate = self;
@@ -64,6 +60,10 @@
     [tableView registerNib:cellNib forCellReuseIdentifier:@"mainCell"];
     self.view = tableView;
     
+}
+-(void)addNewReminder: (id) sender {
+    MMNewReminderViewController* newRefueling = [[MMNewReminderViewController alloc] initWithCar:carToEdit];
+    [self.navigationController pushViewController:newRefueling animated:YES];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -158,6 +158,15 @@
                                                          timeStyle:NSDateFormatterNoStyle];
     
     cell.detailsLabel.text = reminder.reminderDetails;
+    if ([reminder.reminderType isEqualToString:@"OilChange"]) {
+        cell.iconImageView.image = [UIImage imageNamed:@"oilChange_logo"];
+    }
+    if ([reminder.reminderType isEqualToString:@"Service"]) {
+        cell.iconImageView.image = [UIImage imageNamed:@"services_logo"];
+    }
+    if ([reminder.reminderType isEqualToString:@"Insurance"]) {
+        cell.iconImageView.image = [UIImage imageNamed:@"insurance_logo"];
+    }
     
     
     return cell;

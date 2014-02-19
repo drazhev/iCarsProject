@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		DCAD541018B528AB0040734E /* MMRemindersTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */; };
 		DCAD541218B528C50040734E /* MMRemindersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */; };
+		DCAD541518B541350040734E /* MMNewReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAD541418B541350040734E /* MMNewReminderViewController.m */; };
 		DCC865AE18B3C2480036A539 /* MMNewOilChangeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */; };
 		DCC865AF18B3C2480036A539 /* MMNewServiceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCC865AD18B3C2480036A539 /* MMNewServiceViewController.m */; };
 		EB573C5418AF8B38003DE8D3 /* MMCarMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EB573C5318AF8B38003DE8D3 /* MMCarMenuViewController.m */; };
@@ -87,6 +88,8 @@
 		DCAD540E18B528AB0040734E /* MMRemindersTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMRemindersTableViewCell.h; sourceTree = "<group>"; };
 		DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMRemindersTableViewCell.m; sourceTree = "<group>"; };
 		DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MMRemindersTableViewCell.xib; sourceTree = "<group>"; };
+		DCAD541318B541350040734E /* MMNewReminderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewReminderViewController.h; sourceTree = "<group>"; };
+		DCAD541418B541350040734E /* MMNewReminderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNewReminderViewController.m; sourceTree = "<group>"; };
 		DCC865AA18B3C2480036A539 /* MMNewOilChangeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewOilChangeViewController.h; sourceTree = "<group>"; };
 		DCC865AB18B3C2480036A539 /* MMNewOilChangeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNewOilChangeViewController.m; sourceTree = "<group>"; };
 		DCC865AC18B3C2480036A539 /* MMNewServiceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewServiceViewController.h; sourceTree = "<group>"; };
@@ -279,6 +282,8 @@
 				DCAD540E18B528AB0040734E /* MMRemindersTableViewCell.h */,
 				DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */,
 				DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */,
+				DCAD541318B541350040734E /* MMNewReminderViewController.h */,
+				DCAD541418B541350040734E /* MMNewReminderViewController.m */,
 				EB573C8C18AFCA0D003DE8D3 /* MMInsurancesViewController.h */,
 				EB573C8D18AFCA0D003DE8D3 /* MMInsurancesViewController.m */,
 				EBA20C5818B430CC005272DA /* MMNewInsuranceViewController.h */,
@@ -514,6 +519,7 @@
 				EBAFCDCE18B1113B000FC14A /* MMNewRefuelingViewController.m in Sources */,
 				EB573C8818AFC9E3003DE8D3 /* MMServicesMapViewController.m in Sources */,
 				DCC865AF18B3C2480036A539 /* MMNewServiceViewController.m in Sources */,
+				DCAD541518B541350040734E /* MMNewReminderViewController.m in Sources */,
 				EB573C9418AFCA51003DE8D3 /* MMSummaryViewController.m in Sources */,
 				EBAD464018AB9CF500EA3B6B /* Reminder.m in Sources */,
 				EBA9C5BE18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.m in Sources */,

@@ -175,10 +175,10 @@
     self.changeLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.odometerTextField.frame) + 10, (applicationFrame.size.width / 3), 20)];
     self.changeLocationLabel.textColor = [UIColor blackColor];
     self.changeLocationLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.changeLocationLabel.text = @"Сервиз:";
+    self.changeLocationLabel.text = @"Детайли:";
     [self.newOilChangeView addSubview:self.changeLocationLabel];
     
-    self.changeLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.changeLocationLabel.frame) + 10, (applicationFrame.size.width / 3) , 20 )];
+    self.changeLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.changeLocationLabel.frame) + 10, (applicationFrame.size.width / 3) , 50 )];
     [self.changeLocationTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.changeLocationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
@@ -187,7 +187,7 @@
     //-------------------------------------------------------------------------------
     
     //VERY IMPORTANT FOR THE PROPER FUNCTIONALITY OF RDVKeyboardAvoidingScrollView
-   // [gazFormView setContentSize:CGSizeMake(gazFormFrame.size.width, CGRectGetMaxY(self.gasStationTextField.frame) + 65)];
+    [self.newOilChangeView setContentSize:CGSizeMake(applicationFrame.size.width, CGRectGetMaxY(self.changeLocationTextField.frame) + 65)];
     
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style: UIBarButtonItemStyleBordered target:self action:@selector(saveOilChange:)];
     [self.navigationItem setRightBarButtonItem:addButton];
@@ -196,6 +196,8 @@
 }
 -(void)saveOilChange:(id)sender{
     NSLog(@"nova smqna na maslo");
+    
+    
     
     
     MMOilViewController* oilVC = [[MMOilViewController alloc] initWithCar:carToEdit];

@@ -38,12 +38,7 @@
 -(void)loadView{
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     
-//    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
-//    [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
-//    [newCarView setBackgroundColor:[UIColor whiteColor]];
-//    [newCarView setAlwaysBounceVertical:YES];
-//    [newCarView setAlwaysBounceHorizontal:NO];
-//    [newCarView setScrollEnabled:YES];
+
     
     MKMapView* mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, applicationFrame.size.width, applicationFrame.size.height)];
      MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(42.696552, 23.32601), 10000, 10000);
@@ -140,6 +135,7 @@
     NSString *url=@"http://icars.orgfree.com/";
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+    
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     

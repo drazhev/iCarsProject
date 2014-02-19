@@ -25,6 +25,8 @@
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
 
+#import "MMNewInsuranceViewController.h"
+
 @interface MMInsurancesViewController : UIViewController<RNFrostedSidebarDelegate>
 
 -(id)initWithCar:(Car*) car;

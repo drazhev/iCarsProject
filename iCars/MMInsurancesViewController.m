@@ -46,6 +46,8 @@
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
+    UIBarButtonItem *addNewInsurance = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewInsurance:)];
+    [self.navigationItem setRightBarButtonItem:addNewInsurance];
     
     self.view = newCarView;
 }
@@ -73,6 +75,12 @@
     //callout.showFromRight = YES;
     [callout show];
     
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+-(void)addNewInsurance:(id)sender{
+    MMNewInsuranceViewController* newInsurance = [[MMNewInsuranceViewController alloc] initWithCar:carToEdit];
+    [self.navigationController pushViewController:newInsurance animated:YES];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - RNFrostedSidebarDelegate

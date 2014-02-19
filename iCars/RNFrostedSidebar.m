@@ -206,7 +206,7 @@
 - (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event {
     [super touchesBegan:touches withEvent:event];
     
-    double r, g, b, a;
+    CGFloat r, g, b, a;
     double darkenFactor = 0.3f;
     UIColor *darkerColor;
     if ([self.originalBackgroundColor getRed:&r green:&g blue:&b alpha:&a]) {

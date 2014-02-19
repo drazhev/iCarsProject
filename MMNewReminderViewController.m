@@ -30,6 +30,19 @@
     return self;
 }
 
+- (id)initWithNibName:(NSString*) nibName details: (NSString*) details {
+    self = [super initWithNibName:nibName bundle:nil];
+    if (self) {
+        self.reminderTypes = @[@"OilChange", @"Tax", @"Service", @"Insurance"];
+        self.detailsTextField.text = details;
+        [self.typePickerView selectRow:2 inComponent:0 animated:NO];
+        
+    }
+    return self;
+}
+
+
+
 - (CGRect)getScreenFrameForCurrentOrientation {
     return [self getScreenFrameForOrientation:[UIApplication sharedApplication].statusBarOrientation];
 }
@@ -183,6 +196,7 @@
     [formatter setDateFormat:@"dd/MM/yyyy"];
     dateString = [formatter stringFromDate:self.datePicker.date];
     [self.dateLabel setTitle:dateString forState:UIControlStateNormal];
+    
 }
 
 -(void)datePickerValueChanged {

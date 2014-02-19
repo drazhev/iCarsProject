@@ -12,6 +12,9 @@
 
 @property(nonatomic, strong) UIScrollView* reminderScrollView;
 @property (nonatomic, strong) NSArray* reminderTypes;
+@property (nonatomic, strong) NSDate* selectedDate;
+@property (nonatomic) int selectedType;
+@property (nonatomic, strong) NSString* selectedDetails;
 
 
 @end
@@ -26,16 +29,17 @@
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         // Custom initialization
+        self.selectedDate = [NSDate date];
+        self.selectedType = 0;
     }
     return self;
 }
 
-- (id)initWithNibName:(NSString*) nibName details: (NSString*) details {
+- (id)initWithNibName:(NSString*) nibName details: (NSString*) details andType: (int)type{
     self = [super initWithNibName:nibName bundle:nil];
     if (self) {
-        self.reminderTypes = @[@"OilChange", @"Tax", @"Service", @"Insurance"];
-        self.detailsTextField.text = details;
-        [self.typePickerView selectRow:2 inComponent:0 animated:NO];
+        self.selectedDetails = details;
+        self.selectedType = type;
         
     }
     return self;
@@ -83,20 +87,6 @@
 
 }
 
-//-(void)loadView {
-////    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
-////    self.reminderScrollView = [[RDVKeyboardAvoidingScrollView alloc]initWithFrame:applicationFrame];
-////    [self.reminderScrollView setBackgroundColor:[UIColor whiteColor]];
-////    [self.reminderScrollView setAlwaysBounceVertical:YES];
-////    [self.reminderScrollView setAlwaysBounceHorizontal:NO];
-////    [self.reminderScrollView setScrollEnabled:YES];
-//    
-//
-//    
-//    
-//    
-//    //self.view = self.reminderScrollView;
-//}
 
 -(void)saveReminder: (id)sender {
     
@@ -189,13 +179,17 @@
     
     [self.datePicker addTarget:self action:@selector(datePickerValueChanged) forControlEvents:UIControlEventValueChanged];
     
-    [self.typeLabel setTitle:self.reminderTypes[0] forState:UIControlStateNormal];
+    [self.typeLabel setTitle:self.reminderTypes[self.selectedType] forState:UIControlStateNormal];
     
     NSString* dateString;
     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
     [formatter setDateFormat:@"dd/MM/yyyy"];
-    dateString = [formatter stringFromDate:self.datePicker.date];
+    dateString = [formatter stringFromDate:self.selectedDate];
     [self.dateLabel setTitle:dateString forState:UIControlStateNormal];
+    
+    self.detailsTextField.text = self.selectedDetails;
+    
+    
     
 }
 

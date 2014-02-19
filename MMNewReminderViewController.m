@@ -162,6 +162,7 @@
     if (!self.datePicker.hidden && CGRectContainsPoint(self.datePicker.frame, touchLocation)) return NO;
     return YES;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -189,6 +190,8 @@
     [self.dateLabel setTitle:dateString forState:UIControlStateNormal];
     
     self.detailsTextField.text = self.selectedDetails;
+    
+    self.odometerTextField.keyboardType = UIKeyboardTypeNumberPad;
     
     
     

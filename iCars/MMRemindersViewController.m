@@ -14,12 +14,13 @@
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
+@property (nonatomic, strong) UILabel* noRemindersLabel;
 
 @end
 
 @implementation MMRemindersViewController
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-@synthesize optionIndices, viewControllersContainer;
+@synthesize optionIndices, viewControllersContainer, noRemindersLabel;
 @synthesize carToEdit;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
@@ -43,8 +44,33 @@
     return [[appDelegate.managedObjectContext executeFetchRequest:requestRefuelings error:&errorRefuelings] mutableCopy];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
--(void)loadView{
+- (CGRect)getScreenFrameForCurrentOrientation {
+    return [self getScreenFrameForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+}
+
+- (CGRect)getScreenFrameForOrientation:(UIInterfaceOrientation)orientation {
     
+    UIScreen *screen = [UIScreen mainScreen];
+    CGRect fullScreenRect = screen.bounds;
+    BOOL statusBarHidden = [UIApplication sharedApplication].statusBarHidden;
+    
+    //implicitly in Portrait orientation.
+    if(orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
+        CGRect temp = CGRectZero;
+        temp.size.width = fullScreenRect.size.height;
+        temp.size.height = fullScreenRect.size.width;
+        fullScreenRect = temp;
+    }
+    
+    if(!statusBarHidden){
+        CGFloat statusBarHeight = 20;//Needs a better solution, FYI statusBarFrame reports wrong in some cases..
+        fullScreenRect.size.height -= statusBarHeight;
+    }
+    
+    return fullScreenRect;
+}
+-(void)loadView{
+    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
     //tabBar buttons
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
@@ -52,13 +78,43 @@
         UIBarButtonItem *addNewReminder = [[UIBarButtonItem alloc] initWithTitle:@"+" style: UIBarButtonItemStyleBordered target:self action:@selector(addNewReminder:)];
     [self.navigationItem setRightBarButtonItem:addNewReminder];
     
-    UITableView* tableView = [[UITableView alloc] init];
-    tableView.delegate = self;
-    tableView.dataSource = self;
+    if ([self reminders].count == 0){
+        
+        UIView* noView= [[UIView alloc] initWithFrame:applicationFrame];
+        [noView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [noView setBackgroundColor:[UIColor whiteColor]];
+        
+        
+        noRemindersLabel = [[UILabel alloc] init];
+        noRemindersLabel.textColor = [UIColor blackColor];
+        noRemindersLabel.backgroundColor = [UIColor whiteColor];
+        
+        noRemindersLabel.text = @"Нямате въведени напомняния.";
+        noRemindersLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+            noRemindersLabel.font = [UIFont fontWithName:@"Arial" size: 15.0f];
+        }
+        else{
+            noRemindersLabel.font = [UIFont fontWithName:@"Arial" size: 30.0f];
+        }
+        noRemindersLabel.textAlignment = NSTextAlignmentCenter;
+        [noView addSubview: noRemindersLabel];
+        
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRemindersLabel)]];
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRemindersLabel)]];
+        
+        self.view = noView;
+    }
+    else {
     
-    UINib *cellNib = [UINib nibWithNibName:@"MMRemindersTableViewCell" bundle:nil];
-    [tableView registerNib:cellNib forCellReuseIdentifier:@"mainCell"];
-    self.view = tableView;
+        UITableView* tableView = [[UITableView alloc] init];
+        tableView.delegate = self;
+        tableView.dataSource = self;
+        
+        UINib *cellNib = [UINib nibWithNibName:@"MMRemindersTableViewCell" bundle:nil];
+        [tableView registerNib:cellNib forCellReuseIdentifier:@"mainCell"];
+        self.view = tableView;
+    }
     
 }
 -(void)addNewReminder: (id) sender {

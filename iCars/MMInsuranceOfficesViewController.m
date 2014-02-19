@@ -132,6 +132,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    //NSString *url=@"http://localhost/";
     NSString *url=@"http://icars.orgfree.com/";
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
     NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];

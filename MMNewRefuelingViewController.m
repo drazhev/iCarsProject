@@ -62,20 +62,20 @@
         isfuelPickerViewDrop = NO;
         isGasStationViewDrop = NO;
         fuelType = [[NSMutableArray alloc] init];
-        [fuelType addObject:@" A95"];
-        [fuelType addObject:@" A95+ "];
-        [fuelType addObject:@" A98 "];
-        [fuelType addObject:@" A98+ "];
-        [fuelType addObject:@" Diesel "];
-        [fuelType addObject:@" LPG "];
-        [fuelType addObject:@" CNG "];
+        [fuelType addObject:@"A95"];
+        [fuelType addObject:@"A95+"];
+        [fuelType addObject:@"A98"];
+        [fuelType addObject:@"A98+"];
+        [fuelType addObject:@"Diesel"];
+        [fuelType addObject:@"LPG"];
+        [fuelType addObject:@"CNG"];
         
         gasStations = [[NSMutableArray alloc] init];
-        [gasStations addObject:@" Shell "];
-        [gasStations addObject:@" OMV "];
-        [gasStations addObject:@" Petrol "];
-        [gasStations addObject:@" Lucoil "];
-        [gasStations addObject:@" ECO "];
+        [gasStations addObject:@"Shell"];
+        [gasStations addObject:@"OMV"];
+        [gasStations addObject:@"Petrol"];
+        [gasStations addObject:@"Lucoil"];
+        [gasStations addObject:@"ECO "];
         
     }
     return self;
@@ -255,7 +255,7 @@
 -(void)saveCarButtonAction:(id)sender{
     NSLog(@"novo zarejdane");
     if (self.totalCostTextField.text.length == 0 || self.fuelPriceTextField.text.length == 0 || self.odometerTextField.text.length == 0) {
-        UIAlertView *notEnoughCarInfo = [[UIAlertView alloc] initWithTitle:@"Недостатъчна информация!" message:@"Крайна цена, пробег и цена за литър са задължинелни полета!!!"delegate:sender cancelButtonTitle:@"Опитайте отново" otherButtonTitles:nil];
+        UIAlertView *notEnoughCarInfo = [[UIAlertView alloc] initWithTitle:@"Недостатъчна информация!" message:@"Крайна цена, пробег и цена за литър са задължителни полета!!!"delegate:sender cancelButtonTitle:@"Опитайте отново" otherButtonTitles:nil];
         [notEnoughCarInfo show];
     }
     else{
@@ -273,9 +273,9 @@
         
         if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
         
-        /* if (self.fuelTypeTextField.text.length != 0)*/ newRefueling.fuelType = self.fuelTypePickerButton.titleLabel.text;;//da se prepravi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! spisuk @"95, 95+, 98, 98+, diesel, gaz4iza, metan4e i t.n"
-         if (self.gasStationPickerButton.titleLabel.text.length != 0) newRefueling.refuelingGasStation = self.gasStationPickerButton.titleLabel.text;
-        newRefueling.fullTank = @(1);
+        newRefueling.fuelType = [fuelType objectAtIndex:[self.fuelTypePicerView selectedRowInComponent:0]];
+        if (self.gasStationPickerButton.titleLabel.text.length != 0) newRefueling.refuelingGasStation = [gasStations objectAtIndex:[self.gasStationPickerView selectedRowInComponent:0]];
+        newRefueling.fullTank = [NSNumber numberWithBool: self.fullTankSwitch.on];
         newRefueling.car = carToEdit;
         
         

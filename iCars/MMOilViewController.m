@@ -11,6 +11,7 @@
 @interface MMOilViewController ()<UIScrollViewDelegate>
 
 @property(nonatomic, strong)Car* carToEdit;
+
 @property(nonatomic) CGPoint currentOffset;
 @property (nonatomic) int page;
 
@@ -104,7 +105,7 @@
     
     
 
-    if (self.oilChangesArray.count == 0){
+    if (self.oilChangeEntities.count == 0){
         
         UIView* noView= [[UIView alloc] initWithFrame:applicationFrame];
         [noView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
@@ -131,6 +132,7 @@
         
         self.view = noView;
     }
+    
     else{
         self.oilChangesArray = [[NSMutableArray alloc] init];
         UIView *oilChangeView;

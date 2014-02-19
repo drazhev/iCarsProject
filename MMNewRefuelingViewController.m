@@ -148,18 +148,21 @@
     [self.totalCostTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.totalCostTextField setDelegate:self];
     self.totalCostTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.totalCostTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [gazFormView addSubview: self.totalCostTextField];
     
     self.fuelPriceTextField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostTextField.frame) + 5, CGRectGetMaxY(self.fuelPriceLabel.frame) + 10, (gazFormFrame.size.width - 20) / 3, 25)];
     [self.fuelPriceTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.fuelPriceTextField setDelegate:self];
     self.fuelPriceTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.fuelPriceTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [gazFormView addSubview: self.fuelPriceTextField];
     
     self.litersTextField = [[UITextField alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.fuelPriceTextField.frame) + 5, CGRectGetMaxY(self.litersLabel.frame) + 10, (gazFormFrame.size.width - 20) / 3, 25)];
     [self.litersTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.litersTextField setDelegate:self];
     self.litersTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.litersTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [gazFormView addSubview: self.litersTextField];
     
     self.odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(5, CGRectGetMaxY(self.litersTextField.frame) + 10, (gazFormFrame.size.width - 20) / 3, 25)];
@@ -172,6 +175,7 @@
     [self.odometerTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.odometerTextField setDelegate:self];
     self.odometerTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.odometerTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [gazFormView addSubview: self.odometerTextField];
     
     self.fullTankSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.odometerTextField.frame) + 40, CGRectGetMaxY(self.litersTextField.frame) + 10, 120, 25)];

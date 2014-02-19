@@ -99,14 +99,11 @@
     [newOilChangeView setAlwaysBounceHorizontal:NO];
     [newOilChangeView setScrollEnabled:YES];
     
-    //-----------------------------------------------------------
-    
     self.dateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width, 20)];
     self.dateLabel.textColor = [UIColor blackColor];
     self.dateLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.dateLabel.text = @"Дата на смяна:";
     [self.newOilChangeView addSubview:self.dateLabel];
-    //self.totalCostTextField.frame) + 20
     self.datePickerButton = [[UIButton alloc] initWithFrame:CGRectMake(40, CGRectGetMaxY(self.formLabel.frame) + 10, 400, 25)];
     NSDateFormatter* formatter = [[NSDateFormatter alloc] init];
     [formatter setDateStyle:NSDateFormatterShortStyle];
@@ -123,7 +120,6 @@
     
     
     
-    //datePickerFrame = CGRectMake(applicationFrame.origin, <#CGFloat y#>, <#CGFloat width#>, <#CGFloat height#>)
     self.datePicker = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.dateTextField.frame) + 10, applicationFrame.size.width, 0)];
     [self.datePicker setDate:[NSDate date]];
     [self.datePicker addTarget:self action:@selector(dueDateChanged:) forControlEvents:UIControlEventValueChanged];
@@ -138,8 +134,8 @@
     self.totalCostTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostLabel.frame) + 5, applicationFrame.size.width / 3, 20)];
     [self.totalCostTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.totalCostTextField setDelegate:self];
-    //self.totalCostTextField.backgroundColor = [UIColor redColor];
     self.totalCostTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.totalCostTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [self.newOilChangeView addSubview: self.totalCostTextField];
     
     self.litersLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostTextField.frame) + 20, CGRectGetMaxY(self.dateLabel.frame) + 15, applicationFrame.size.width /3, 20)];
@@ -158,9 +154,6 @@
     self.increaseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.increaseButton setTitle:@"▲" forState:UIControlStateNormal];
     self.increaseButton.frame = CGRectMake(CGRectGetMaxX(self.litersTextField.frame) + 20, CGRectGetMaxY(litersTextField.frame ) - 20, 20, 20);
-    //self.increaseButton.layer.borderWidth = 0.5;
-    //self.increaseButton.layer.cornerRadius = 3;
-    //self.increaseButton.backgroundColor = [UIColor redColor];
     [self.increaseButton addTarget:self
                             action:@selector(increaseLitters)
                   forControlEvents:UIControlEventTouchDown];
@@ -169,10 +162,6 @@
     self.decreaseButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
     [self.decreaseButton setTitle:@"▼" forState:UIControlStateNormal];
     self.decreaseButton.frame = CGRectMake(CGRectGetMaxX(self.increaseButton.frame) + 10, CGRectGetMaxY(litersTextField.frame ) - 20, 20, 20);
-    //self.decreaseButton.layer.borderColor = [UIColor greenColor].CGColor;
-    //self.increaseButton.layer.borderWidth = 0.5;
-    //self.decreaseButton.layer.cornerRadius = 3;
-    //self.decreaseButton.backgroundColor = [UIColor redColor];
     [self.decreaseButton addTarget:self
                             action:@selector(decreaseLitters)
                   forControlEvents:UIControlEventTouchDown];
@@ -188,12 +177,12 @@
     [self.odometerTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.odometerTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.odometerTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [self.newOilChangeView addSubview: self.odometerTextField];
     
     
     self.nextChangeLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.litersLabel.frame), CGRectGetMaxY(totalCostTextField.frame) + 10, (applicationFrame.size.width - 60) / 2, 20)];
     self.nextChangeLabel.textColor = [UIColor blackColor];
-    //self.nextChangeLabel.backgroundColor = [UIColor redColor];
     self.nextChangeLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.nextChangeLabel.text = @"Следваща смяна:";
     [self.newOilChangeView addSubview:self.nextChangeLabel];
@@ -202,6 +191,7 @@
     [self.nextChangeTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.dateTextField setDelegate:self];
     self.nextChangeTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    [self.nextChangeTextField setKeyboardType:UIKeyboardTypeNumberPad];
     [self.newOilChangeView addSubview: self.nextChangeTextField];
     
     self.changeLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.odometerTextField.frame) + 10, (applicationFrame.size.width / 3), 20)];
@@ -234,17 +224,49 @@
 }
 -(void)saveOilChange:(id)sender{
     NSLog(@"nova smqna na maslo");
-    
-    
-    
-    
-    MMOilViewController* oilVC = [[MMOilViewController alloc] initWithCar:carToEdit];
-    [self.navigationController pushViewController:oilVC animated:YES];
+    if (self.totalCostTextField.text.length == 0 || self.odometerTextField.text.length == 0 || self.nextChangeTextField.text.length == 0) {
+        UIAlertView *notEnoughCarInfo = [[UIAlertView alloc] initWithTitle:@"Недостатъчна информация!" message:@"Пробег, сл.смяна и цена са задължителни полета!!!"delegate:sender cancelButtonTitle:@"Опитайте отново" otherButtonTitles:nil];
+        [notEnoughCarInfo show];
+    }
+    else{
         
         
+        MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+        OilChange*  oilChange = [NSEntityDescription insertNewObjectForEntityForName:@"OilChange" inManagedObjectContext:appDelegate.managedObjectContext];
         
+        oilChange.odometer = @([self.odometerTextField.text integerValue]);
+        oilChange.oilChangeDate = self.datePicker.date;
+        oilChange.oilNextChangeOdometer = @([self.nextChangeTextField.text integerValue]);
+        oilChange.oilChangeTotalCost = @([self.totalCostTextField.text integerValue]);
+        oilChange.oilChangeDetails = self.changeLocationTextField.text;
         
-    
+        oilChange.car = carToEdit;
+        
+        Reminder* oilChangeReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:appDelegate.managedObjectContext];
+        
+        oilChangeReminder
+        
+
+        // Save the object to managedObjectContext
+        NSError* newOilChangeError = nil;
+        if (![appDelegate.managedObjectContext save:&newOilChangeError]) {
+            NSLog(@"New Refueling ERROR: %@ %@", newOilChangeError, [newOilChangeError localizedDescription]);
+        }
+        else{
+            NSLog(@"dobavihte nova smqna maslo");
+        }
+        
+        NSError *error01 = nil;
+        // Save the object to persistent store
+        if (![appDelegate.managedObjectContext save:&error01]) {
+            NSLog(@"Can't Save! %@ %@", error01, [error01 localizedDescription]);
+        }
+        
+        //push to gasolineVC
+        
+        MMOilViewController* oilVC = [[MMOilViewController alloc] initWithCar:carToEdit];
+        [self.navigationController pushViewController:oilVC animated:YES];
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)viewDidLoad

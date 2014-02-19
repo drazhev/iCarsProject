@@ -256,10 +256,7 @@
         
         self.view = newCarView;
     }
-    
-    
-    
-    
+
     //tabBar buttons
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];

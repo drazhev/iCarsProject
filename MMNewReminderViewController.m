@@ -40,6 +40,7 @@
     if (self) {
         self.selectedDetails = details;
         self.selectedType = type;
+        self.selectedDate = [NSDate date];
         
     }
     return self;

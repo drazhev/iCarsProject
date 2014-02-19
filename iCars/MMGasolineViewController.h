@@ -29,6 +29,8 @@
 
 @interface MMGasolineViewController : UIViewController <RNFrostedSidebarDelegate>
 
+@property(nonatomic, strong) Refueling* lastRefueling;
+
 -(id)initWithCar:(Car*) car;
 
 @end

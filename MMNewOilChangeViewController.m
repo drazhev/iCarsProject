@@ -269,6 +269,7 @@
         //push to gasolineVC
         
         MMOilViewController* oilVC = [[MMOilViewController alloc] initWithCar:carToEdit];
+        oilVC.lastOilChange = oilChange;
         [self.navigationController pushViewController:oilVC animated:YES];
     }
 }

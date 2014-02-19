@@ -302,6 +302,7 @@
         //push to gasolineVC
         
         MMGasolineViewController* gasolineVC = [[MMGasolineViewController alloc] initWithCar:carToEdit];
+        gasolineVC.lastRefueling = newRefueling;
         [self.navigationController pushViewController:gasolineVC animated:YES];
         
         

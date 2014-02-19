@@ -85,6 +85,17 @@
     NSError *errorOilChanges;
     return [[appDelegate.managedObjectContext executeFetchRequest:requestOilChanges error:&errorOilChanges] mutableCopy];
 }
+
+-(NSArray*)reminders{
+    
+    MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSFetchRequest* requestRefuelings = [[NSFetchRequest alloc] initWithEntityName:@"Reminder"];
+    requestRefuelings.predicate = [NSPredicate predicateWithFormat: @"car = %@", carToEdit];
+    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"reminderDate" ascending:NO];
+    requestRefuelings.sortDescriptors = @[sortByDate];
+    NSError *errorRefuelings;
+    return [[appDelegate.managedObjectContext executeFetchRequest:requestRefuelings error:&errorRefuelings] mutableCopy];
+}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - MainView CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -295,6 +306,13 @@
                                      @"MMInsuranceOfficesViewController",
                                      @"MMSummaryViewController",
                                      @"MMChartsViewController",nil];
+    
+    for (Reminder* reminder in [self reminders]) {
+        if ([self.lastOilChange.odometer integerValue] >= [reminder.reminderOdometer integerValue] - 500) {
+            UIAlertView *alert = [[UIAlertView alloc] initWithTitle:reminder.reminderType message: [NSString stringWithFormat: @"You have a reminder for %d and you are now at %d. Details: %@", [reminder.reminderOdometer integerValue], [self.lastOilChange.odometer integerValue], reminder.reminderDetails] delegate:self cancelButtonTitle:@"Dismiss" otherButtonTitles:nil];
+            [alert show];
+        }
+    }
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)didReceiveMemoryWarning

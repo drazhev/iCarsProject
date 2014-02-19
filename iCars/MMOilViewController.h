@@ -30,6 +30,8 @@
 
 @interface MMOilViewController : UIViewController <RNFrostedSidebarDelegate>
 
+@property (nonatomic, strong) OilChange* lastOilChange;
+
 -(id)initWithCar:(Car*) car;
 
 @end

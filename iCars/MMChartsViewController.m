@@ -11,6 +11,7 @@
 
 @interface MMChartsViewController ()<UITableViewDataSource, UITableViewDelegate>{
     int numFuels;
+    
     float a95qty;
     float a95PLUSqty;
     float a98qty;
@@ -18,14 +19,16 @@
     float dieselQty;
     float lpgQty;
     float cngQty;
-    CGFloat allRefuelings;
-    CGFloat a95percent;
-    CGFloat a95plusPercent;
-    CGFloat a98percent;
-    CGFloat a98plusPercent;
-    CGFloat dieselPerc;
-    CGFloat lpgPerc;
-    CGFloat cngPerc;
+    
+    float allRefuelings;
+    
+    float a95percent;
+    float a95plusPercent;
+    float a98percent;
+    float a98plusPercent;
+    float dieselPerc;
+    float lpgPerc;
+    float cngPerc;
 }
 
 @property(nonatomic, strong)Car* carToEdit;
@@ -36,6 +39,8 @@
 @property(nonatomic, strong)PieView *pieView;
 @property(nonatomic, strong)UITableView *colorStatsTableView;
 
+@property (nonatomic, strong)UILabel* noRefuelingsLabel;
+
 @end
 
 @implementation MMChartsViewController
@@ -43,6 +48,7 @@
 @synthesize optionIndices, viewControllersContainer;
 @synthesize carToEdit;
 @synthesize colorStatsTableView, pieView;
+@synthesize  noRefuelingsLabel;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
 {
@@ -51,6 +57,23 @@
         // Custom initialization
         self.title = @"Диаграми";
         carToEdit = car;
+        
+        numFuels = 0;
+        
+        a95qty= 0;
+        a95PLUSqty= 0;
+        a98qty= 0;
+        a98PLUSqty= 0;
+        dieselQty= 0;
+        lpgQty= 0;
+        cngQty= 0;
+        a95percent= 0;
+        a95plusPercent= 0;
+        a98percent= 0;
+        a98plusPercent= 0;
+        dieselPerc= 0;
+        lpgPerc= 0;
+        cngPerc= 0;
     }
     return self;
 }
@@ -86,7 +109,7 @@
 #pragma mark - ConfigureTableView
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return numFuels;
+    return 7;// numFuels;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -105,18 +128,39 @@
         cell = [nib objectAtIndex:0];
     }
     NSArray* colorContainer = [[NSArray alloc] initWithObjects:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor  brownColor], nil];
+    NSArray* qties4check = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"%f", a95percent],
+                            [NSString stringWithFormat:@"%f", a95plusPercent],
+                            [NSString stringWithFormat:@"%f", a98percent],
+                            [NSString stringWithFormat:@"%f", a98plusPercent],
+                            [NSString stringWithFormat:@"%f", dieselPerc],
+                            [NSString stringWithFormat:@"%f", lpgPerc],
+                            [NSString stringWithFormat:@"%f", cngPerc], nil];
+    NSLog(@"QTY %@", [qties4check objectAtIndex: indexPath.row]);
+    //NSLog(@"size q4c %@", [qties4check count]);
     
-    NSArray* qties = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"A95: %.2f %% (%.2f л.)", a95percent, a95qty], [NSString stringWithFormat:@"A95+: %.2f %% (%.2f л.)", a95plusPercent, a95qty], [NSString stringWithFormat:@"A98: %.2f %% (%.2f л.)", a98percent, a98qty],
-                      [NSString stringWithFormat:@"A98+: %.2f %% (%.2f л.)", a98plusPercent, a98PLUSqty], [NSString stringWithFormat:@"Дизел: %.2f %% (%.2f л.)", dieselPerc, dieselQty], [NSString stringWithFormat:@"Газ: %.2f %% (%.2f л.)", lpgPerc, lpgQty], [NSString stringWithFormat:@"Метан: %.2f %% (%.2f л.)", cngPerc, cngQty], nil];
+    NSArray* qties = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"A95: %.2f %% (%.2f л.)", a95percent, a95qty],
+                      [NSString stringWithFormat:@"A95+: %.2f %% (%.2f л.)", a95plusPercent, a95PLUSqty],
+                      [NSString stringWithFormat:@"A98: %.2f %% (%.2f л.)", a98percent, a98qty],
+                      [NSString stringWithFormat:@"A98+: %.2f %% (%.2f л.)", a98plusPercent, a98PLUSqty],
+                      [NSString stringWithFormat:@"Дизел: %.2f %% (%.2f л.)", dieselPerc, dieselQty],
+                      [NSString stringWithFormat:@"Газ: %.2f %% (%.2f л.)", lpgPerc, lpgQty],
+                      [NSString stringWithFormat:@"Метан: %.2f %% (%.2f л.)", cngPerc, cngQty], nil];
+    
+    NSLog(@"%%%% %@", [qties objectAtIndex: indexPath.row]);
     
 
     
-    if (![[qties objectAtIndex:indexPath.row] isEqualToString:@"0.000000"]) {
+   // if (![[qties4check objectAtIndex:indexPath.row] isEqualToString:@"0.000000"]) {
         cell.backgroundColor = [colorContainer objectAtIndex:indexPath.row];
         cell.textLabel.text = [qties objectAtIndex:indexPath.row];
-    }
+   // }
+//    else{
+//        cell.backgroundColor = [UIColor blackColor];
+//        cell.textLabel.text = @"nqma";
+//    }
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
+    NSLog(@"size q4c %lu", (unsigned long)[qties4check count]);
 }
 
 -(NSArray*)refuelingEntities{
@@ -130,64 +174,46 @@
     return [[appDelegate.managedObjectContext executeFetchRequest:requestRefuelings error:&errorRefuelings] mutableCopy];
 }
 -(void)calculateEth{
-    NSMutableArray* a95 = [[NSMutableArray alloc] init];
-    NSMutableArray* a95plus = [[NSMutableArray alloc] init];
-    NSMutableArray* a98 = [[NSMutableArray alloc] init];
-    NSMutableArray* a98plus = [[NSMutableArray alloc] init];
-    NSMutableArray* diesel = [[NSMutableArray alloc] init];
-    NSMutableArray* lpg = [[NSMutableArray alloc] init];
-    NSMutableArray* cng = [[NSMutableArray alloc] init];
-    
-    numFuels = 0;
-    
-    //int numFuels= 0;
-    a95qty= 0;
-    a95PLUSqty= 0;
-    a98qty= 0;
-    a98PLUSqty= 0;
-    dieselQty= 0;
-    lpgQty= 0;
-    cngQty= 0;
     
     for (Refueling* refueling in self.refuelingEntities) {
         
         if ([refueling.fuelType isEqualToString:@"A95"]) {
-            [a95 addObject: refueling];
+           // [a95 addObject: refueling];
             a95qty += [refueling.refuelingQantity integerValue];
             
         }
         else if ([refueling.fuelType isEqualToString:@"A95+"]){
-            [a95plus addObject: refueling];
+            //[a95plus addObject: refueling];
             a95PLUSqty += [refueling.refuelingQantity integerValue];
         }
         else if ([refueling.fuelType isEqualToString:@"A98"]){
-            [a98 addObject: refueling];
+            //[a98 addObject: refueling];
             a98qty += [refueling.refuelingQantity integerValue];
         }
         else if ([refueling.fuelType isEqualToString:@"A98+"]){
-            [a98plus addObject: refueling];
+            //[a98plus addObject: refueling];
             a98PLUSqty += [refueling.refuelingQantity integerValue];
         }
         else if ([refueling.fuelType isEqualToString:@"Diesel"]){
-            [diesel addObject: refueling];
+            //[diesel addObject: refueling];
             dieselQty += [refueling.refuelingQantity integerValue];
         }
         else if ([refueling.fuelType isEqualToString:@"LPG"]){
-            [lpg addObject: refueling];
+            //[lpg addObject: refueling];
             lpgQty += [refueling.refuelingQantity integerValue];
         }
         else if ([refueling.fuelType isEqualToString:@"CNG"]){
-            [cng addObject: refueling];
+            //[cng addObject: refueling];
             cngQty += [refueling.refuelingQantity integerValue];
         }
     }
-    if([a95 count] != 0) numFuels++;
-    if([a95plus count] != 0) numFuels++;
-    if([a98 count] != 0) numFuels++;
-    if([a98plus count] != 0) numFuels++;
-    if([diesel count] != 0) numFuels++;
-    if([lpg count] != 0) numFuels++;
-    if([cng count] != 0) numFuels++;
+    if(a95qty != 0) numFuels++;
+    if(a95PLUSqty != 0) numFuels++;
+    if(a98qty != 0) numFuels++;
+    if(a98PLUSqty != 0) numFuels++;
+    if(dieselQty != 0) numFuels++;
+    if(lpgQty != 0) numFuels++;
+    if(cngQty != 0) numFuels++;
     
 //    NSLog(@"A95: %lu", (unsigned long)[a95 count]);
 //    NSLog(@"A95+: %lu", (unsigned long)[a95plus count]);
@@ -196,8 +222,8 @@
 //    NSLog(@"diesel: %lu", (unsigned long)[diesel count]);
 //    NSLog(@"lpg: %lu", (unsigned long)[lpg count]);
 //    NSLog(@"cng: %lu", (unsigned long)[cng count]);
-//    
-//    NSLog(@"broi na vidovete izpolzvani goriva %d", numFuels);
+    
+    NSLog(@"broi na vidovete izpolzvani goriva %d", numFuels);
     
     
     
@@ -230,32 +256,63 @@
     [newCarView setAlwaysBounceHorizontal:NO];
     [newCarView setScrollEnabled:YES];
     
-    
-    [self calculateEth];
-    
-    self.pieView = [[PieView alloc] initWithFrame:CGRectMake(0, 5, applicationFrame.size.width, applicationFrame.size.height/2)];
-    self.pieView.sliceValues = [NSArray arrayWithObjects:@(a95percent), @(a95plusPercent), @(a98percent), @(a98plusPercent), @(dieselPerc),  @(lpgPerc), @(cngPerc), nil];
-    
-    [newCarView addSubview:self.pieView];
-    
-    self.colorStatsTableView =[[UITableView alloc] initWithFrame:CGRectMake(0, applicationFrame.size.height/2 + 10, applicationFrame.size.width, applicationFrame.size.height/2)];
-    self.colorStatsTableView.separatorColor = [UIColor clearColor];
-    [self.colorStatsTableView setBackgroundColor:[UIColor clearColor]];
+    if (self.refuelingEntities.count == 0){
+        
+        UIView* noView= [[UIView alloc] initWithFrame:applicationFrame];
+        [noView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [noView setBackgroundColor:[UIColor whiteColor]];
+        
+        
+        self.noRefuelingsLabel = [[UILabel alloc] init];
+        self.noRefuelingsLabel.textColor = [UIColor blackColor];
+        self.noRefuelingsLabel.backgroundColor = [UIColor whiteColor];
+        
+        self.noRefuelingsLabel.text = @"Нямате въведени зареждания.";
+        self.noRefuelingsLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+            self.noRefuelingsLabel.font = [UIFont fontWithName:@"Arial" size: 15.0f];
+        }
+        else{
+            self.noRefuelingsLabel.font = [UIFont fontWithName:@"Arial" size: 30.0f];
+        }
+        self.noRefuelingsLabel.textAlignment = NSTextAlignmentCenter;
+        [noView addSubview: self.noRefuelingsLabel];
+        
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noRefuelingsLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRefuelingsLabel)]];
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[noRefuelingsLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRefuelingsLabel)]];
+        
+        self.view = noView;
+    }
+    else{
+        [self calculateEth];
+        
+        self.pieView = [[PieView alloc] initWithFrame:CGRectMake(0, 5, applicationFrame.size.width, applicationFrame.size.height/2)];
+        self.pieView.sliceValues = [NSArray arrayWithObjects:@(a95percent), @(a95plusPercent), @(a98percent), @(a98plusPercent), @(dieselPerc),  @(lpgPerc), @(cngPerc), nil];
+        
+        [newCarView addSubview:self.pieView];
+        
+        self.colorStatsTableView =[[UITableView alloc] initWithFrame:CGRectMake(0, applicationFrame.size.height/2 + 10, applicationFrame.size.width, applicationFrame.size.height/2)];
+        self.colorStatsTableView.separatorColor = [UIColor clearColor];
+        [self.colorStatsTableView setBackgroundColor:[UIColor clearColor]];
+        
+        self.colorStatsTableView.scrollEnabled = NO;
+        [self.colorStatsTableView setDataSource: self];
+        [self.colorStatsTableView setDelegate: self];
+        [self.colorStatsTableView registerClass:[MMCarCustomCellTableView class] forCellReuseIdentifier:@"color"];
 
-    self.colorStatsTableView.scrollEnabled = NO;
-    [self.colorStatsTableView setDataSource: self];
-    [self.colorStatsTableView setDelegate: self];
-    [self.colorStatsTableView registerClass:[MMCarCustomCellTableView class] forCellReuseIdentifier:@"color"];
-    
-    [newCarView addSubview: self.colorStatsTableView];
-    
+        [newCarView addSubview: self.colorStatsTableView];
+        
+         self.view = newCarView;
+
+        
+    }
     //[newCarView setContentSize:CGSizeMake(applicationFrame.size.width, CGRectGetMaxY(self.colorStatsTableView.frame) + 65)];
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"]style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     
-    self.view = newCarView;
+   
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{

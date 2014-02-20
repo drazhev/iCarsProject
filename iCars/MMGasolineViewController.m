@@ -180,7 +180,7 @@
             [refuelingView addSubview:litresLabel];
             
             UILabel* litresMainlabel = [[UILabel alloc] initWithFrame:CGRectMake(190, 70, 90, 40)];
-            litresMainlabel.text = [NSString stringWithFormat:@"%@", refueling.refuelingQantity];
+            litresMainlabel.text = [NSString stringWithFormat:@"%.2f", round(2.0f*[refueling.refuelingQantity floatValue])/2.0f];
             [refuelingView addSubview: litresMainlabel];
             
             UILabel* odometerLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];

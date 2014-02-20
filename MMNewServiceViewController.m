@@ -385,6 +385,9 @@
     self.datePicker.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame), 0, 0);
     self.datePicker.hidden = YES;
     
+    self.serviceTypeLabel.hidden = NO;
+    self.serviceTypePickerButton.hidden = NO;
+    
     self.totalCostLabel.hidden = NO;
     self.totalCostTextField.hidden = NO;
     

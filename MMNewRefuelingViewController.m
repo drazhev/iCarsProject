@@ -272,11 +272,11 @@
         
         newRefueling.refuelingDate = self.datePicker.date;
         
-        newRefueling.refuelingTotalCost = @([self.totalCostTextField.text integerValue]);
-        newRefueling.odometer = @([self.odometerTextField.text integerValue]);
-        newRefueling.fuelPrice = @([self.fuelPriceTextField.text integerValue]);
+        newRefueling.refuelingTotalCost = @([self.totalCostTextField.text floatValue]);
+        newRefueling.odometer = @([self.odometerTextField.text floatValue]);
+        newRefueling.fuelPrice = @([self.fuelPriceTextField.text floatValue]);
         
-        if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
+        if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text floatValue]);
         else newRefueling.refuelingQantity = [NSNumber numberWithFloat:[newRefueling.refuelingTotalCost floatValue] / [newRefueling.fuelPrice floatValue]];
         newRefueling.fuelType = [fuelType objectAtIndex:[self.fuelTypePicerView selectedRowInComponent:0]];
         if (self.gasStationPickerButton.titleLabel.text.length != 0) newRefueling.refuelingGasStation = [gasStations objectAtIndex:[self.gasStationPickerView selectedRowInComponent:0]];

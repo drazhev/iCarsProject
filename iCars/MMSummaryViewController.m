@@ -114,12 +114,13 @@
     [newCarView addSubview:self.distanceLabel];
     
     self.distanceOutLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.distanceLabel.frame), CGRectGetMaxY(self.distanceLabel.frame) + 5, CGRectGetWidth(self.distanceLabel.frame), 20)];
-    self.distanceOutLabel.textColor = [UIColor greenColor];
+    //self.distanceOutLabel.textColor = [UIColor greenColor];
     self.distanceOutLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.distanceOutLabel.textAlignment = NSTextAlignmentCenter;
-    Refueling* lastRefueling = [self.allRefuelings lastObject];
-    Refueling* firstRefueling = [self.allRefuelings firstObject];
-    self.distanceOutLabel.text = [NSString stringWithFormat:@"%d лв", [firstRefueling.odometer integerValue] - [lastRefueling.odometer integerValue]];
+    int sum = 0;
+    for (Refueling* refueling in self.allRefuelings) {
+        sum += [refueling.refuelingTotalCost integerValue];
+    }
     [newCarView addSubview: self.distanceOutLabel];
     
     self.totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.modelLabel.frame), CGRectGetMaxY(self.modelLabel.frame) + 10, CGRectGetWidth(self.modelLabel.frame), 20)];
@@ -130,13 +131,12 @@
     [newCarView addSubview:self.totalCostLabel];
     
     self.totalCostOutLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.totalCostLabel.frame), CGRectGetMaxY(self.totalCostLabel.frame) + 5, CGRectGetWidth(self.totalCostLabel.frame), 20)];
-    self.totalCostOutLabel.textColor = [UIColor greenColor];
+    //self.totalCostOutLabel.textColor = [UIColor greenColor];
     self.totalCostOutLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.totalCostOutLabel.textAlignment = NSTextAlignmentCenter;
-    int sum = 0;
-    for (Refueling* refueling in self.allRefuelings) {
-        sum += [refueling.refuelingTotalCost integerValue];
-    }
+    Refueling* lastRefueling = [self.allRefuelings lastObject];
+    Refueling* firstRefueling = [self.allRefuelings firstObject];
+    self.distanceOutLabel.text = [NSString stringWithFormat:@"%d лв", [firstRefueling.odometer integerValue] - [lastRefueling.odometer integerValue]];
     
     self.totalCostOutLabel.text = [NSString stringWithFormat:@"%d км", sum];
     [newCarView addSubview: self.totalCostOutLabel];
@@ -149,10 +149,10 @@
     [newCarView addSubview:self.regIDLabel];
     
     self.outCostPerKm = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.regIDLabel.frame)-20, CGRectGetMaxY(self.regIDLabel.frame) + 5, CGRectGetWidth(self.regIDLabel.frame), 20)];
-    self.outCostPerKm.textColor = [UIColor greenColor];
+    //self.outCostPerKm.textColor = [UIColor greenColor];
     self.outCostPerKm.font = [UIFont fontWithName:@"Arial" size:12];
     self.outCostPerKm.textAlignment = NSTextAlignmentCenter;
-    self.outCostPerKm.text = [NSString stringWithFormat:@"%f лв/км", (float)sum/((float)[firstRefueling.odometer integerValue] - [lastRefueling.odometer integerValue])];
+    self.outCostPerKm.text = [NSString stringWithFormat:@"%.4f лв/км", (float)sum/((float)[firstRefueling.odometer integerValue] - [lastRefueling.odometer integerValue])];
     [newCarView addSubview: self.self.outCostPerKm];
 
     

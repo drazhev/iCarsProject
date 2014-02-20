@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		32ACF0B018B656AD002A7EF5 /* Refueling.m in Sources */ = {isa = PBXBuildFile; fileRef = 32ACF0AF18B656AD002A7EF5 /* Refueling.m */; };
 		DCAD541018B528AB0040734E /* MMRemindersTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */; };
 		DCAD541218B528C50040734E /* MMRemindersTableViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */; };
 		DCAD541518B541350040734E /* MMNewReminderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DCAD541418B541350040734E /* MMNewReminderViewController.m */; };
@@ -49,7 +50,6 @@
 		EBA9C5BE18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA9C5BD18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.m */; };
 		EBAD463718AB9CF500EA3B6B /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD463618AB9CF500EA3B6B /* Expense.m */; };
 		EBAD463A18AB9CF500EA3B6B /* OilChange.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD463918AB9CF500EA3B6B /* OilChange.m */; };
-		EBAD463D18AB9CF500EA3B6B /* Refueling.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD463C18AB9CF500EA3B6B /* Refueling.m */; };
 		EBAD464018AB9CF500EA3B6B /* Reminder.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD463F18AB9CF500EA3B6B /* Reminder.m */; };
 		EBAD464318AB9CF500EA3B6B /* Insurance.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD464218AB9CF500EA3B6B /* Insurance.m */; };
 		EBAD464618AB9CF500EA3B6B /* Service.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD464518AB9CF500EA3B6B /* Service.m */; };
@@ -88,6 +88,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		32ACF0AE18B656AD002A7EF5 /* Refueling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Refueling.h; path = iCars/Refueling.h; sourceTree = "<group>"; };
+		32ACF0AF18B656AD002A7EF5 /* Refueling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Refueling.m; path = iCars/Refueling.m; sourceTree = "<group>"; };
 		DCAD540E18B528AB0040734E /* MMRemindersTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMRemindersTableViewCell.h; sourceTree = "<group>"; };
 		DCAD540F18B528AB0040734E /* MMRemindersTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMRemindersTableViewCell.m; sourceTree = "<group>"; };
 		DCAD541118B528C50040734E /* MMRemindersTableViewCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MMRemindersTableViewCell.xib; sourceTree = "<group>"; };
@@ -155,8 +157,6 @@
 		EBAD463618AB9CF500EA3B6B /* Expense.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Expense.m; sourceTree = "<group>"; };
 		EBAD463818AB9CF500EA3B6B /* OilChange.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OilChange.h; sourceTree = "<group>"; };
 		EBAD463918AB9CF500EA3B6B /* OilChange.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = OilChange.m; sourceTree = "<group>"; };
-		EBAD463B18AB9CF500EA3B6B /* Refueling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Refueling.h; sourceTree = "<group>"; };
-		EBAD463C18AB9CF500EA3B6B /* Refueling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Refueling.m; sourceTree = "<group>"; };
 		EBAD463E18AB9CF500EA3B6B /* Reminder.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reminder.h; sourceTree = "<group>"; };
 		EBAD463F18AB9CF500EA3B6B /* Reminder.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reminder.m; sourceTree = "<group>"; };
 		EBAD464118AB9CF500EA3B6B /* Insurance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Insurance.h; sourceTree = "<group>"; };
@@ -256,10 +256,10 @@
 				EBAD464218AB9CF500EA3B6B /* Insurance.m */,
 				EBAD463E18AB9CF500EA3B6B /* Reminder.h */,
 				EBAD463F18AB9CF500EA3B6B /* Reminder.m */,
-				EBAD463B18AB9CF500EA3B6B /* Refueling.h */,
-				EBAD463C18AB9CF500EA3B6B /* Refueling.m */,
 				EBAD463818AB9CF500EA3B6B /* OilChange.h */,
 				EBAD463918AB9CF500EA3B6B /* OilChange.m */,
+				32ACF0AE18B656AD002A7EF5 /* Refueling.h */,
+				32ACF0AF18B656AD002A7EF5 /* Refueling.m */,
 				EBAD463518AB9CF500EA3B6B /* Expense.h */,
 				EBAD463618AB9CF500EA3B6B /* Expense.m */,
 			);
@@ -533,6 +533,7 @@
 				EBAFCDCE18B1113B000FC14A /* MMNewRefuelingViewController.m in Sources */,
 				EB573C8818AFC9E3003DE8D3 /* MMServicesMapViewController.m in Sources */,
 				DCC865AF18B3C2480036A539 /* MMNewServiceViewController.m in Sources */,
+				32ACF0B018B656AD002A7EF5 /* Refueling.m in Sources */,
 				DCAD541518B541350040734E /* MMNewReminderViewController.m in Sources */,
 				EB573C9418AFCA51003DE8D3 /* MMSummaryViewController.m in Sources */,
 				EBAD464018AB9CF500EA3B6B /* Reminder.m in Sources */,
@@ -555,7 +556,6 @@
 				EB573C8218AFC989003DE8D3 /* MMGasStationsViewController.m in Sources */,
 				EBAD464318AB9CF500EA3B6B /* Insurance.m in Sources */,
 				EBA2EC3418B5935C00E8F1CD /* PieSliceLayer.m in Sources */,
-				EBAD463D18AB9CF500EA3B6B /* Refueling.m in Sources */,
 				EB573C8B18AFC9F4003DE8D3 /* MMRemindersViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

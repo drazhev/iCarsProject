@@ -42,14 +42,14 @@
         <relationship name="car" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Car" inverseName="oilChanges" inverseEntity="Car" syncable="YES"/>
     </entity>
     <entity name="Refueling" representedClassName="Refueling" syncable="YES">
-        <attribute name="fuelPrice" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="fuelPrice" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <attribute name="fuelType" optional="YES" attributeType="String" syncable="YES"/>
         <attribute name="fullTank" optional="YES" attributeType="Boolean" syncable="YES"/>
         <attribute name="odometer" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
         <attribute name="refuelingDate" optional="YES" attributeType="Date" syncable="YES"/>
         <attribute name="refuelingGasStation" optional="YES" attributeType="String" syncable="YES"/>
-        <attribute name="refuelingQantity" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
-        <attribute name="refuelingTotalCost" optional="YES" attributeType="Integer 32" defaultValueString="0" syncable="YES"/>
+        <attribute name="refuelingQantity" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
+        <attribute name="refuelingTotalCost" optional="YES" attributeType="Float" defaultValueString="0" syncable="YES"/>
         <relationship name="car" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Car" inverseName="refuelings" inverseEntity="Car" syncable="YES"/>
     </entity>
     <entity name="Reminder" representedClassName="Reminder" syncable="YES">
@@ -69,12 +69,12 @@
         <relationship name="car" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="Car" inverseName="services" inverseEntity="Car" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Car" positionX="0" positionY="0" width="128" height="240"/>
-        <element name="Expense" positionX="-182" positionY="-306" width="128" height="133"/>
-        <element name="Insurance" positionX="-288" positionY="-129" width="128" height="163"/>
-        <element name="OilChange" positionX="162" positionY="-279" width="128" height="133"/>
-        <element name="Refueling" positionX="180" positionY="-117" width="128" height="180"/>
-        <element name="Service" positionX="-288" positionY="90" width="128" height="148"/>
-        <element name="Reminder" positionX="180" positionY="105" width="128" height="118"/>
+        <element name="Car" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Expense" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Insurance" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="OilChange" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Refueling" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Reminder" positionX="0" positionY="0" width="0" height="0"/>
+        <element name="Service" positionX="0" positionY="0" width="0" height="0"/>
     </elements>
 </model>

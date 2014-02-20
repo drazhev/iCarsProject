@@ -2,7 +2,7 @@
 //  Refueling.m
 //  iCars
 //
-//  Created by Emilian Parvanov on 2/12/14.
+//  Created by Stoyan Stoyanov on 2/20/14.
 //  Copyright (c) 2014 MMA. All rights reserved.
 //
 
@@ -12,14 +12,14 @@
 
 @implementation Refueling
 
-@dynamic refuelingDate;
 @dynamic fuelPrice;
 @dynamic fuelType;
 @dynamic fullTank;
+@dynamic odometer;
+@dynamic refuelingDate;
 @dynamic refuelingGasStation;
 @dynamic refuelingQantity;
 @dynamic refuelingTotalCost;
-@dynamic odometer;
 @dynamic car;
 
 @end

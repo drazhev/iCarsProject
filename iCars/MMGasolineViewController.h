@@ -27,7 +27,7 @@
 
 #import "MMNewRefuelingViewController.h"
 
-@interface MMGasolineViewController : UIViewController <RNFrostedSidebarDelegate>
+@interface MMGasolineViewController : UIViewController <RNFrostedSidebarDelegate, UIScrollViewDelegate>
 
 @property(nonatomic, strong) Refueling* lastRefueling;
 

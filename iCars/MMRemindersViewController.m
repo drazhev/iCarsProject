@@ -217,14 +217,30 @@
     
     cell.detailsLabel.text = reminder.reminderDetails;
     if ([reminder.reminderType isEqualToString:@"OilChange"]) {
-        cell.iconImageView.image = [UIImage imageNamed:@"oilChange_logo"];
+        cell.iconImageView.image = [UIImage imageNamed:@"oilChange_logo.jpg"];
     }
     if ([reminder.reminderType isEqualToString:@"Service"]) {
-        cell.iconImageView.image = [UIImage imageNamed:@"services_logo"];
+        cell.iconImageView.image = [UIImage imageNamed:@"services_logo.jpg"];
     }
     if ([reminder.reminderType isEqualToString:@"Insurance"]) {
         cell.iconImageView.image = [UIImage imageNamed:@"insurance_logo"];
     }
+    if ([reminder.reminderType isEqualToString:@"Tax"]) {
+        cell.iconImageView.image = [UIImage imageNamed:@"expenses_logo.png"];
+    }
+    /*
+     "refueling_logo.png",
+     @"refueling-pin_logo.png",//+gps
+     @"oilChange_logo.jpg",
+     @"services_logo.jpg",
+     @"services-pin_logo.jpg",//+gps
+     @"reminders_logo.jpg",
+     @"expenses_logo.png",
+     @"insurance_logo.png",
+     @"insurance-pin_logo.png",//+gps
+     @"summary_logo.png",
+     @"charts_logo.png"
+     */
     
     
     return cell;

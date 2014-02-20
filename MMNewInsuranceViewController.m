@@ -145,6 +145,7 @@
     self.totalCostTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostLabel.frame) + 10, (newInsFrame.size.width - 30) / 2, 20)];
     [self.totalCostTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.totalCostTextField setDelegate:self];
+    [self.totalCostTextField setKeyboardType:UIKeyboardTypeNumberPad];
     self.totalCostTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [newInsView addSubview: self.totalCostTextField];
     
@@ -207,7 +208,7 @@
     self.expenseDetailLabel.text = @"Бележки:";
     [newInsView addSubview:self.expenseDetailLabel];
     
-    self.expenseDetailTextView = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseDetailLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
+    self.expenseDetailTextView = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseDetailLabel.frame) + 10, newInsFrame.size.width - 20, 40)];
     [[self.expenseDetailTextView layer] setBorderColor:[[UIColor grayColor] CGColor]];
     [[self.expenseDetailTextView layer] setBorderWidth:0.5];
     [[self.expenseDetailTextView layer] setCornerRadius:3];
@@ -338,6 +339,9 @@
     self.expenseLocationTextField.hidden = NO;
     self.expenseDetailLabel.hidden = NO;
     self.expenseDetailTextView.hidden = NO;
+    self.diferentInsuranceSwitch.hidden = NO;
+    self.leftSwitchLabel.hidden = NO;
+    self.rightSwitchLabel.hidden = NO;
     
 }
 
@@ -369,6 +373,9 @@
     self.expenseLocationTextField.hidden = NO;
     self.expenseDetailLabel.hidden = NO;
     self.expenseDetailTextView.hidden = NO;
+    self.diferentInsuranceSwitch.hidden = NO;
+    self.leftSwitchLabel.hidden = NO;
+    self.rightSwitchLabel.hidden = NO;
     
     NSLog(@"pribra se DISMISS");
     
@@ -397,6 +404,9 @@
             self.expenseLocationTextField.hidden = NO;
             self.expenseDetailLabel.hidden = NO;
             self.expenseDetailTextView.hidden = NO;
+            self.diferentInsuranceSwitch.hidden = NO;
+            self.leftSwitchLabel.hidden = NO;
+            self.rightSwitchLabel.hidden = NO;
             
             [self.view endEditing:YES];
             [newInsView addSubview:datePickerView];
@@ -436,6 +446,9 @@
             self.expenseLocationTextField.hidden = YES;
             self.expenseDetailLabel.hidden = YES;
             self.expenseDetailTextView.hidden = YES;
+            self.diferentInsuranceSwitch.hidden = YES;
+            self.leftSwitchLabel.hidden = YES;
+            self.rightSwitchLabel.hidden = YES;
             
             [self.view endEditing:YES];
             [newInsView addSubview:dueDatePickerView];
@@ -453,6 +466,9 @@
             self.expenseLocationTextField.hidden = NO;
             self.expenseDetailLabel.hidden = NO;
             self.expenseDetailTextView.hidden = NO;
+            self.diferentInsuranceSwitch.hidden = NO;
+            self.leftSwitchLabel.hidden = NO;
+            self.rightSwitchLabel.hidden = NO;
             NSLog(@"pribra se123 ");
             
         }];

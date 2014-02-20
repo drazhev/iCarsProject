@@ -100,7 +100,7 @@
         noRemindersLabel.textAlignment = NSTextAlignmentCenter;
         [noView addSubview: noRemindersLabel];
         
-        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRemindersLabel)]];
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings( noRemindersLabel)]];
         [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRemindersLabel)]];
         
         self.view = noView;

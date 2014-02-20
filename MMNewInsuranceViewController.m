@@ -34,6 +34,7 @@
 @property (nonatomic, strong) UITextField *expenseDetailTextView;
 @property (nonatomic, strong) UILabel *expenseLocationLabel;
 @property (nonatomic, strong) UITextField *expenseLocationTextField;
+@property (nonatomic, strong) UISwitch *diferentInsuranceSwitch;
 
 
 @property (nonatomic, strong, getter = theNewInsView) UIScrollView *newInsView;
@@ -174,16 +175,24 @@
     self.expenseLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostTextField.frame) + 10, (newInsFrame.size.width - 30) /2, 20)];
     self.expenseLocationLabel.textColor = [UIColor blackColor];
     self.expenseLocationLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.expenseLocationLabel.text = @"Място на разхода:";
+    self.expenseLocationLabel.text = @"Тип на зстраховката:";
     [newInsView addSubview:self.expenseLocationLabel];
     
-    self.expenseLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
+    self.diferentInsuranceSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((newInsFrame.size.width / 2 ) - 30, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
+    [self.diferentInsuranceSwitch addTarget:self action:@selector(actionSwitch:) forControlEvents:UIControlEventTouchUpInside];
+    [self.diferentInsuranceSwitch setBackgroundColor:[UIColor clearColor]];
+    //[(UILabel *)[[[[[[self.diferentInsuranceSwitch subviews] lastObject] subviews] objectAtIndex:1] subviews] objectAtIndex:0] setText:@"Yes"];
+    //[(UILabel *)[[[[[[self.diferentInsuranceSwitch subviews] lastObject] subviews] objectAtIndex:1] subviews] objectAtIndex:1] setText:@"No"];
+    [newInsView addSubview:self.diferentInsuranceSwitch];
+
+    
+    /*self.expenseLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
     [self.expenseLocationTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.expenseLocationTextField setDelegate:self];
     self.expenseLocationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [newInsView addSubview: self.expenseLocationTextField];
+    [newInsView addSubview: self.expenseLocationTextField];*/
     
-    self.expenseDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseLocationTextField.frame) + 10,newInsFrame.size.width / 2, 20)];
+    self.expenseDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.diferentInsuranceSwitch.frame) + 10,newInsFrame.size.width / 2, 20)];
     self.expenseDetailLabel.textColor = [UIColor blackColor];
     self.expenseDetailLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.expenseDetailLabel.text = @"Подробности за разхода:";
@@ -215,39 +224,40 @@
 }
 -(void)saveInsurance:(id)sender{
     NSLog(@"zastrahovka");
-    /*if (self.companyTextField.text.length == 0 || self.insuranceIDTextField.text.length == 0 || self.totalCostTextField.text.length == 0 ||self.dueDatePickerButton) {
-        UIAlertView *notEnoughCarInfo = [[UIAlertView alloc] initWithTitle:@"Недостатъчна информация!" message:@"Крайна цена, пробег и цена за литър са задължинелни полета!!!"delegate:sender cancelButtonTitle:@"Опитайте отново" otherButtonTitles:nil];
+    if (self.companyTextField.text.length == 0 || self.insuranceIDTextField.text.length == 0 || self.totalCostTextField.text.length == 0) {
+        UIAlertView *notEnoughCarInfo = [[UIAlertView alloc] initWithTitle:@"Недостатъчна информация!" message:@"Застрахователна  компания, номер на застраховка и крайна цена са задължинелни полета!!!"delegate:sender cancelButtonTitle:@"Опитайте отново" otherButtonTitles:nil];
         [notEnoughCarInfo show];
     }
-     *else{
-        
+     else{
         //DRAFT 6it
         
         MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
-        Refueling* newRefueling = [NSEntityDescription insertNewObjectForEntityForName:@"Refueling" inManagedObjectContext:appDelegate.managedObjectContext];
+        Insurance* newInsurance = [NSEntityDescription insertNewObjectForEntityForName:@"Insurance" inManagedObjectContext:appDelegate.managedObjectContext];
         
-        newRefueling.refuelingDate = self.datePicker.date;
-        
-        newRefueling.refuelingTotalCost = @([self.totalCostTextField.text integerValue]);
-        newRefueling.odometer = @([self.odometerTextField.text integerValue]);
-        newRefueling.fuelPrice = @([self.fuelPriceTextField.text integerValue]);
-        
-        if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
+        newInsurance.insurancePaymentDate = self.datePickerView.date;
+        newInsurance.insuranceDueDate = self.dueDatePickerView.date;
+        newInsurance.insuranceID = @([self.insuranceIDTextField.text integerValue]);
+        newInsurance.insuranceTotalCost = @([self.totalCostTextField.text integerValue]);
+        newInsurance.insuranceNotes = self.expenseDetailTextView.text;
+        //newInsurance.insuraneType =
+         newInsurance.insuranceCompany = self.companyTextField.text;
+         
+        //if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
         
         // if (self.fuelTypeTextField.text.length != 0) newRefueling.fuelType = self.fuelTypeTextField.text;;//da se prepravi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! spisuk @"95, 95+, 98, 98+, diesel, gaz4iza, metan4e i t.n"
         // if (self.gasStationTextField.text.length != 0) newRefueling.refuelingGasStation = self.gasStationTextField.text;
-        newRefueling.fullTank = @(1);
-        newRefueling.car = carToEdit;
+        //newRefueling.fullTank = @(1);
+        newInsurance.car = carToEdit;
         
         
         
         // Save the object to managedObjectContext
-        NSError* newRefuelingError = nil;
-        if (![appDelegate.managedObjectContext save:&newRefuelingError]) {
-            NSLog(@"New Refueling ERROR: %@ %@", newRefuelingError, [newRefuelingError localizedDescription]);
+        NSError* newInsuranceError = nil;
+        if (![appDelegate.managedObjectContext save:&newInsuranceError]) {
+            NSLog(@"New Insurance ERROR: %@ %@", newInsuranceError, [newInsuranceError localizedDescription]);
         }
         else{
-            NSLog(@"dobavihte novo zarejdane");
+            NSLog(@"dobavihte nova zastrahovka");
         }
         
         NSError *error01 = nil;
@@ -255,18 +265,18 @@
         if (![appDelegate.managedObjectContext save:&error01]) {
             NSLog(@"Can't Save! %@ %@", error01, [error01 localizedDescription]);
         }
-        */
     
         
         MMInsurancesViewController* insuranceVC = [[MMInsurancesViewController alloc] initWithCar:carToEdit];
         [self.navigationController pushViewController:insuranceVC animated:YES];
+         
         
         
         
-        
-        
-    //}
+    }
 }
+    
+    
 - (void)viewDidLoad
 {
     [super viewDidLoad];

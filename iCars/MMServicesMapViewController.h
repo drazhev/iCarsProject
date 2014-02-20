@@ -25,7 +25,7 @@
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
 
-@interface MMServicesMapViewController : UIViewController <RNFrostedSidebarDelegate>
+@interface MMServicesMapViewController : UIViewController <RNFrostedSidebarDelegate, MKMapViewDelegate, NSURLConnectionDelegate>
 
 -(id)initWithCar:(Car*) car;
 

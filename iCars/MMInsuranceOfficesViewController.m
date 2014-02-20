@@ -151,7 +151,6 @@
 }
 
 -(void)newInsurance {
-    NSLog(@"%@", self.selectedTitle);
     MMNewInsuranceViewController* newVC = [[MMNewInsuranceViewController alloc] init];
     newVC.selectedTitle = self.selectedTitle;
     [self.navigationController pushViewController:newVC animated:YES];

@@ -190,6 +190,7 @@
     [self.serviceLocationTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.serviceLocationTextField setDelegate:self];
     self.serviceLocationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    if ([self.selectedAddress length] != 0) self.serviceLocationTextField.text = [NSString stringWithFormat:@"%@",self.selectedAddress];
     [self.newServiceView addSubview: self.serviceLocationTextField];
     
     
@@ -206,6 +207,7 @@
     [self.serviceDetailsTextField setBorderStyle:UITextBorderStyleRoundedRect];
     [self.serviceDetailsTextField setDelegate:self];
     self.serviceDetailsTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    if ([self.selectedTitle length] != 0) self.serviceDetailsTextField.text = [NSString stringWithFormat:@"В сервиз: %@",self.selectedTitle];
     [self.newServiceView addSubview: self.serviceDetailsTextField];
     
     

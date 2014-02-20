@@ -16,6 +16,9 @@
 
 @interface MMNewServiceViewController : UIViewController
 
+@property (nonatomic, strong) NSString* selectedTitle;
+@property (nonatomic, strong) NSString* selectedAddress;
+
 -(id)initWithCar:(Car*) car;
 
 @end

@@ -7,6 +7,7 @@
 //
 
 #import "MMServicesMapViewController.h"
+#import <MapKit/MapKit.h>
 
 @interface MMServicesMapViewController ()
 
@@ -14,6 +15,9 @@
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
+@property (nonatomic, strong) NSMutableData* response;
+@property (nonatomic, strong) NSString* selectedTitle;
+@property (nonatomic, strong) NSString* selectedAddress;
 
 @end
 
@@ -43,11 +47,17 @@
     [newCarView setAlwaysBounceHorizontal:NO];
     [newCarView setScrollEnabled:YES];
     
+    MKMapView *services = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, applicationFrame.size.width, applicationFrame.size.height)];
+    services.delegate = self;
+    
+    MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(42.696552, 23.32601), 10000, 10000);
+    [services setRegion:[services regionThatFits:region] animated:YES];
+    
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
     [self.navigationItem setLeftBarButtonItem:hamburger];
     
-    self.view = newCarView;
+    self.view = services;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -95,6 +105,65 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Data CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response
+{
+    self.response = [[NSMutableData alloc] init];
+}
+
+- (void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data
+{
+    [self.response appendData:data];
+}
+
+- (void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error
+{
+    NSLog(@"failed request");
+}
+
+- (void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSError *err = nil;
+    
+    NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData: self.response options: NSJSONReadingMutableContainers error: &err];
+    NSArray *results = [jsonDict objectForKey:@"results"];
+    for(NSDictionary *item in results) {
+        NSString* name = [item objectForKey:@"name"];
+        CGFloat x = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"] floatValue];
+        CGFloat y = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"] floatValue];
+        NSString* address = [item objectForKey:@"formatted_address"];
+        MKPointAnnotation* annotation = [[MKPointAnnotation alloc] init];
+        annotation.subtitle = address;
+        annotation.coordinate = CLLocationCoordinate2DMake(x, y);
+        annotation.title = name;
+        MKMapView* mapView = (MKMapView*) self.view;
+        [mapView addAnnotation:annotation];
+    }
+}
+// return selected pin
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    self.selectedTitle =  [[mapView.selectedAnnotations lastObject] title];
+    self.selectedAddress = [[mapView.selectedAnnotations lastObject] subtitle];
+}
+// pin animation
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"mainPin"];
+    [pinView setPinColor:MKPinAnnotationColorGreen];
+    pinView.animatesDrop = YES;
+    pinView.canShowCallout = YES;
+    
+    UIButton* annotationButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [annotationButton setTitle:@"Поправи" forState:UIControlStateNormal];
+    annotationButton.frame = CGRectMake(0, 0, 70, 40);
+    [annotationButton addTarget:self action:@selector(newService) forControlEvents:UIControlEventTouchUpInside];
+    pinView.rightCalloutAccessoryView = annotationButton;
+    
+    return pinView;
+}
+-(void)newService {
+    MMNewServiceViewController* newService = [[MMNewServiceViewController alloc] init];
+    newService.selectedTitle = self.selectedTitle;
+    newService.selectedAddress = self.selectedAddress;
+    [self.navigationController pushViewController:newService animated:YES];
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -102,6 +171,14 @@
     self.view.backgroundColor = [UIColor whiteColor];
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
+    
+    NSString *url=@"https://maps.googleapis.com/maps/api/place/textsearch/json?query=car%20repair%20shops%20in%20Sofia&sensor=true&key=AIzaSyBVYq2PvGlNrSIewHboBOdDJqULO3Ff4XM";
+    NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];
+    NSURLConnection *conn = [[NSURLConnection alloc] initWithRequest:theRequest delegate:self];
+    
+    
+    
+    
     
     self.viewControllersContainer = [NSArray arrayWithObjects: @"MMCarMenuViewController",
                                      @"MMGasolineViewController",

@@ -41,6 +41,9 @@
 
 @property (nonatomic, strong)UILabel* noRefuelingsLabel;
 
+@property (nonatomic, strong)NSMutableArray* qties4check;
+@property (nonatomic, strong)NSMutableArray* colorContainer;
+
 @end
 
 @implementation MMChartsViewController
@@ -49,6 +52,7 @@
 @synthesize carToEdit;
 @synthesize colorStatsTableView, pieView;
 @synthesize  noRefuelingsLabel;
+@synthesize qties4check, colorContainer;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
 {
@@ -109,7 +113,7 @@
 #pragma mark - ConfigureTableView
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
-    return 7;// numFuels;
+    return numFuels;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
@@ -127,40 +131,26 @@
         NSArray *nib = [[NSBundle mainBundle] loadNibNamed:@"color" owner:self options:nil];
         cell = [nib objectAtIndex:0];
     }
-    NSArray* colorContainer = [[NSArray alloc] initWithObjects:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor  brownColor], nil];
-    NSArray* qties4check = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"%f", a95percent],
-                            [NSString stringWithFormat:@"%f", a95plusPercent],
-                            [NSString stringWithFormat:@"%f", a98percent],
-                            [NSString stringWithFormat:@"%f", a98plusPercent],
-                            [NSString stringWithFormat:@"%f", dieselPerc],
-                            [NSString stringWithFormat:@"%f", lpgPerc],
-                            [NSString stringWithFormat:@"%f", cngPerc], nil];
-    NSLog(@"QTY %@", [qties4check objectAtIndex: indexPath.row]);
-    //NSLog(@"size q4c %@", [qties4check count]);
-    
-    NSArray* qties = [[NSArray alloc] initWithObjects:[NSString stringWithFormat:@"A95: %.2f %% (%.2f л.)", a95percent, a95qty],
-                      [NSString stringWithFormat:@"A95+: %.2f %% (%.2f л.)", a95plusPercent, a95PLUSqty],
-                      [NSString stringWithFormat:@"A98: %.2f %% (%.2f л.)", a98percent, a98qty],
-                      [NSString stringWithFormat:@"A98+: %.2f %% (%.2f л.)", a98plusPercent, a98PLUSqty],
-                      [NSString stringWithFormat:@"Дизел: %.2f %% (%.2f л.)", dieselPerc, dieselQty],
-                      [NSString stringWithFormat:@"Газ: %.2f %% (%.2f л.)", lpgPerc, lpgQty],
-                      [NSString stringWithFormat:@"Метан: %.2f %% (%.2f л.)", cngPerc, cngQty], nil];
-    
-    NSLog(@"%%%% %@", [qties objectAtIndex: indexPath.row]);
-    
-
+   
+//    self.colorContainer = [[NSMutableArray alloc] init];
+//    
+//    [self.colorContainer addObject:[UIColor lightGrayColor]];
+//    [self.colorContainer addObject:[UIColor redColor]];
+//    [self.colorContainer addObject:[UIColor greenColor]];
+//    [self.colorContainer addObject:[UIColor blueColor]];
+//    [self.colorContainer addObject:[UIColor yellowColor]];
+//    [self.colorContainer addObject:[UIColor purpleColor]];
+//    [self.colorContainer addObject:[UIColor brownColor]];
+//
+//    
     
    // if (![[qties4check objectAtIndex:indexPath.row] isEqualToString:@"0.000000"]) {
-        cell.backgroundColor = [colorContainer objectAtIndex:indexPath.row];
-        cell.textLabel.text = [qties objectAtIndex:indexPath.row];
-   // }
-//    else{
-//        cell.backgroundColor = [UIColor blackColor];
-//        cell.textLabel.text = @"nqma";
-//    }
+        //cell.backgroundColor = [self.pieView.colorContainer objectAtIndex:indexPath.row];
+        cell.textLabel.text = [self.qties4check objectAtIndex:indexPath.row];
+
     [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
     return cell;
-    NSLog(@"size q4c %lu", (unsigned long)[qties4check count]);
+  //  NSLog(@"size q4c %lu", (unsigned long)[qties4check count]);
 }
 
 -(NSArray*)refuelingEntities{
@@ -240,9 +230,32 @@
     lpgPerc = lpgQty / allRefuelings * 100;
     cngPerc = cngQty / allRefuelings * 100;
     
+   // [self.colorContainer addObject:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor brownColor], nil];
+
     
+    self.qties4check = [[NSMutableArray alloc] init];
     
-    
+    if(a95qty != 0)     [self.qties4check addObject:[NSString stringWithFormat:@"A95: %.2f %% (%.2f л.)", a95percent, a95qty]];
+    if(a95PLUSqty != 0) [self.qties4check addObject:[NSString stringWithFormat:@"A95: %.2f %% (%.2f л.)", a95plusPercent, a95PLUSqty]];
+    if(a98qty != 0)     [self.qties4check addObject:[NSString stringWithFormat:@"A98: %.2f %% (%.2f л.)", a98percent, a98qty]];
+    if(a98PLUSqty != 0) [self.qties4check addObject:[NSString stringWithFormat:@"A98+: %.2f %% (%.2f л.)", a98plusPercent, a98PLUSqty]];
+    if(dieselQty != 0)  [self.qties4check addObject:[NSString stringWithFormat:@"Дизел: %.2f %% (%.2f л.)", dieselPerc, dieselQty]];
+    if(lpgQty != 0)     [self.qties4check addObject:[NSString stringWithFormat:@"Газ: %.2f %% (%.2f л.)", lpgPerc, lpgQty]];
+    if(cngQty != 0)     [self.qties4check addObject:[NSString stringWithFormat:@"Метан: %.2f %% (%.2f л.)", cngPerc, cngQty]];
+                                   
+                                 
+                                 
+//    NSLog(@"QTY %@", [qties4check objectAtIndex: indexPath.row]);
+//    //NSLog(@"size q4c %@", [qties4check count]);
+//    
+//    NSArray* qties = [[NSArray alloc] initWithObjects:,
+//                      ,
+//                      [NSString stringWithFormat:@"A98: %.2f %% (%.2f л.)", a98percent, a98qty],
+//                      [NSString stringWithFormat:@"A98+: %.2f %% (%.2f л.)", a98plusPercent, a98PLUSqty],
+//                      [NSString stringWithFormat:@"Дизел: %.2f %% (%.2f л.)", dieselPerc, dieselQty],
+//                      [NSString stringWithFormat:@"Газ: %.2f %% (%.2f л.)", lpgPerc, lpgQty],
+//                      [NSString stringWithFormat:@"Метан: %.2f %% (%.2f л.)", cngPerc, cngQty], nil];
+//    
 
     
 }

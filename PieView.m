@@ -28,6 +28,11 @@
 	_containerLayer = [CALayer layer];
 	[self.layer addSublayer:_containerLayer];
 }
+-(NSArray*)colorContainer{
+    return [[NSArray alloc] initWithObjects:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor  brownColor], nil];
+    
+}// =
+
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -188,9 +193,13 @@
 		//NSLog(@"Angle = %f", angle);
 		
 		PieSliceLayer *slice = [_containerLayer.sublayers objectAtIndex:index];
-        NSArray* colorContainer = [[NSArray alloc] initWithObjects:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor  brownColor], nil];
+
+        //NSArray* colorContainer = [[NSArray alloc] initWithObjects:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor  brownColor], nil];
+
+                                       
+        
 		//slice.fillColor = [UIColor colorWithHue:index/count saturation:0.5 brightness:0.75 alpha:1.0];
-        slice.fillColor = colorContainer[index];
+        slice.fillColor = self.colorContainer[index];
         
 		slice.startAngle = startAngle;
 		slice.endAngle = startAngle + angle;

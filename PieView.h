@@ -11,6 +11,8 @@
 @interface PieView : UIView
 
 @property (nonatomic, strong) NSArray *sliceValues;
+@property (nonatomic, strong) NSArray* colorContainer;
+
 
 -(id)initWithSliceValues:(NSArray *)sliceValues;
 @end

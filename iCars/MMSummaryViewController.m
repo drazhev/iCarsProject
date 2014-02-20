@@ -7,6 +7,7 @@
 //
 
 #import "MMSummaryViewController.h"
+#import "MMAppDelegate.h"
 
 @interface MMSummaryViewController ()
 
@@ -14,6 +15,17 @@
 
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
+@property (nonatomic, strong) NSArray* allRefuelings;
+
+@property (nonatomic, strong) UILabel *markaLabel;
+@property (nonatomic, strong) UILabel *modelLabel;
+@property (nonatomic, strong) UILabel *regNumberLabel;
+@property (nonatomic, strong) UILabel *distanceLabel;
+@property (nonatomic, strong) UILabel *distanceOutLabel;
+@property (nonatomic, strong) UILabel *totalCostLabel;
+@property (nonatomic, strong) UILabel *totalCostOutLabel;
+@property (nonatomic, strong) UILabel *regIDLabel;
+@property (nonatomic, strong) UILabel *outCostPerKm;
 
 @end
 
@@ -29,6 +41,7 @@
         // Custom initialization
         self.title = @"Summary";
         carToEdit = car;
+        self.allRefuelings = [self fetchRefuelings];
     }
     return self;
 }
@@ -70,6 +83,79 @@
     [newCarView setAlwaysBounceVertical:YES];
     [newCarView setAlwaysBounceHorizontal:NO];
     [newCarView setScrollEnabled:YES];
+    
+    self.markaLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, (applicationFrame.size.width - 40) / 3, 20)];
+    self.markaLabel.textColor = [UIColor blackColor];
+    self.markaLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.markaLabel.text = @"Марка";
+    self.markaLabel.textAlignment = NSTextAlignmentCenter;
+    [newCarView addSubview:self.markaLabel];
+    
+    self.modelLabel= [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.markaLabel.frame) + 10, 10,(applicationFrame.size.width - 40) / 3, 20)];
+    self.modelLabel.textColor = [UIColor blackColor];
+    self.modelLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.modelLabel.text = @"Модел";
+    self.modelLabel.textAlignment = NSTextAlignmentCenter;
+    [newCarView addSubview:self.modelLabel];
+    
+    self.regNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.modelLabel.frame) + 10, 10, (applicationFrame.size.width - 40) / 3, 20)];
+    self.regNumberLabel.textColor = [UIColor blackColor];
+    self.regNumberLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.regNumberLabel.text = @"Рег. номер";
+    self.regNumberLabel.textAlignment = NSTextAlignmentCenter;
+    [newCarView addSubview:self.regNumberLabel];
+    
+    
+    self.distanceLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.markaLabel.frame), CGRectGetMaxY(self.markaLabel.frame) + 10, CGRectGetWidth(self.markaLabel.frame), 20)];
+    self.distanceLabel.textColor = [UIColor blackColor];
+    self.distanceLabel.font = [UIFont fontWithName:@"Arial" size:14];
+    self.distanceLabel.text = @"Разстояние:";
+    self.distanceLabel.textAlignment = NSTextAlignmentCenter;
+    [newCarView addSubview:self.distanceLabel];
+    
+    self.distanceOutLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.distanceLabel.frame), CGRectGetMaxY(self.distanceLabel.frame) + 5, CGRectGetWidth(self.distanceLabel.frame), 20)];
+    self.distanceOutLabel.textColor = [UIColor greenColor];
+    self.distanceOutLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.distanceOutLabel.textAlignment = NSTextAlignmentCenter;
+    Refueling* lastRefueling = [self.allRefuelings lastObject];
+    Refueling* firstRefueling = [self.allRefuelings firstObject];
+    self.distanceOutLabel.text = [NSString stringWithFormat:@"%d лв", [firstRefueling.odometer integerValue] - [lastRefueling.odometer integerValue]];
+    [newCarView addSubview: self.distanceOutLabel];
+    
+    self.totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.modelLabel.frame), CGRectGetMaxY(self.modelLabel.frame) + 10, CGRectGetWidth(self.modelLabel.frame), 20)];
+    self.totalCostLabel.textColor = [UIColor blackColor];
+    self.totalCostLabel.font = [UIFont fontWithName:@"Arial" size:14];
+    self.totalCostLabel.text = @"Обща сума:";
+    self.totalCostLabel.textAlignment = NSTextAlignmentCenter;
+    [newCarView addSubview:self.totalCostLabel];
+    
+    self.totalCostOutLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.totalCostLabel.frame), CGRectGetMaxY(self.totalCostLabel.frame) + 5, CGRectGetWidth(self.totalCostLabel.frame), 20)];
+    self.totalCostOutLabel.textColor = [UIColor greenColor];
+    self.totalCostOutLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.totalCostOutLabel.textAlignment = NSTextAlignmentCenter;
+    int sum = 0;
+    for (Refueling* refueling in self.allRefuelings) {
+        sum += [refueling.refuelingTotalCost integerValue];
+    }
+    
+    self.totalCostOutLabel.text = [NSString stringWithFormat:@"%d км", sum];
+    [newCarView addSubview: self.totalCostOutLabel];
+    
+    self.regIDLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.regNumberLabel.frame) + 10, CGRectGetMaxY(self.regNumberLabel.frame) + 10, CGRectGetWidth(self.regNumberLabel.frame) + 10, 20)];
+    self.regIDLabel.textColor = [UIColor blackColor];
+    self.regIDLabel.font = [UIFont fontWithName:@"Arial" size:14];
+    self.totalCostOutLabel.textAlignment = NSTextAlignmentCenter;
+    self.regIDLabel.text = @"Цена/км:";
+    [newCarView addSubview:self.regIDLabel];
+    
+    self.outCostPerKm = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.regIDLabel.frame)-20, CGRectGetMaxY(self.regIDLabel.frame) + 5, CGRectGetWidth(self.regIDLabel.frame), 20)];
+    self.outCostPerKm.textColor = [UIColor greenColor];
+    self.outCostPerKm.font = [UIFont fontWithName:@"Arial" size:12];
+    self.outCostPerKm.textAlignment = NSTextAlignmentCenter;
+    self.outCostPerKm.text = [NSString stringWithFormat:@"%f лв/км", (float)sum/((float)[firstRefueling.odometer integerValue] - [lastRefueling.odometer integerValue])];
+    [newCarView addSubview: self.self.outCostPerKm];
+
+    
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
@@ -149,6 +235,19 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+-(NSArray*)fetchRefuelings
+{
+    MMAppDelegate *appDelegate =[[UIApplication sharedApplication]delegate];
+    NSFetchRequest* request = [[NSFetchRequest alloc] initWithEntityName:@"Refueling"];
+    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"odometer" ascending:NO];
+    request.sortDescriptors = @[sortByDate];
+    NSError *err;
+    return [[appDelegate.managedObjectContext executeFetchRequest:request error:&err] mutableCopy];
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Auto/Rotation CONFIG

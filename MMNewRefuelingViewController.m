@@ -306,7 +306,25 @@
         gasolineVC.lastRefueling = newRefueling;
         [self.navigationController pushViewController:gasolineVC animated:YES];
         
-        
+        /*
+         - (void)applicationDidEnterBackground:(UIApplication *)application
+         {
+         NSDate *alertTime = [[NSDate date]
+         dateByAddingTimeInterval:10];
+         UIApplication* app = [UIApplication sharedApplication];
+         UILocalNotification* notifyAlarm = [[UILocalNotification alloc]
+         init];
+         if (notifyAlarm)
+         {
+         notifyAlarm.fireDate = alertTime;
+         notifyAlarm.timeZone = [NSTimeZone defaultTimeZone];
+         notifyAlarm.repeatInterval = 0;
+         notifyAlarm.soundName = @"bell_tree.mp3";
+         notifyAlarm.alertBody = @"Staff meeting in 30 minutes";
+         [app scheduleLocalNotification:notifyAlarm];
+         }
+         }
+         */
         
         
         
@@ -333,6 +351,27 @@
     
     [self.view addGestureRecognizer:tap];
 }
+
+
+ - (void)applicationDidEnterBackground:(UIApplication *)application
+{
+    NSDate *alertTime = [[NSDate date]
+    dateByAddingTimeInterval:10];
+    UIApplication* app = [UIApplication sharedApplication];
+    UILocalNotification* notifyAlarm = [[UILocalNotification alloc]
+    init];
+    if (notifyAlarm)
+    {
+        notifyAlarm.fireDate = alertTime;
+        notifyAlarm.timeZone = [NSTimeZone defaultTimeZone];
+        notifyAlarm.repeatInterval = 0;
+        notifyAlarm.soundName = @"bell_tree.mp3";
+        notifyAlarm.alertBody = @"Staff meeting in 30 minutes";
+        [app scheduleLocalNotification:notifyAlarm];
+    }
+ }
+
+
 
 - (void)keyboardWasShown:(NSNotification *)aNotification {
     

@@ -12,6 +12,7 @@
     BOOL isDatePickerViewDrop;
     BOOL isDueDatePickerViewDrop;
     NSInteger originx;
+    NSString *insuranceType;
 }
 
 
@@ -35,6 +36,8 @@
 @property (nonatomic, strong) UILabel *expenseLocationLabel;
 @property (nonatomic, strong) UITextField *expenseLocationTextField;
 @property (nonatomic, strong) UISwitch *diferentInsuranceSwitch;
+@property (nonatomic, strong) UILabel *leftSwitchLabel;
+@property (nonatomic, strong) UILabel *rightSwitchLabel;
 
 
 @property (nonatomic, strong, getter = theNewInsView) UIScrollView *newInsView;
@@ -49,7 +52,7 @@
 @synthesize carToEdit;
 
 @synthesize formLabel, paymontDateLabel, insuranceIDLabel, totalCostLabel, dueDateLabel, expenseDetailLabel, companyLabel, expenseLocationLabel;
-@synthesize datePickerButton, totalCostTextField, insuranceIDTextField, companyTextField, expenseLocationTextField;
+@synthesize datePickerButton, totalCostTextField, insuranceIDTextField, companyTextField, expenseLocationTextField, leftSwitchLabel, rightSwitchLabel;
 @synthesize newInsView, datePickerView, dueDatePickerButton, dueDatePickerView;
 @synthesize expenseDetailTextView;
 
@@ -69,7 +72,7 @@
         }
         else
             originx = 0;
-        
+        insuranceType = [NSString stringWithFormat:@"Kasko"];
     }
     return self;
 }
@@ -170,27 +173,33 @@
 
     
     
-    
-    
     self.expenseLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.totalCostTextField.frame) + 10, (newInsFrame.size.width - 30) /2, 20)];
     self.expenseLocationLabel.textColor = [UIColor blackColor];
     self.expenseLocationLabel.font = [UIFont fontWithName:@"Arial" size:12];
     self.expenseLocationLabel.text = @"Тип на зстраховката:";
     [newInsView addSubview:self.expenseLocationLabel];
     
-    self.diferentInsuranceSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((newInsFrame.size.width / 2 ) - 30, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
+    self.diferentInsuranceSwitch = [[UISwitch alloc] initWithFrame:CGRectMake((newInsFrame.size.width / 2 ) - 50, CGRectGetMaxY(self.expenseLocationLabel.frame) + 5, newInsFrame.size.width - 20, 20)];
     [self.diferentInsuranceSwitch addTarget:self action:@selector(actionSwitch:) forControlEvents:UIControlEventTouchUpInside];
     [self.diferentInsuranceSwitch setBackgroundColor:[UIColor clearColor]];
-    //[(UILabel *)[[[[[[self.diferentInsuranceSwitch subviews] lastObject] subviews] objectAtIndex:1] subviews] objectAtIndex:0] setText:@"Yes"];
-    //[(UILabel *)[[[[[[self.diferentInsuranceSwitch subviews] lastObject] subviews] objectAtIndex:1] subviews] objectAtIndex:1] setText:@"No"];
     [newInsView addSubview:self.diferentInsuranceSwitch];
 
     
-    /*self.expenseLocationTextField = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
-    [self.expenseLocationTextField setBorderStyle:UITextBorderStyleRoundedRect];
-    [self.expenseLocationTextField setDelegate:self];
-    self.expenseLocationTextField.autocapitalizationType = UITextAutocapitalizationTypeNone;
-    [newInsView addSubview: self.expenseLocationTextField];*/
+    
+    self.leftSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, 60, 20)];
+    self.leftSwitchLabel.textColor = [UIColor blackColor];
+    self.leftSwitchLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.leftSwitchLabel.text = @"Каско:";
+    self.leftSwitchLabel.textAlignment = UIControlContentHorizontalAlignmentLeft;
+    self.leftSwitchLabel.backgroundColor = [UIColor greenColor];
+    
+    [newInsView addSubview:self.leftSwitchLabel];
+    
+    self.rightSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.diferentInsuranceSwitch.frame) + 10, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, 140, 20)];
+    self.rightSwitchLabel.textColor = [UIColor blackColor];
+    self.rightSwitchLabel.font = [UIFont fontWithName:@"Arial" size:12];
+    self.rightSwitchLabel.text = @"Гражданска отговорност:";
+    [newInsView addSubview:self.rightSwitchLabel];
     
     self.expenseDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.diferentInsuranceSwitch.frame) + 10,newInsFrame.size.width / 2, 20)];
     self.expenseDetailLabel.textColor = [UIColor blackColor];
@@ -239,8 +248,16 @@
         newInsurance.insuranceID = @([self.insuranceIDTextField.text integerValue]);
         newInsurance.insuranceTotalCost = @([self.totalCostTextField.text integerValue]);
         newInsurance.insuranceNotes = self.expenseDetailTextView.text;
-        //newInsurance.insuraneType =
-         newInsurance.insuranceCompany = self.companyTextField.text;
+        newInsurance.insuraneType = insuranceType;
+        newInsurance.insuranceCompany = self.companyTextField.text;
+         
+         Reminder* newInsurenceReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:appDelegate.managedObjectContext];
+         newInsurenceReminder.reminderDate = self.dueDatePickerView.date;
+         newInsurenceReminder.reminderType = @"Insurance";
+         //newInsurenceReminder.reminderOdometer = @([self.nextChangeTextField.text integerValue]);
+         newInsurenceReminder.reminderDetails = self.expenseDetailTextView.text;
+         
+         newInsurenceReminder.car = carToEdit;
          
         //if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
         
@@ -275,8 +292,20 @@
         
     }
 }
-    
-    
+
+-(void) actionSwitch:(id)sender{
+    if (self.diferentInsuranceSwitch .on) {
+        self.leftSwitchLabel.backgroundColor = [UIColor whiteColor];
+        self.rightSwitchLabel.backgroundColor = [UIColor greenColor];
+        insuranceType = [NSString stringWithFormat:@"Гражданска отговорност:"];
+    }
+    else{
+        self.leftSwitchLabel.backgroundColor = [UIColor greenColor];
+        self.rightSwitchLabel.backgroundColor = [UIColor whiteColor];
+        insuranceType = [NSString stringWithFormat:@"Kasko"];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -285,9 +314,7 @@
     
     if ([self.selectedTitle length] != 0)
         self.expenseDetailTextView.text = [NSString stringWithFormat: @"Офис: %@",self.selectedTitle];
-    
-    
-    
+        
     UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]
                                    initWithTarget:self
                                    action:@selector(dismissAll)];

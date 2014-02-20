@@ -170,6 +170,7 @@
     self.reminderTypes = @[@"OilChange", @"Tax", @"Service", @"Insurance"];
     self.typePickerView.delegate = self;
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithTitle:@"Save" style: UIBarButtonItemStyleBordered target:self action:@selector(saveReminder:)];
     [self.navigationItem setRightBarButtonItem:addButton];
     

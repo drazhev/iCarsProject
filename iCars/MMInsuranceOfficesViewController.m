@@ -132,6 +132,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     //NSString *url=@"http://localhost/";
     NSString *url=@"http://icars.orgfree.com/";
     NSURLRequest *theRequest = [NSURLRequest requestWithURL:[NSURL URLWithString:url]];

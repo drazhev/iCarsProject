@@ -15,11 +15,22 @@
 @property (nonatomic, strong) NSMutableIndexSet *optionIndices;
 @property (nonatomic, strong) NSArray* viewControllersContainer;
 
+@property (nonatomic, strong) NSArray* expenses;
+
+@property (nonatomic, strong)NSMutableArray* expensesArray;
+
+@property(nonatomic) CGPoint currentOffset;
+
+@property (nonatomic) int page;
+
+@property (nonatomic, strong) UILabel* noExpensesLabel;
+
+
 @end
 
 @implementation MMExpensesViewController
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-@synthesize optionIndices, viewControllersContainer;
+@synthesize optionIndices, viewControllersContainer, expensesArray, noExpensesLabel;
 @synthesize carToEdit;
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (id)initWithCar:(Car*)car
@@ -29,25 +40,134 @@
         // Custom initialization
         self.title = @"Разходи";
         carToEdit = car;
+        
     }
     return self;
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
-    CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
     
-    UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
+    CGRect applicationFrame = [self getScreenFrameForCurrentOrientation];
+    UIScrollView *newCarView = [[UIScrollView alloc] initWithFrame:applicationFrame];
     [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     [newCarView setBackgroundColor:[UIColor whiteColor]];
-    [newCarView setAlwaysBounceVertical:YES];
-    [newCarView setAlwaysBounceHorizontal:NO];
-    [newCarView setScrollEnabled:YES];
+    newCarView.pagingEnabled = YES;
+    newCarView.showsHorizontalScrollIndicator = YES;//no
+    newCarView.showsVerticalScrollIndicator = YES;//no
+    newCarView.scrollsToTop = NO;
+    newCarView.delegate = self;
     
-    self.navigationItem.hidesBackButton = YES;
-    UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"] style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];
-    [self.navigationItem setLeftBarButtonItem:hamburger];
-    
-    self.view = newCarView;
+    if ([self.expenses count] == 0){
+        
+        UIView* noView= [[UIView alloc] initWithFrame:applicationFrame];
+        [noView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+        [noView setBackgroundColor:[UIColor whiteColor]];
+        
+        
+        self.noExpensesLabel = [[UILabel alloc] init];
+        self.noExpensesLabel.textColor = [UIColor blackColor];
+        self.noExpensesLabel.backgroundColor = [UIColor whiteColor];
+        
+        self.noExpensesLabel.text = @"Нямате въведени разходи.";
+        self.noExpensesLabel.translatesAutoresizingMaskIntoConstraints = NO;
+        if([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPhone){
+            self.noExpensesLabel.font = [UIFont fontWithName:@"Arial" size: 15.0f];
+        }
+        else{
+            self.noExpensesLabel.font = [UIFont fontWithName:@"Arial" size: 30.0f];
+        }
+        self.noExpensesLabel.textAlignment = NSTextAlignmentCenter;
+        [noView addSubview: self.noExpensesLabel];
+        
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noExpensesLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noExpensesLabel)]];
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[noExpensesLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noExpensesLabel)]];
+        
+        self.view = noView;
+    }
+    else{
+        expensesArray = [[NSMutableArray alloc] init];
+        UIView *expenseView;
+        for(Expense *expense in self.expenses) {
+            expenseView = [[UIView alloc] init];
+            
+            UILabel* expenseDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, applicationFrame.size.width - 10, 20)];
+            expenseDateLabel.text = @"Дата на разход";
+            expenseDateLabel.textColor = [UIColor lightGrayColor];
+            expenseDateLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [expenseView addSubview:expenseDateLabel];
+            
+            UILabel* expenseDateMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 20, applicationFrame.size.width - 10, 40)];
+            NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+            [formatter setDateFormat:@"dd/MM/yyyy"];
+            expenseDateMainLabel.text = [NSString stringWithFormat:@"%@", [formatter stringFromDate:expense.expenseDate]];
+            [expenseView addSubview: expenseDateMainLabel];
+            
+            UILabel* expenseTypeLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 60, applicationFrame.size.width - 10, 20)];
+            expenseTypeLabel.text = @"Тип разход";
+            expenseTypeLabel.textColor = [UIColor lightGrayColor];
+            expenseTypeLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [expenseView addSubview:expenseTypeLabel];
+            
+            UILabel* expenseTypeMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 70, 90, 40)];
+            expenseTypeMainLabel.text = [NSString stringWithFormat:@"%@",expense.expenseType];
+            [expenseView addSubview: expenseTypeMainLabel];
+            
+            UILabel* totalCostLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 110, applicationFrame.size.width - 10, 20)];
+            totalCostLabel.text = @"Сума на разход";
+            totalCostLabel.textColor = [UIColor lightGrayColor];
+            totalCostLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [expenseView addSubview:totalCostLabel];
+            
+            UILabel* totalCostMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 120, applicationFrame.size.width - 10, 40)];
+            totalCostMainLabel.text = [NSString stringWithFormat:@"%@",expense.expenseTotalCost];
+            [expenseView addSubview:totalCostMainLabel];
+            
+            
+            UILabel* expenseLocationLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 160, applicationFrame.size.width - 10, 20)];
+            expenseLocationLabel.text = @"Местоположение";
+            expenseLocationLabel.textColor = [UIColor lightGrayColor];
+            expenseLocationLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [expenseView addSubview:expenseLocationLabel];
+            
+            UILabel* expenseLocationMainlabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 170, 90, 40)];
+            expenseLocationMainlabel.text = [NSString stringWithFormat:@"%@", expense.expenseTotalCost];
+            [expenseView addSubview: expenseLocationMainlabel];
+            
+            UILabel* expenseDetailsLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 210, applicationFrame.size.width - 10, 20)];
+            expenseDetailsLabel.text = @"Детайли";
+            expenseDetailsLabel.textColor = [UIColor lightGrayColor];
+            expenseDetailsLabel.font = [UIFont fontWithName:@"Arial" size:11];
+            [expenseView addSubview:expenseDetailsLabel];
+            
+            UILabel* expenseDetailsMainLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 220, 90, 40)];
+            expenseDetailsMainLabel.text = expense.expenseDetails;
+            [expenseView addSubview: expenseDetailsMainLabel];
+            
+            
+            
+            [expensesArray addObject:expenseView];
+            
+        }
+        
+        //paging
+        
+        NSUInteger page = 0;
+        for(UIView *view in expensesArray) {
+            
+            [newCarView addSubview:view];
+            [view setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
+            view.frame = CGRectMake(applicationFrame.size.width * page++ + 5, 0, applicationFrame.size.width - 10, applicationFrame.size.height);
+        }
+        newCarView.contentSize = CGSizeMake(applicationFrame.size.width * [expensesArray count], applicationFrame.size.height - 44);
+        
+        
+        
+        [newCarView setContentOffset:self.currentOffset];
+        
+        
+        self.view = newCarView;
+    }
+
 }
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)showHamburger:(id)sender{
@@ -95,9 +215,45 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Data CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-(NSArray*)expenses {
+    MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
+    NSFetchRequest* requestRefuelings = [[NSFetchRequest alloc] initWithEntityName:@"Expense"];
+    requestRefuelings.predicate = [NSPredicate predicateWithFormat: @"car = %@", carToEdit];
+    NSSortDescriptor* sortByDate = [[NSSortDescriptor alloc] initWithKey:@"expenseDate" ascending:NO];
+    requestRefuelings.sortDescriptors = @[sortByDate];
+    NSError *errorRefuelings;
+    return [[appDelegate.managedObjectContext executeFetchRequest:requestRefuelings error:&errorRefuelings] mutableCopy];
+
+}
+- (CGRect)getScreenFrameForCurrentOrientation {
+    return [self getScreenFrameForOrientation:[UIApplication sharedApplication].statusBarOrientation];
+}
+
+- (CGRect)getScreenFrameForOrientation:(UIInterfaceOrientation)orientation {
+    
+    UIScreen *screen = [UIScreen mainScreen];
+    CGRect fullScreenRect = screen.bounds;
+    BOOL statusBarHidden = [UIApplication sharedApplication].statusBarHidden;
+    
+    //implicitly in Portrait orientation.
+    if(orientation == UIInterfaceOrientationLandscapeRight || orientation == UIInterfaceOrientationLandscapeLeft){
+        CGRect temp = CGRectZero;
+        temp.size.width = fullScreenRect.size.height;
+        temp.size.height = fullScreenRect.size.width;
+        fullScreenRect = temp;
+    }
+    
+    if(!statusBarHidden){
+        CGFloat statusBarHeight = 20;//Needs a better solution, FYI statusBarFrame reports wrong in some cases..
+        fullScreenRect.size.height -= statusBarHeight;
+    }
+    
+    return fullScreenRect;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor whiteColor];
 	// Do any additional setup after loading the view.
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
@@ -114,7 +270,36 @@
                                      @"MMInsuranceOfficesViewController",
                                      @"MMSummaryViewController",
                                      @"MMChartsViewController",nil];
+    
 }
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+
+{
+    scrollView = (UIScrollView*)self.view;
+    
+    // switch the indicator when more than 50% of the previous/next page is visible
+    CGFloat pageWidth = CGRectGetWidth(scrollView.frame);
+    NSUInteger page = floor((scrollView.contentOffset.x - pageWidth / 2) / pageWidth) + 1;
+    self.page = page;
+    
+}
+//--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)gotoPage:(BOOL)animated
+{
+    
+    NSInteger page = self.page;
+    UIScrollView* scrollView = (UIScrollView*)self.view;
+    
+	// update the scroll view to the appropriate page
+    CGRect bounds = scrollView.bounds;
+    bounds.origin.x = CGRectGetWidth(bounds) * page;
+    bounds.origin.y = 0;
+    
+    if (self.expenses.count != 0){
+        [scrollView scrollRectToVisible:bounds animated:animated];
+    }
+}
+
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 - (void)didReceiveMemoryWarning
 {
@@ -124,6 +309,12 @@
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 #pragma mark - Auto/Rotation CONFIG
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+- (void)willAnimateRotationToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration {
+    
+    [self loadView];
+    [self gotoPage:NO];
+}
+
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation {
     if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad) {
         return YES;

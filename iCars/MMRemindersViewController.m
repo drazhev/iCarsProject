@@ -100,7 +100,7 @@
         noRemindersLabel.textAlignment = NSTextAlignmentCenter;
         [noView addSubview: noRemindersLabel];
         
-        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRemindersLabel)]];
+        [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"V:|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings( noRemindersLabel)]];
         [noView addConstraints:[NSLayoutConstraint constraintsWithVisualFormat:@"|-[noRemindersLabel]-|" options:0 metrics:nil views:NSDictionaryOfVariableBindings(noRemindersLabel)]];
         
         self.view = noView;
@@ -173,6 +173,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    self.view.backgroundColor = [UIColor whiteColor];
     [[[self navigationController] navigationBar] setTranslucent:NO];
     self.optionIndices = [NSMutableIndexSet indexSetWithIndex:1];
     

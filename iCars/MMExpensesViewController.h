@@ -23,9 +23,10 @@
 #import "MMInsuranceOfficesViewController.h"
 #import "MMExpensesViewController.h"
 #import "MMSummaryViewController.h"
+#import "Expense.h"
 #import "MMChartsViewController.h"
 
-@interface MMExpensesViewController : UIViewController <RNFrostedSidebarDelegate>
+@interface MMExpensesViewController : UIViewController <RNFrostedSidebarDelegate, UIScrollViewDelegate>
 
 -(id)initWithCar:(Car*) car;
 

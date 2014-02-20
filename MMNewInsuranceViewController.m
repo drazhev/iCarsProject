@@ -8,9 +8,10 @@
 
 #import "MMNewInsuranceViewController.h"
 
-@interface MMNewInsuranceViewController ()<UITextFieldDelegate, UIPickerViewDelegate,  UIActionSheetDelegate, UIGestureRecognizerDelegate>{
+@interface MMNewInsuranceViewController ()<UITextFieldDelegate, UIPickerViewDelegate,  UIActionSheetDelegate, UIGestureRecognizerDelegate, UITextViewDelegate>{
     BOOL isDatePickerViewDrop;
     BOOL isDueDatePickerViewDrop;
+    NSInteger originx;
 }
 
 
@@ -30,7 +31,7 @@
 @property (nonatomic, strong) UIButton *dueDatePickerButton;
 @property (nonatomic, strong) UIDatePicker *dueDatePickerView;
 @property (nonatomic, strong) UILabel *expenseDetailLabel;
-@property (nonatomic, strong) UITextView *expenseDetailTextView;
+@property (nonatomic, strong) UITextField *expenseDetailTextView;
 @property (nonatomic, strong) UILabel *expenseLocationLabel;
 @property (nonatomic, strong) UITextField *expenseLocationTextField;
 
@@ -62,6 +63,11 @@
         
         isDatePickerViewDrop = NO;
         isDueDatePickerViewDrop = NO;
+        if ([[UIDevice currentDevice] userInterfaceIdiom] == UIUserInterfaceIdiomPad ) {
+            originx = 100;
+        }
+        else
+            originx = 0;
         
     }
     return self;
@@ -74,14 +80,6 @@
     [newInsView setAlwaysBounceVertical:YES];
     [newInsView setAlwaysBounceHorizontal:NO];
     [newInsView setScrollEnabled:YES];
-    
-//--------------------------------------------------------------------------------------------------
-        /*self.formLabel = [[UILabel alloc] init];
-        self.formLabel.textColor = [UIColor blackColor];
-        self.formLabel.font = [UIFont fontWithName:@"Arial" size:15];
-        self.formLabel.translatesAutoresizingMaskIntoConstraints = NO;
-        self.formLabel.text = @"Застраховка";
-        [newInsView addSubview:self.formLabel];*/
         
     self.paymontDateLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, newInsFrame.size.width /3, 20)];
     self.paymontDateLabel.textColor = [UIColor blackColor];
@@ -102,8 +100,7 @@
     self.datePickerButton.titleLabel.font = [UIFont fontWithName:@"Arial" size:14.0f];
     [self.datePickerButton addTarget:self action: @selector(choosePayDate:) forControlEvents:UIControlEventTouchUpInside];
     [self.newInsView addSubview:self.datePickerButton];
-    
-    
+ 
     
     self.datePickerView = [[UIDatePicker alloc] initWithFrame:CGRectMake(0, CGRectGetMaxY(self.paymontDateLabel.frame) + 10, newInsFrame.size.width / 3, 0)];
     [self.datePickerView setDate:[NSDate date]];
@@ -153,13 +150,14 @@
     self.dueDateLabel.text = @"Срок на полицата:";
     [newInsView addSubview:self.dueDateLabel];
     
-    self.dueDatePickerButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.totalCostTextField.frame) + 10, CGRectGetMaxY(self.dueDateLabel.frame) + 10, (newInsFrame.size.width - 30) / 2, 20)];
+    self.dueDatePickerButton = [[UIButton alloc] initWithFrame:CGRectMake(CGRectGetMinX(self.dueDateLabel.frame), CGRectGetMaxY(self.dueDateLabel.frame) + 10, (newInsFrame.size.width - 50) / 2, 20)];
     [self.dueDatePickerButton setTitle: @"Изберете" forState: UIControlStateNormal];
     [self.dueDatePickerButton setTitle: @"Изберете" forState: UIControlStateApplication];
     [self.dueDatePickerButton setTitle: @"Изберете" forState: UIControlStateHighlighted];
     [self.dueDatePickerButton setTitle: @"Изберете" forState: UIControlStateSelected];
     [self.dueDatePickerButton setTitleColor:[UIColor blueColor] forState: UIControlStateNormal];
     self.dueDatePickerButton.titleLabel.font = [UIFont fontWithName:@"Arial" size:14.0f];
+    self.dueDatePickerButton.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
     [self.dueDatePickerButton addTarget:self action: @selector(chooseDueDate:) forControlEvents:UIControlEventTouchUpInside];
     [newInsView addSubview:self.dueDatePickerButton];
     
@@ -191,11 +189,11 @@
     self.expenseDetailLabel.text = @"Подробности за разхода:";
     [newInsView addSubview:self.expenseDetailLabel];
     
-    self.expenseDetailTextView = [[UITextView alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseDetailLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
+    self.expenseDetailTextView = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseDetailLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
     [[self.expenseDetailTextView layer] setBorderColor:[[UIColor grayColor] CGColor]];
     [[self.expenseDetailTextView layer] setBorderWidth:0.5];
     [[self.expenseDetailTextView layer] setCornerRadius:3];
-    //[self.expenseDetailTextView setDelegate:self];
+    [self.expenseDetailTextView setDelegate:self];
     self.expenseDetailTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
     [newInsView addSubview: self.expenseDetailTextView];
 
@@ -283,17 +281,18 @@
                                              selector:@selector(keyboardWasShown:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+    
     [self.view addGestureRecognizer:tap];
 
 }
 //-------------------------------------------------------------------------------------
 - (void)keyboardWasShown:(NSNotification *)aNotification {
     
-    self.datePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320, 0);
+    self.datePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320 + originx, 0);
     self.datePickerView.hidden = YES;
     isDatePickerViewDrop = NO;
     
-    self.dueDatePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320, 0);
+    self.dueDatePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.dueDatePickerButton.frame) + 10, 320 + originx, 0);
     self.dueDatePickerView.hidden = YES;
     isDueDatePickerViewDrop = NO;
     
@@ -305,7 +304,6 @@
     self.totalCostTextField.hidden = NO;
     self.dueDateLabel.hidden = NO;
     self.dueDatePickerButton.hidden = NO;
-    self.dueDatePickerView.hidden = NO;
     self.expenseLocationLabel.hidden = NO;
     self.expenseLocationTextField.hidden = NO;
     self.expenseDetailLabel.hidden = NO;
@@ -321,11 +319,11 @@
     
     [self.view endEditing:YES];
     
-    self.datePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320, 0);
+    self.datePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320 + originx, 0);
     self.datePickerView.hidden = YES;
     isDatePickerViewDrop = NO;
     
-    self.dueDatePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320, 0);
+    self.dueDatePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.dueDatePickerButton.frame) + 10, 320 + originx, 0);
     self.dueDatePickerView.hidden = YES;
     isDueDatePickerViewDrop = NO;
     
@@ -337,13 +335,12 @@
     self.totalCostTextField.hidden = NO;
     self.dueDateLabel.hidden = NO;
     self.dueDatePickerButton.hidden = NO;
-    self.dueDatePickerView.hidden = NO;
     self.expenseLocationLabel.hidden = NO;
     self.expenseLocationTextField.hidden = NO;
     self.expenseDetailLabel.hidden = NO;
     self.expenseDetailTextView.hidden = NO;
     
-    NSLog(@"pribra se ");
+    NSLog(@"pribra se DISMISS");
     
 }
 
@@ -352,9 +349,9 @@
     
     if (!isDatePickerViewDrop) {
         [UIView animateWithDuration:0.01 animations:^{
-            self.datePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame), 320, 162);
+            self.datePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.paymontDateLabel.frame) + 10, 320 + originx, 162);
             self.datePickerView.hidden = NO;
-            [newInsView addSubview:datePickerView];
+            
             self.companyLabel.hidden = YES;
             self.companyTextField.hidden = YES;
             self.insuranceIDLabel.hidden = YES;
@@ -363,24 +360,24 @@
             self.totalCostTextField.hidden = YES;
             self.dueDateLabel.hidden = YES;
             self.dueDatePickerButton.hidden = YES;
-            //-------------------------------------
+            
             self.dueDatePickerView.hidden = YES;
             isDueDatePickerViewDrop = NO;
             self.expenseLocationLabel.hidden = NO;
             self.expenseLocationTextField.hidden = NO;
             self.expenseDetailLabel.hidden = NO;
             self.expenseDetailTextView.hidden = NO;
-            //------------------------------------
-            [self.view endEditing:YES];
             
+            [self.view endEditing:YES];
+            [newInsView addSubview:datePickerView];
         } completion:^(BOOL finished) {
             //[self.view reloadData];
-            NSLog(@"poqvi se");
+            NSLog(@"poqvi se 456");
         }];
     }
     else{
         [UIView animateWithDuration:0.01 animations:^{
-            self.datePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320, 0);
+            self.datePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320 + originx, 0);
             self.datePickerView.hidden = YES;
             self.companyLabel.hidden = NO;
             self.companyTextField.hidden = NO;
@@ -390,7 +387,7 @@
             self.totalCostTextField.hidden = NO;
             self.dueDateLabel.hidden = NO;
             self.dueDatePickerButton.hidden = NO;
-            NSLog(@"pribra se ");
+            NSLog(@"pribra se 456");
             
         }];
     }
@@ -402,30 +399,31 @@
     
     if (!isDueDatePickerViewDrop) {
         [UIView animateWithDuration:0.01 animations:^{
-            self.dueDatePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.dueDatePickerButton.frame) + 10, 320, 162);
+            self.dueDatePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.totalCostTextField.frame) + 5, 320 + originx, 162);
             self.dueDatePickerView.hidden = NO;
-            [newInsView addSubview:dueDatePickerView];
+            
             self.expenseLocationLabel.hidden = YES;
             self.expenseLocationTextField.hidden = YES;
             self.expenseDetailLabel.hidden = YES;
             self.expenseDetailTextView.hidden = YES;
             
             [self.view endEditing:YES];
-            
+            [newInsView addSubview:dueDatePickerView];
         } completion:^(BOOL finished) {
             //[self.view reloadData];
-            NSLog(@"poqvi se");
+            NSLog(@"poqvi se123");
         }];
     }
     else{
         [UIView animateWithDuration:0.01 animations:^{
-            self.dueDatePickerView.frame = CGRectMake(0, CGRectGetMaxY(self.datePickerButton.frame) + 10, 320, 0);
+            
+            self.dueDatePickerView.frame = CGRectMake(originx, CGRectGetMaxY(self.dueDatePickerButton.frame) + 10, 320 + originx, 0);
             self.dueDatePickerView.hidden = YES;
             self.expenseLocationLabel.hidden = NO;
             self.expenseLocationTextField.hidden = NO;
             self.expenseDetailLabel.hidden = NO;
             self.expenseDetailTextView.hidden = NO;
-            NSLog(@"pribra se ");
+            NSLog(@"pribra se123 ");
             
         }];
     }

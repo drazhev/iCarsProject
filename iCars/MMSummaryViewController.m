@@ -86,22 +86,22 @@
     
     self.markaLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, 10, (applicationFrame.size.width - 40) / 3, 20)];
     self.markaLabel.textColor = [UIColor blackColor];
-    self.markaLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.markaLabel.text = @"Марка";
+    self.markaLabel.font = [UIFont fontWithName:@"Arial" size:16];
+    self.markaLabel.text = self.carToEdit.make;
     self.markaLabel.textAlignment = NSTextAlignmentCenter;
     [newCarView addSubview:self.markaLabel];
     
     self.modelLabel= [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.markaLabel.frame) + 10, 10,(applicationFrame.size.width - 40) / 3, 20)];
     self.modelLabel.textColor = [UIColor blackColor];
-    self.modelLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.modelLabel.text = @"Модел";
+    self.modelLabel.font = [UIFont fontWithName:@"Arial" size:16];
+    self.modelLabel.text = self.carToEdit.model;
     self.modelLabel.textAlignment = NSTextAlignmentCenter;
     [newCarView addSubview:self.modelLabel];
     
     self.regNumberLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.modelLabel.frame) + 10, 10, (applicationFrame.size.width - 40) / 3, 20)];
     self.regNumberLabel.textColor = [UIColor blackColor];
-    self.regNumberLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.regNumberLabel.text = @"Рег. номер";
+    self.regNumberLabel.font = [UIFont fontWithName:@"Arial" size:16];
+    self.regNumberLabel.text = self.carToEdit.licenseTag;
     self.regNumberLabel.textAlignment = NSTextAlignmentCenter;
     [newCarView addSubview:self.regNumberLabel];
     

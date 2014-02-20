@@ -15,6 +15,8 @@
 
 @interface MMNewInsuranceViewController : UIViewController
 
+@property (nonatomic, strong) NSString* selectedTitle;
+
 -(id)initWithCar:(Car*) car;
 
 @end

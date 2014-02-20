@@ -24,8 +24,9 @@
 #import "MMExpensesViewController.h"
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
+#import <MapKit/MapKit.h>
 
-@interface MMGasStationsViewController : UIViewController <RNFrostedSidebarDelegate>
+@interface MMGasStationsViewController : UIViewController <RNFrostedSidebarDelegate, MKMapViewDelegate>
 
 -(id)initWithCar:(Car*) car;
 

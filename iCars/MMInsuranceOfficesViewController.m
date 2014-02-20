@@ -17,6 +17,8 @@
 @property (nonatomic, strong) NSArray* viewControllersContainer;
 @property (nonatomic, strong) NSMutableData* response;
 
+@property (nonatomic, strong) NSString* selectedTitle;
+
 @end
 
 @implementation MMInsuranceOfficesViewController
@@ -43,6 +45,7 @@
     MKMapView* mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, applicationFrame.size.width, applicationFrame.size.height)];
      MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(42.696552, 23.32601), 10000, 10000);
     [mapView setRegion:[mapView regionThatFits:region] animated:YES];
+    mapView.delegate = self;
     self.view = mapView;
     
     self.navigationItem.hidesBackButton = YES;
@@ -126,6 +129,32 @@
         [mapView addAnnotation:annotation];
         
     }
+}
+
+-(void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view {
+    self.selectedTitle =  [[mapView.selectedAnnotations lastObject] title];
+}
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"mainPin"];
+    [pinView setPinColor:MKPinAnnotationColorPurple];
+    pinView.animatesDrop = YES;
+    pinView.canShowCallout = YES;
+    
+    
+    UIButton* button = [UIButton buttonWithType:UIButtonTypeRoundedRect];
+    [button setTitle:@"Застраховай" forState:UIControlStateNormal];
+    button.frame = CGRectMake(0, 0, 100, 40);
+    [button addTarget:self action:@selector(newInsurance) forControlEvents:UIControlEventTouchUpInside];
+    pinView.rightCalloutAccessoryView = button;
+    
+    return pinView;
+}
+
+-(void)newInsurance {
+    NSLog(@"%@", self.selectedTitle);
+    MMNewInsuranceViewController* newVC = [[MMNewInsuranceViewController alloc] init];
+    newVC.selectedTitle = self.selectedTitle;
+    [self.navigationController pushViewController:newVC animated:YES];
 }
 
 - (void)viewDidLoad

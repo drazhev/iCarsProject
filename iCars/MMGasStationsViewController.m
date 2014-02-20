@@ -7,7 +7,6 @@
 //
 
 #import "MMGasStationsViewController.h"
-#import <MapKit/MapKit.h>
 
 @interface MMGasStationsViewController ()
 
@@ -57,16 +56,28 @@
     NSDictionary *jsonDict = [NSJSONSerialization JSONObjectWithData: self.response options: NSJSONReadingMutableContainers error: &err];
     NSArray *results = [jsonDict objectForKey:@"results"];
     for(NSDictionary *item in results) {
-            NSString* name = [item objectForKey:@"name"];
-            CGFloat x = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"] floatValue];
-            CGFloat y = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"] floatValue];
-            MKPointAnnotation* annotation = [[MKPointAnnotation alloc] init];
-            annotation.coordinate = CLLocationCoordinate2DMake(x, y);
-            annotation.title = name;
-            MKMapView* mapView = (MKMapView*) self.view;
-            [mapView addAnnotation:annotation]; 
+        NSString* name = [item objectForKey:@"name"];
+        CGFloat x = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lat"] floatValue];
+        CGFloat y = [[[[item objectForKey:@"geometry"] objectForKey:@"location"] objectForKey:@"lng"] floatValue];
+        MKPointAnnotation* annotation = [[MKPointAnnotation alloc] init];
+        annotation.coordinate = CLLocationCoordinate2DMake(x, y);
+        annotation.title = name;
+        MKMapView* mapView = (MKMapView*) self.view;
+        [mapView addAnnotation:annotation];
     }
 }
+
+-(MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id<MKAnnotation>)annotation {
+    MKPinAnnotationView *pinView = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"mainPin"];
+    [pinView setPinColor:MKPinAnnotationColorRed];
+    pinView.animatesDrop = YES;
+    pinView.canShowCallout = YES;
+    
+    return pinView;
+}
+
+
+
 
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
@@ -76,6 +87,7 @@
     MKMapView* mapView = [[MKMapView alloc] initWithFrame:CGRectMake(0, 0, applicationFrame.size.width, applicationFrame.size.height)];
     MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(CLLocationCoordinate2DMake(42.696552, 23.32601), 10000, 10000);
     [mapView setRegion:[mapView regionThatFits:region] animated:YES];
+    mapView.delegate = self;
     self.view = mapView;
 
     

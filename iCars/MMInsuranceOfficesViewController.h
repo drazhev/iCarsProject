@@ -10,6 +10,7 @@
 #import "RDVKeyboardAvoidingScrollView.h"
 #import "RNFrostedSidebar.h"
 #import "Car.h"
+#import <MapKit/MapKit.h>
 
 #import "MMCarMenuViewController.h"
 
@@ -25,7 +26,7 @@
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
 
-@interface MMInsuranceOfficesViewController : UIViewController <RNFrostedSidebarDelegate>
+@interface MMInsuranceOfficesViewController : UIViewController <RNFrostedSidebarDelegate, MKMapViewDelegate>
 
 -(id)initWithCar:(Car*) car;
 

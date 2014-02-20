@@ -195,6 +195,8 @@
     [[self.expenseDetailTextView layer] setCornerRadius:3];
     [self.expenseDetailTextView setDelegate:self];
     self.expenseDetailTextView.autocapitalizationType = UITextAutocapitalizationTypeNone;
+    
+
     [newInsView addSubview: self.expenseDetailTextView];
 
     
@@ -270,6 +272,9 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     [[[self navigationController] navigationBar] setTranslucent:NO];
+    
+    if ([self.selectedTitle length] != 0)
+        self.expenseDetailTextView.text = [NSString stringWithFormat: @"Офис: %@",self.selectedTitle];
     
     
     

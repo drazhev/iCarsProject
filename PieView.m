@@ -172,7 +172,7 @@
 	}
 	else if (_normalizedValues.count < _containerLayer.sublayers.count) {
 		int count = _containerLayer.sublayers.count - _normalizedValues.count;
-
+        
 		for (int i = 0; i < count; i++) {
 			[[_containerLayer.sublayers objectAtIndex:0] removeFromSuperlayer];
 		}
@@ -181,14 +181,17 @@
 	// Set the angles on the slices
 	CGFloat startAngle = 0.0;
 	int index = 0;
-	CGFloat count = _normalizedValues.count;
+	//CGFloat count = _normalizedValues.count;
 	for (NSNumber *num in _normalizedValues) {
 		CGFloat angle = num.floatValue * 2 * M_PI;
 		
-		NSLog(@"Angle = %f", angle);
+		//NSLog(@"Angle = %f", angle);
 		
 		PieSliceLayer *slice = [_containerLayer.sublayers objectAtIndex:index];
-		slice.fillColor = [UIColor colorWithHue:index/count saturation:0.5 brightness:0.75 alpha:1.0];
+        NSArray* colorContainer = [[NSArray alloc] initWithObjects:[UIColor lightGrayColor], [UIColor redColor], [UIColor greenColor], [UIColor blueColor], [UIColor yellowColor], [UIColor purpleColor], [UIColor  brownColor], nil];
+		//slice.fillColor = [UIColor colorWithHue:index/count saturation:0.5 brightness:0.75 alpha:1.0];
+        slice.fillColor = colorContainer[index];
+        
 		slice.startAngle = startAngle;
 		slice.endAngle = startAngle + angle;
 		

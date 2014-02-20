@@ -189,7 +189,7 @@
     self.leftSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(30, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, 60, 20)];
     self.leftSwitchLabel.textColor = [UIColor blackColor];
     self.leftSwitchLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.leftSwitchLabel.text = @"Каско:";
+    self.leftSwitchLabel.text = @"Каско";
     self.leftSwitchLabel.textAlignment = UIControlContentHorizontalAlignmentLeft;
     self.leftSwitchLabel.backgroundColor = [UIColor greenColor];
     
@@ -198,13 +198,13 @@
     self.rightSwitchLabel = [[UILabel alloc] initWithFrame:CGRectMake(CGRectGetMaxX(self.diferentInsuranceSwitch.frame) + 10, CGRectGetMaxY(self.expenseLocationLabel.frame) + 10, 140, 20)];
     self.rightSwitchLabel.textColor = [UIColor blackColor];
     self.rightSwitchLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.rightSwitchLabel.text = @"Гражданска отговорност:";
+    self.rightSwitchLabel.text = @"Гражданска отговорност";
     [newInsView addSubview:self.rightSwitchLabel];
     
     self.expenseDetailLabel = [[UILabel alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.diferentInsuranceSwitch.frame) + 10,newInsFrame.size.width / 2, 20)];
     self.expenseDetailLabel.textColor = [UIColor blackColor];
     self.expenseDetailLabel.font = [UIFont fontWithName:@"Arial" size:12];
-    self.expenseDetailLabel.text = @"Подробности за разхода:";
+    self.expenseDetailLabel.text = @"Бележки:";
     [newInsView addSubview:self.expenseDetailLabel];
     
     self.expenseDetailTextView = [[UITextField alloc] initWithFrame:CGRectMake(10, CGRectGetMaxY(self.expenseDetailLabel.frame) + 10, newInsFrame.size.width - 20, 20)];
@@ -217,11 +217,6 @@
 
     [newInsView addSubview: self.expenseDetailTextView];
 
-    
-
-//--------------------------------------------------------------------------------------------------
-    
-    
     
     //VERY IMPORTANT FOR THE PROPER FUNCTIONALITY OF RDVKeyboardAvoidingScrollView
    [newInsView setContentSize:CGSizeMake(newInsFrame.size.width, CGRectGetMaxY(self.expenseDetailTextView.frame) + 85)];
@@ -238,7 +233,6 @@
         [notEnoughCarInfo show];
     }
      else{
-        //DRAFT 6it
         
         MMAppDelegate* appDelegate = (MMAppDelegate*)[[UIApplication sharedApplication] delegate];
         Insurance* newInsurance = [NSEntityDescription insertNewObjectForEntityForName:@"Insurance" inManagedObjectContext:appDelegate.managedObjectContext];
@@ -251,20 +245,18 @@
         newInsurance.insuraneType = insuranceType;
         newInsurance.insuranceCompany = self.companyTextField.text;
          
-         Reminder* newInsurenceReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:appDelegate.managedObjectContext];
-         newInsurenceReminder.reminderDate = self.dueDatePickerView.date;
-         newInsurenceReminder.reminderType = @"Insurance";
-         //newInsurenceReminder.reminderOdometer = @([self.nextChangeTextField.text integerValue]);
-         newInsurenceReminder.reminderDetails = self.expenseDetailTextView.text;
-         
-         newInsurenceReminder.car = carToEdit;
-         
-        //if (self.litersTextField.text.length != 0) newRefueling.refuelingQantity = @([self.litersTextField.text integerValue]);
-        
-        // if (self.fuelTypeTextField.text.length != 0) newRefueling.fuelType = self.fuelTypeTextField.text;;//da se prepravi!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! spisuk @"95, 95+, 98, 98+, diesel, gaz4iza, metan4e i t.n"
-        // if (self.gasStationTextField.text.length != 0) newRefueling.refuelingGasStation = self.gasStationTextField.text;
-        //newRefueling.fullTank = @(1);
         newInsurance.car = carToEdit;
+         
+         
+        Reminder* newInsurenceReminder = [NSEntityDescription insertNewObjectForEntityForName:@"Reminder" inManagedObjectContext:appDelegate.managedObjectContext];
+        newInsurenceReminder.reminderDate = self.dueDatePickerView.date;
+        newInsurenceReminder.reminderType = @"Insurance";
+        //newInsurenceReminder.reminderOdometer = @([self.nextChangeTextField.text integerValue]);
+        newInsurenceReminder.reminderDetails = self.expenseDetailTextView.text;
+         
+        newInsurenceReminder.car = carToEdit;
+         
+        
         
         
         
@@ -282,14 +274,10 @@
         if (![appDelegate.managedObjectContext save:&error01]) {
             NSLog(@"Can't Save! %@ %@", error01, [error01 localizedDescription]);
         }
-    
-        
+
         MMInsurancesViewController* insuranceVC = [[MMInsurancesViewController alloc] initWithCar:carToEdit];
         [self.navigationController pushViewController:insuranceVC animated:YES];
-         
-        
-        
-        
+    
     }
 }
 

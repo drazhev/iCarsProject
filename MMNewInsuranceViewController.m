@@ -215,7 +215,7 @@
 }
 -(void)saveInsurance:(id)sender{
     NSLog(@"zastrahovka");
-    /*if (self.totalCostTextField.text.length == 0 || self.fuelPriceTextField.text.length == 0 || self.odometerTextField.text.length == 0) {
+    /*if (self.companyTextField.text.length == 0 || self.insuranceIDTextField.text.length == 0 || self.totalCostTextField.text.length == 0 ||self.dueDatePickerButton) {
         UIAlertView *notEnoughCarInfo = [[UIAlertView alloc] initWithTitle:@"Недостатъчна информация!" message:@"Крайна цена, пробег и цена за литър са задължинелни полета!!!"delegate:sender cancelButtonTitle:@"Опитайте отново" otherButtonTitles:nil];
         [notEnoughCarInfo show];
     }

@@ -25,6 +25,10 @@
 #import "MMSummaryViewController.h"
 #import "MMChartsViewController.h"
 
+#import <QuartzCore/QuartzCore.h>
+#import <CoreGraphics/CoreGraphics.h>
+#import "PieView.h"
+
 @interface MMChartsViewController : UIViewController <RNFrostedSidebarDelegate>
 
 -(id)initWithCar:(Car*) car;

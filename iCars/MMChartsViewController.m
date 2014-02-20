@@ -7,8 +7,7 @@
 //
 
 #import "MMChartsViewController.h"
-#import <QuartzCore/QuartzCore.h>
-#import <CoreGraphics/CoreGraphics.h>
+
 
 @interface MMChartsViewController ()
 
@@ -34,25 +33,22 @@
     }
     return self;
 }
--(void)drawRect {
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetLineWidth(context, 10.0);
-    CGContextSetStrokeColorWithColor(context, [UIColor blueColor].CGColor);
-    CGContextMoveToPoint(context, 100, 600);
-    CGContextAddCurveToPoint(context, 475, 0, 750, 600, 200, 300);
-    CGContextStrokePath(context);
-
-}
 //--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 -(void)loadView{
     CGRect applicationFrame = [[UIScreen mainScreen] applicationFrame];
-    [self drawRect];
     UIScrollView *newCarView = [[RDVKeyboardAvoidingScrollView alloc] initWithFrame:applicationFrame];
     [newCarView setAutoresizingMask:UIViewAutoresizingFlexibleWidth|UIViewAutoresizingFlexibleHeight];
     [newCarView setBackgroundColor:[UIColor whiteColor]];
     [newCarView setAlwaysBounceVertical:YES];
     [newCarView setAlwaysBounceHorizontal:NO];
     [newCarView setScrollEnabled:YES];
+    
+    PieView* pieView = [[PieView alloc] initWithFrame:CGRectMake(0, 9, applicationFrame.size.width, applicationFrame.size.height/2)];
+    pieView.sliceValues = [NSArray arrayWithObjects:@(50), @(25),@(1),@(24),nil];
+    
+    [newCarView addSubview:pieView];
+    
+    
     
     self.navigationItem.hidesBackButton = YES;
     UIBarButtonItem *hamburger = [[UIBarButtonItem alloc] initWithImage:[UIImage imageNamed:@"burger_logo"]style: UIBarButtonItemStyleBordered target:self action:@selector(showHamburger:)];

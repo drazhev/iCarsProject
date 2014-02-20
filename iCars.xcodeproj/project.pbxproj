@@ -43,6 +43,8 @@
 		EB9B48E818AE5D8700C1B83A /* opel_logo.jpg in Resources */ = {isa = PBXBuildFile; fileRef = EB9B48E318AE5D8700C1B83A /* opel_logo.jpg */; };
 		EB9B48EC18AE5F8100C1B83A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = EB9B48EB18AE5F8100C1B83A /* Images.xcassets */; };
 		EBA20C5A18B430CC005272DA /* MMNewInsuranceViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA20C5918B430CC005272DA /* MMNewInsuranceViewController.m */; };
+		EBA2EC3418B5935C00E8F1CD /* PieSliceLayer.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2EC3118B5935C00E8F1CD /* PieSliceLayer.m */; };
+		EBA2EC3518B5935C00E8F1CD /* PieView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA2EC3318B5935C00E8F1CD /* PieView.m */; };
 		EBA9C5BB18ABDF790088A2AF /* MMAddNewCarViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA9C5BA18ABDF790088A2AF /* MMAddNewCarViewController.m */; };
 		EBA9C5BE18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = EBA9C5BD18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.m */; };
 		EBAD463718AB9CF500EA3B6B /* Expense.m in Sources */ = {isa = PBXBuildFile; fileRef = EBAD463618AB9CF500EA3B6B /* Expense.m */; };
@@ -141,6 +143,10 @@
 		EB9B48EB18AE5F8100C1B83A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
 		EBA20C5818B430CC005272DA /* MMNewInsuranceViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMNewInsuranceViewController.h; sourceTree = "<group>"; };
 		EBA20C5918B430CC005272DA /* MMNewInsuranceViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMNewInsuranceViewController.m; sourceTree = "<group>"; };
+		EBA2EC3018B5935C00E8F1CD /* PieSliceLayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieSliceLayer.h; sourceTree = "<group>"; };
+		EBA2EC3118B5935C00E8F1CD /* PieSliceLayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieSliceLayer.m; sourceTree = "<group>"; };
+		EBA2EC3218B5935C00E8F1CD /* PieView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PieView.h; sourceTree = "<group>"; };
+		EBA2EC3318B5935C00E8F1CD /* PieView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PieView.m; sourceTree = "<group>"; };
 		EBA9C5B918ABDF790088A2AF /* MMAddNewCarViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MMAddNewCarViewController.h; sourceTree = "<group>"; };
 		EBA9C5BA18ABDF790088A2AF /* MMAddNewCarViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MMAddNewCarViewController.m; sourceTree = "<group>"; };
 		EBA9C5BC18ABE4170088A2AF /* RDVKeyboardAvoidingScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RDVKeyboardAvoidingScrollView.h; sourceTree = "<group>"; };
@@ -299,6 +305,10 @@
 				EB573C9318AFCA51003DE8D3 /* MMSummaryViewController.m */,
 				EB573C9518AFCA5E003DE8D3 /* MMChartsViewController.h */,
 				EB573C9618AFCA5E003DE8D3 /* MMChartsViewController.m */,
+				EBA2EC3018B5935C00E8F1CD /* PieSliceLayer.h */,
+				EBA2EC3118B5935C00E8F1CD /* PieSliceLayer.m */,
+				EBA2EC3218B5935C00E8F1CD /* PieView.h */,
+				EBA2EC3318B5935C00E8F1CD /* PieView.m */,
 			);
 			name = ExpensesViewControllers;
 			sourceTree = "<group>";
@@ -541,8 +551,10 @@
 				EBA20C5A18B430CC005272DA /* MMNewInsuranceViewController.m in Sources */,
 				EBB7F32E18A555FA0050998B /* main.m in Sources */,
 				EB5F9C5718A66E78007AA245 /* MMCarListViewController.m in Sources */,
+				EBA2EC3518B5935C00E8F1CD /* PieView.m in Sources */,
 				EB573C8218AFC989003DE8D3 /* MMGasStationsViewController.m in Sources */,
 				EBAD464318AB9CF500EA3B6B /* Insurance.m in Sources */,
+				EBA2EC3418B5935C00E8F1CD /* PieSliceLayer.m in Sources */,
 				EBAD463D18AB9CF500EA3B6B /* Refueling.m in Sources */,
 				EB573C8B18AFC9F4003DE8D3 /* MMRemindersViewController.m in Sources */,
 			);
